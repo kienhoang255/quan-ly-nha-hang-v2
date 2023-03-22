@@ -1,0 +1,30 @@
+@use "../../assets/styles/" as *;
+
+.container {
+  width: 100%;
+}
+
+.title {
+  background-color: $bgColor;
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+  @include flex;
+  margin: 10px 0;
+}
+
+.pagination {
+  max-height: 35px;
+  @include flex;
+  gap: 4px;
+}
+
+.stageBtn {
+  height: 35px;
+  width: 35px;
+}
+
+.content {
+  margin-top: 12px;
+  @include grid($columns: 1fr 1fr 1fr 1fr);
+}

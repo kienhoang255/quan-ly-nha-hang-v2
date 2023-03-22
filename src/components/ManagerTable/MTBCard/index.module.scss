@@ -1,0 +1,47 @@
+@use "../../../assets/styles/" as *;
+
+.container {
+  width: 100%;
+  height: 250px;
+  border-radius: 12px;
+  background-color: $primaryBgColor;
+}
+
+$margin: 20px;
+.content {
+  @include flex($justifyContent: start);
+  margin: $margin;
+  width: calc(100% - $margin * 2);
+  height: calc(100% - $margin * 2);
+  gap: 8px;
+}
+
+.imgPreview {
+  height: 100%;
+  width: 210px;
+  background-color: aquamarine;
+  border-radius: 8px;
+  background-size: cover;
+}
+
+.detail {
+  color: $primaryColor;
+  flex-grow: 1;
+  @include flex($flexD: column, $alignItems: start, $justifyContent: start);
+  height: 100%;
+}
+
+.name {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 28px;
+}
+
+.settingBtn {
+  justify-self: end;
+  align-self: end;
+  width: 55px;
+  height: 55px;
+  font-size: 22px;
+  border-radius: 8px;
+}

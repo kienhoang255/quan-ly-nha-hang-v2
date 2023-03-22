@@ -1,0 +1,12 @@
+@use "../assets/styles/" as *;
+
+.container {
+  @include fullScreen;
+  background-color: $secondaryBgColor;
+}
+
+.content {
+  max-width: 1200px;
+  margin: auto;
+  @include flex;
+}

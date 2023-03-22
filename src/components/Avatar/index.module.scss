@@ -1,0 +1,22 @@
+@use "../../assets/styles/" as *;
+
+.container {
+  @include flex;
+  height: 41px;
+  background-color: $primaryColor;
+  border-radius: 40px;
+}
+
+.img {
+  @include flex;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: white;
+  object-fit: contain;
+}
+
+.name {
+  padding: 0 8px;
+  color: black;
+}

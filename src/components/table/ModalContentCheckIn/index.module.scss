@@ -1,0 +1,32 @@
+@use "../../../assets/styles/" as *;
+
+.container {
+  height: 180px;
+  width: 360px;
+  background-color: $primaryBgColor;
+  border-radius: 14px;
+  border: 1px solid $bgColor;
+  padding: 20px;
+  @include flex($flexD: column, $justifyContent: space-between);
+}
+
+.header {
+  @include flex;
+  width: 100%;
+  &Title {
+    color: $primaryColor;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 20px;
+  }
+}
+
+.body {
+  width: 100%;
+}
+
+.footer {
+  width: 100%;
+  @include flex($justifyContent: space-between);
+  gap: 12px;
+}

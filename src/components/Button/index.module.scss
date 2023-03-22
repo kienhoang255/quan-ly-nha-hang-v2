@@ -1,0 +1,78 @@
+@use "../../assets/styles/" as *;
+
+.content {
+  height: 40px;
+  width: 120px;
+  @include centerDirection(row);
+  @include window {
+    height: 34px;
+    width: 110px;
+  }
+}
+
+.left-icon {
+  margin: 10px;
+}
+
+.title {
+  @include center;
+  height: 100%;
+}
+
+.normal {
+  background-color: $primaryColor;
+  color: black;
+  @include btn($border-radius: 8px);
+  text-decoration: none;
+}
+
+.outline {
+  @include btn($border-radius: 8px);
+  color: $primaryColor;
+  background-color: transparent;
+  border: 1px solid $primaryColor;
+  &:hover {
+    background-color: $bgColor;
+    color: black;
+  }
+}
+
+.none {
+  @include btn($border-radius: 0px);
+  color: white;
+  background-color: transparent;
+  &:hover {
+    background-color: $primaryColor;
+  }
+}
+
+.circle {
+  @include btn($border-radius: 50%);
+  height: 40px;
+  width: 40px;
+  background-color: $primaryColor;
+  color: #000;
+}
+
+.active {
+  background-color: $bgColor;
+  color: black;
+  box-shadow: rgba(255, 114, 13, 0.4) -5px 5px,
+    rgba(255, 114, 13, 0.3) -10px 10px, rgba(255, 114, 13, 0.2) -15px 15px;
+  border-radius: 0 12px 12px 0;
+  border: 1px solid lighten($primaryColor, 20%);
+}
+
+.disable {
+  cursor: not-allowed !important;
+  pointer-events: none;
+  position: relative;
+  &::after {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+  }
+}

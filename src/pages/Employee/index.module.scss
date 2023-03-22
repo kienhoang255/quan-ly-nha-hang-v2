@@ -1,0 +1,74 @@
+@use "../../assets/styles/" as *;
+
+.container {
+  width: 100%;
+  @include flex($flexD: column);
+}
+
+.title {
+  background-color: $bgColor;
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+  @include flex;
+  margin: 10px 0;
+}
+
+.search {
+  width: 30%;
+  @include flex;
+  &Btn {
+    height: 56px;
+    width: 56px;
+  }
+}
+
+.body {
+  width: 100%;
+}
+
+.table {
+  width: 100%;
+}
+
+.headerTable {
+  margin-top: 22px;
+  @include grid($columns: 6% 1fr 10% 22% 24%);
+  background-color: $primaryColor;
+  border-radius: 8px 8px 0 0;
+}
+
+.headerCell {
+  width: 100%;
+  @include flex;
+  border-left: 1px solid $primaryBgColor;
+
+  height: 35px;
+  &:first-child {
+    border-left: 0px;
+  }
+}
+
+.bodyTable {
+  @extend .headerTable;
+  margin-top: 0px;
+  background-color: $primaryBgColor;
+  border-bottom: 1px solid $primaryColor;
+  border-radius: 0px;
+  height: 65px;
+  &:last-child {
+    border-bottom: 0px;
+    border-radius: 0 0 8px 8px;
+  }
+}
+
+.bodyCell {
+  color: $primaryColor;
+  gap: 20px;
+}
+
+.left {
+  @include flex($justifyContent: flex-start);
+  width: calc(100% - 20px);
+  padding-left: 20px;
+}

@@ -1,0 +1,38 @@
+@use "../../../assets/styles/" as *;
+
+.container {
+  width: 100%;
+  height: 330px;
+  background-color: $primaryBgColor;
+  margin: 6px;
+  border-radius: 8px;
+}
+
+.imgPreview {
+  height: 70%;
+  width: 100%;
+  background-color: $bgColor;
+  border-radius: 8px 8px 0 0;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.detail {
+  color: $primaryColor;
+  @include flex($flexD: column);
+}
+
+.name {
+  font-size: 18px;
+  font-weight: 600;
+  height: 35px;
+}
+
+.action {
+  width: 40%;
+  @include flex($justifyContent: space-between);
+  &Btn {
+    width: 30px;
+    height: 30px;
+  }
+}

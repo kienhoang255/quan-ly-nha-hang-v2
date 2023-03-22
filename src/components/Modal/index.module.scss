@@ -1,0 +1,65 @@
+@use "../../assets/styles/" as *;
+
+.container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  @include fullScreenCenter;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.content {
+}
+
+.openContainer {
+  animation: OpenModal 0.25s linear;
+}
+.closeContainer {
+  animation: Close 0.15s linear forwards;
+}
+
+.openContent {
+  animation: OpenModal 0.15s linear, SlideIn 0.25s linear;
+}
+
+.closeContent {
+  animation: Close 0.15s linear forwards, SlideOut 0.15s linear;
+}
+
+@keyframes OpenModal {
+  to {
+    opacity: 1;
+  }
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes SlideIn {
+  to {
+    transform: translateY(0);
+  }
+  from {
+    transform: translateY(-40%);
+  }
+}
+
+@keyframes Close {
+  to {
+    opacity: 0;
+  }
+  from {
+    opacity: 1;
+  }
+}
+
+@keyframes SlideOut {
+  to {
+    transform: translateY(-40%);
+  }
+  from {
+    transform: translateY(0);
+  }
+}

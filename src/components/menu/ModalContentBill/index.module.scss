@@ -1,0 +1,109 @@
+@use "../../../assets/styles/" as *;
+
+.container {
+  background-color: $primaryBgColor;
+  width: 550px;
+  height: 600px;
+  @include flex($flexD: column, $justifyContent: space-between);
+  border-radius: 12px;
+}
+
+.header {
+  @include flex($flexD: column);
+  width: calc(100% - 12px);
+  padding: 6px;
+}
+
+.clientInfo {
+  @include flex($flexD: column);
+  width: 100%;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-bottom: 1px dashed $primaryColor;
+  border-top: 1px dashed $primaryColor;
+}
+
+.detail {
+  width: 100%;
+  @include flex($justifyContent: space-between);
+}
+
+.name {
+  color: $primaryColor;
+}
+
+.value {
+  color: white;
+}
+
+.body {
+  height: 100%;
+  width: 100%;
+}
+
+.table {
+  width: auto;
+  padding: 6px;
+}
+
+.headerTable {
+  width: auto;
+  @include grid($columns: 10% 1fr 18% 18% 20%);
+  color: $primaryColor;
+  border-bottom: 1px solid $primaryColor;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 4px;
+}
+
+.bodyTable {
+  @extend .headerTable;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.left {
+  justify-self: start;
+}
+
+.right {
+  justify-self: end;
+}
+
+.mid {
+  justify-self: center;
+}
+
+.action {
+  @include flex;
+  gap: 6px;
+  &Btn {
+    height: 25px;
+    width: 25px;
+  }
+}
+
+.footerTable {
+  width: auto;
+  color: $primaryColor;
+  @include flex($justifyContent: space-between);
+}
+
+.footer {
+  width: calc(100% - 16px);
+  @include flex($flexD: column);
+  padding: 16px;
+}
+
+.totalPrice {
+  @include flex($justifyContent: space-between);
+  color: $primaryColor;
+  width: 100%;
+}
+
+.actionBtn {
+  width: 100%;
+  @include flex;
+  gap: 20px;
+  height: 40px;
+}

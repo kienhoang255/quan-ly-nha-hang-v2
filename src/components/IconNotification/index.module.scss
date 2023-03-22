@@ -1,0 +1,33 @@
+@use "../../assets/styles/" as *;
+
+.container {
+  @include flex;
+  position: relative;
+}
+
+.redDot {
+  color: red;
+  font-size: 18px;
+  line-height: 0;
+  position: absolute;
+  bottom: 15px;
+  left: 12px;
+  ~ .icon {
+    animation: shake 0.1s infinite linear;
+  }
+}
+
+.icon {
+  color: white;
+  font-size: 25px;
+  line-height: 0;
+}
+
+@keyframes shake {
+  to {
+    transform: rotate(10deg);
+  }
+  from {
+    transform: rotate(-10deg);
+  }
+}

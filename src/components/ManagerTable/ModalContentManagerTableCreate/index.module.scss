@@ -1,0 +1,76 @@
+@use "../../../assets/styles/" as *;
+
+.container {
+  height: 600px;
+  width: 850px;
+  background-color: $primaryBgColor;
+  border-radius: 18px;
+}
+
+$pContent: 16px;
+.content {
+  padding: $pContent;
+  @include flex($flexD: column, $justifyContent: space-between);
+  width: calc(100% - $pContent * 2);
+  height: calc(100% - $pContent * 2);
+}
+
+.title {
+  color: $primaryColor;
+  font-size: 18px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.body {
+  flex-grow: 1;
+  @include flex;
+  width: 100%;
+  &Left {
+    background-color: aquamarine;
+    height: 460px;
+    width: 460px;
+    border-radius: 12px;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  &Right {
+    flex-grow: 1;
+    @include flex($flexD: column, $justifyContent: space-evenly);
+    height: 100%;
+    &Form {
+      padding: 12px;
+      @include flex($flexD: column);
+      gap: 14px;
+    }
+  }
+}
+
+.footer {
+  width: 50%;
+  @include flex($justifyContent: space-between);
+}
+
+.imageInput {
+  @include flex($justifyContent: space-between);
+  gap: 12px;
+  width: 280px;
+  &Btn {
+    width: 40px;
+  }
+  &Preview {
+    height: 70px;
+    width: 70px;
+    background-color: aquamarine;
+    background-size: cover;
+    border-radius: 6px;
+  }
+  &Input {
+    width: 75px;
+    text-align: center;
+  }
+}
+
+.actionBtn {
+  @include flex($flexD: row);
+}

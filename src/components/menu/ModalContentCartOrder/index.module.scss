@@ -1,0 +1,72 @@
+@use "../../../assets/styles/" as *;
+
+.container {
+  background-color: $primaryBgColor;
+  width: 550px;
+  height: 600px;
+  @include flex($flexD: column, $justifyContent: space-between);
+  border-radius: 12px;
+}
+
+.body {
+  height: 100%;
+  width: 100%;
+}
+
+.table {
+  width: auto;
+  padding: 6px;
+}
+
+.headerTable {
+  width: auto;
+  @include grid($columns: 10% 1fr 18% 22%);
+  color: $primaryColor;
+  border-bottom: 1px solid $primaryColor;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 4px;
+}
+
+.bodyTable {
+  @extend .headerTable;
+  font-weight: 400;
+  font-size: 14px;
+  padding: 4px 0;
+}
+
+.left {
+  justify-self: start;
+}
+
+.right {
+  justify-self: end;
+}
+
+.mid {
+  justify-self: center;
+}
+
+.action {
+  @include flex;
+  gap: 6px;
+  &Btn {
+    height: 25px;
+    width: 25px;
+  }
+}
+
+.footerTable {
+  width: auto;
+  color: $primaryColor;
+  @include flex($justifyContent: space-between);
+}
+
+.footer {
+  width: 100%;
+  @include flex($justifyContent: space-around);
+  padding: 16px 0;
+  &Btn {
+    height: 35px;
+  }
+}

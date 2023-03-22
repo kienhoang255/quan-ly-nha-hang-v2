@@ -1,0 +1,46 @@
+@use "../../../assets/styles/" as *;
+
+.container {
+  border: 1px solid $primaryColor;
+  background-color: $primaryBgColor;
+  width: 195px;
+  height: 120px;
+  border-radius: 8px;
+  @include flex($flexD: column);
+  padding: 12px;
+  margin: 12px;
+  color: $primaryColor;
+  cursor: pointer;
+  &:hover {
+    background-color: $bgColor;
+    color: $primaryBgColor;
+  }
+}
+
+.name {
+  font-size: 18px;
+  align-self: flex-start;
+  @include flex;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.status {
+  align-self: flex-end;
+  font-size: 20px;
+  line-height: 0;
+}
+
+.using {
+  color: $dangerColor;
+}
+.empty {
+  color: $successColor;
+}
+.ordered {
+  color: $warningColor;
+}
+
+.amount {
+  @extend .name;
+}

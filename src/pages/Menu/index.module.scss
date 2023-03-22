@@ -1,0 +1,108 @@
+@use "../../assets/styles/" as *;
+
+$headerHeight: 40px;
+$headerMargin: 10px;
+$bodyMarginTop: 32px;
+$bodyTitleHeight: 35px;
+
+.container {
+  @include fullScreen;
+  background-color: $secondaryBgColor;
+  @include flex;
+}
+
+.wrap {
+  max-width: 1200px;
+  height: 100vh;
+  width: 100%;
+}
+
+.header {
+  width: 100%;
+  height: $headerHeight;
+  border-radius: 8px;
+  @include flex;
+  margin: $headerMargin 0;
+  gap: 16px;
+
+  &Title {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    background-color: $bgColor;
+    color: $primaryBgColor;
+    @include flex;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  &BackBtn {
+    font-size: 22px;
+  }
+}
+
+.body {
+  @include grid($columns: 25% 75%);
+  margin-top: $bodyMarginTop;
+}
+
+.typeList {
+  background-color: $primaryBgColor;
+  width: 90%;
+  align-self: flex-start;
+  justify-self: flex-start;
+  border-radius: 8px;
+  &Btn {
+    width: 100%;
+    border-radius: 0px;
+    height: 50px;
+
+    &:first-child {
+      border-radius: 8px 8px 0 0;
+    }
+    &:last-child {
+      border-radius: 0 0 8px 8px;
+    }
+  }
+}
+
+.content {
+  width: 100%;
+  height: 100%;
+}
+
+.contentHeader {
+  @include flex;
+  width: 100%;
+  gap: 10px;
+}
+
+.title {
+  height: 35px;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid $bgColor;
+  @include flex;
+  color: $bgColor;
+  text-transform: capitalize;
+}
+
+.btnBill {
+  width: 35px;
+  height: 35px;
+  font-size: 22px;
+}
+
+.contentBody {
+  @include grid($columns: 1fr 1fr 1fr);
+  gap: 16px;
+  max-height: calc(
+    100vh -
+      ($bodyMarginTop + $bodyTitleHeight + $headerHeight + $headerMargin + 13px)
+  );
+  overflow: hidden;
+  overflow-y: auto;
+
+  @include scrollBar($primaryColor);
+}

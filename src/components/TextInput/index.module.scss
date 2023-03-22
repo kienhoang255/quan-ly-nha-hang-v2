@@ -1,0 +1,97 @@
+@use "../../assets/styles/" as *;
+
+.container {
+  @include flex;
+  position: relative;
+  margin: 8px 6px;
+  border-radius: 8px;
+  background-color: white;
+}
+
+.input {
+  background-color: transparent;
+  width: 100%;
+  outline: none;
+  padding: 18px 14px;
+  border: 0.5px solid $primaryColor;
+  border-radius: 8px;
+  &:focus {
+    border: 1.5px solid $primaryColor;
+
+    + .label {
+      padding: 1px 8px;
+      background-color: $primaryBgColor;
+      color: $primaryColor;
+      border: 0.1px solid $primaryColor;
+      animation: up 0.15s linear forwards;
+    }
+  }
+
+  &:not(:placeholder-shown) + .label {
+    padding: 1px 8px;
+    background-color: $primaryBgColor;
+    color: $primaryColor;
+    border: 0.1px solid $primaryColor;
+    animation: up 0.15s linear forwards;
+  }
+
+  &::-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px white inset !important;
+  }
+}
+
+.label {
+  border-radius: 12px;
+  position: absolute;
+  left: 15px;
+  user-select: none;
+  color: gray;
+  pointer-events: none;
+  background-color: transparent;
+}
+
+.rightIcon {
+  position: absolute;
+  right: 15px;
+  + .input {
+    padding: 18px 42px 18px 14px;
+  }
+}
+
+@keyframes up {
+  to {
+    top: -15px;
+    font-size: 16px;
+  }
+  from {
+    top: 0px;
+  }
+}
+
+.hideReveal {
+  font-size: 25px;
+  line-height: 0;
+  cursor: pointer;
+  color: gray;
+}
+
+.clearText {
+  @extend .hideReveal;
+}
+
+.file {
+  background-color: $primaryColor;
+  border-radius: 8px;
+  height: 40px;
+  @include flex;
+  &:hover {
+    opacity: 0.7;
+  }
+  &:active {
+    opacity: 0.9;
+  }
+
+  &Btn {
+    padding: 10px;
+  }
+}

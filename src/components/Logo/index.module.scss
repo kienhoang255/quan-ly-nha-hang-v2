@@ -1,0 +1,6 @@
+@use "../../assets/styles/" as *;
+
+.logo {
+  @include flex;
+  height: 90px;
+}

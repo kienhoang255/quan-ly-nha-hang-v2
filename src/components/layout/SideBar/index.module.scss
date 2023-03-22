@@ -1,0 +1,86 @@
+@use "../../../assets/styles/" as *;
+
+.container {
+  @include flex;
+}
+
+.buttonShow {
+  font-size: 25px;
+  line-height: 0;
+  color: white;
+}
+
+.wrap {
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background-color: transparent;
+}
+
+.content {
+  height: 100%;
+  width: 265px;
+  background-color: $primaryBgColor;
+}
+
+.header {
+  @include flex;
+}
+
+.body {
+  &Button {
+    font-size: 18px;
+    width: 100% !important;
+    height: 60px !important;
+    justify-content: start !important;
+    text-decoration: none;
+    padding-left: 10px;
+    &:hover {
+      box-shadow: rgba(255, 114, 13, 0.4) -5px 5px,
+        rgba(255, 114, 13, 0.3) -10px 10px, rgba(255, 114, 13, 0.2) -15px 15px;
+      border-radius: 0 12px 12px 0;
+    }
+  }
+}
+
+.rotate {
+  animation: rotateTo 0.2s linear forwards;
+}
+
+.rotated {
+  animation: rotateBack 0.1s linear forwards;
+}
+
+.openSideBar {
+  animation: showSideBar 0.1s linear;
+  display: block;
+}
+
+@keyframes showSideBar {
+  to {
+    width: 265px;
+  }
+  from {
+    width: 0px;
+  }
+}
+
+@keyframes rotateTo {
+  to {
+    transform: rotate(90deg);
+  }
+  from {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes rotateBack {
+  to {
+    transform: rotate(0deg);
+  }
+  from {
+    transform: rotate(90deg);
+  }
+}

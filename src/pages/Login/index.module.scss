@@ -1,0 +1,30 @@
+@use "../../assets/styles/" as *;
+
+.container {
+  @include fullScreenCenter;
+  background-color: $secondaryBgColor;
+}
+
+.content {
+  height: 500px;
+  width: 400px;
+  background-color: $primaryBgColor;
+  @include flex($flexD: column, $justifyContent: space-between);
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.form {
+  @include flex($flexD: column, $justifyContent: space-around);
+  height: auto;
+  width: 100%;
+  gap: 30px;
+}
+
+.logo {
+  height: 200px;
+}
+
+.submitBtn {
+  margin-top: 60px;
+}
