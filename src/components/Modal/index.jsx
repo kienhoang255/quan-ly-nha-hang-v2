@@ -1,10 +1,16 @@
-import React, { forwardRef, memo, useImperativeHandle, useState } from "react";
+import React, {
+  forwardRef,
+  memo,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from "react";
 import classNames from "classnames/bind";
 import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
-const Modal = forwardRef(({ children, component, hasValue }, ref) => {
+const Modal = forwardRef(({ children, component, hasValue, open }, ref) => {
   const [modal, setModal] = useState(false);
   const [isOpenAnimation, setIsOpenAnimation] = useState(false);
 
@@ -21,6 +27,13 @@ const Modal = forwardRef(({ children, component, hasValue }, ref) => {
       setModal(!modal);
     }, 150);
   };
+
+  useEffect(() => {
+    setIsOpenAnimation(open);
+    setTimeout(() => {
+      setModal(open);
+    }, 150);
+  }, [open]);
 
   const handleOnClickOutSideContent = () => {
     if (!hasValue) {

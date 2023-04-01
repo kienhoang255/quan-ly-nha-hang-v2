@@ -22,8 +22,9 @@ const MTBCard = ({
   handleOnUpdateImage,
   handleOption,
   option,
-  options,
   setOption,
+  stateTableInfo,
+  setStateTableInfo,
 }) => {
   const [previewImgRedux, setPreviewImgRedux] = useState();
   useEffect(() => {
@@ -64,8 +65,9 @@ const MTBCard = ({
               handleCloseModal={handleCloseModal}
               handleOption={handleOption}
               option={option}
-              options={options}
               setOption={setOption}
+              stateTableInfo={stateTableInfo}
+              setStateTableInfo={setStateTableInfo}
             />
           }
         >

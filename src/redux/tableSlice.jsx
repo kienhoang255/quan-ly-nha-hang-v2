@@ -5,7 +5,6 @@ const initialState = {
   table: [],
   stageCalled: [],
   tableImage: {},
-  options: [],
 };
 
 export const tableSlice = createSlice({
@@ -22,7 +21,7 @@ export const tableSlice = createSlice({
       state.table.push(...action.payload);
     },
     addTable: (state, action) => {
-      return state;
+      state.table.push(action.payload);
     },
     updateTable: (state, action) => {
       return {
@@ -34,6 +33,7 @@ export const tableSlice = createSlice({
         }),
       };
     },
+
     setTableImage: (state, action) => {
       return {
         ...state,
@@ -55,14 +55,36 @@ export const tableSlice = createSlice({
         },
       };
     },
-    addOption: (state, action) => {
-      return { ...state, options: [...state.options, action.payload] };
+
+    addTableImageOptions: (state, action) => {
+      return {
+        ...state,
+        tableImage: {
+          ...state.tableImage,
+          [action.payload._id]: {
+            ...state.tableImage[action.payload._id],
+            options: [
+              ...state.tableImage[action.payload._id].options,
+              action.payload.option,
+            ],
+          },
+        },
+      };
     },
-    removeOption: (state, action) => {
-      state.options.splice(action.payload, 1);
+
+    updateTableImageOptions: (state, action) => {
+      state.tableImage[action.payload._id].options.splice(
+        action.payload.index,
+        1,
+        action.payload.option
+      );
     },
-    updateOption: (state, action) => {
-      state.options.splice(action.payload.index, 1, action.payload.option);
+
+    removeTableImageOptions: (state, action) => {
+      state.tableImage[action.payload._id].options.splice(
+        action.payload.index,
+        1
+      );
     },
   },
 });
@@ -71,12 +93,14 @@ export const {
   setStage,
   setStageCalled,
   setTable,
+  addTable,
   updateTable,
+  updateTableInfo,
   setTableImage,
   updateTableImage,
-  addOption,
-  updateOption,
-  removeOption,
+  addTableImageOptions,
+  updateTableImageOptions,
+  removeTableImageOptions,
 } = tableSlice.actions;
 
 export default tableSlice.reducer;

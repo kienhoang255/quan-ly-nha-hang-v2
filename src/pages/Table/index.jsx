@@ -66,6 +66,11 @@ const Table = () => {
     setSelectedStage(stage);
   };
 
+  const handleCheckIn = (value) => {
+    // Check value is email/phone
+    // Call api
+  };
+
   return (
     <div className={cx("container")}>
       <div className={cx("title")}>DANH SÁCH BÀN ĂN</div>

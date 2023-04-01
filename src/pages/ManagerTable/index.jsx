@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import classNames from "classnames/bind";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -12,17 +12,20 @@ import Button from "../../components/Button";
 import Modal from "../../components/Modal";
 
 import {
-  addOption,
-  removeOption,
+  addTable,
+  addTableImageOptions,
+  removeTableImageOptions,
   setStage,
   setStageCalled,
   setTable,
   setTableImage,
-  updateOption,
   updateTable,
   updateTableImage,
+  updateTableImageOptions,
+  updateTableInfo,
 } from "../../redux/tableSlice";
 import { TableAPI } from "../../services";
+import Progress from "../../components/Progress";
 
 const cx = classNames.bind(styles);
 
@@ -31,16 +34,20 @@ const ManagerTable = () => {
   const stageCalled = useSelector((stage) => stage.table.stageCalled);
   const table = useSelector((stage) => stage.table.table);
   const tableImage = useSelector((stage) => stage.table.tableImage);
-  const options = useSelector((stage) => stage.table.options);
   const dispatch = useDispatch();
+
+  const modalCreateRef = useRef();
 
   const [tableImg, setTableImg] = useState({});
   const [previewImg, setPreviewImg] = useState();
-
   const [selectedStage, setSelectedStage] = useState();
-
-  const [option, setOption] = useState({ option: "", index: undefined });
-
+  const [option, setOption] = useState({ option: "", index: -1, options: [] });
+  const [openModalFetching, setOpenModalFetching] = useState(false);
+  const [stateTableInfo, setStateTableInfo] = useState({
+    _id: "",
+    stage: "",
+    numOfPeople: "",
+  });
   // For first time render
   useEffect(() => {
     // Set selected stage for first render
@@ -92,6 +99,7 @@ const ManagerTable = () => {
   // Create new table
   const handleCreateNewTable = (e) => {
     e.preventDefault();
+    setOpenModalFetching(true);
     const form = new FormData(e.target);
     const { stage, numOfPeople } = Object.fromEntries(form.entries());
     const { image1, image2, image3, image4 } = tableImg;
@@ -102,17 +110,22 @@ const ManagerTable = () => {
       image2,
       image3,
       image4,
+      options: option.options,
     };
 
-    TableAPI.createTable(dataAPI).then((res) => console.log(res.data.data));
+    TableAPI.createTable(dataAPI).then((res) => {
+      setOpenModalFetching(false);
+      modalCreateRef.current.closeModal();
+      dispatch(addTable(res.data.data.table));
+    });
   };
 
   const handleUpdateTable = (e, _id) => {
     e.preventDefault();
+    setOpenModalFetching(true);
     const form = new FormData(e.target);
     const { stage, numOfPeople } = Object.fromEntries(form.entries());
-    const { image1, image2, image3, image4 } = tableImage[_id];
-    console.log(options);
+    const { image1, image2, image3, image4, options } = tableImage[_id];
     const dataAPI = {
       _id,
       stage,
@@ -123,28 +136,31 @@ const ManagerTable = () => {
       image4,
       options,
     };
-
     TableAPI.updateTable(dataAPI).then((res) => {
+      setOpenModalFetching(false);
       dispatch(setTableImage(res.data.data.tableImage));
       dispatch(updateTable(res.data.data.table));
     });
   };
 
-  const handleOption = (index) => {
+  const handleOption = (_id, key) => {
     return {
       remove() {
-        dispatch(removeOption(index));
-      },
-      setUpdate() {
-        setOption((prev) => ({ ...prev, index: index }));
+        dispatch(removeTableImageOptions({ _id, index: key }));
       },
       cancelUpdate() {
         setOption((prev) => ({ ...prev, index: undefined }));
       },
       add() {
-        if (option.index >= 0) dispatch(updateOption(option));
-        else dispatch(addOption(option.option));
-        setOption((prev) => ({ ...prev, index: undefined }));
+        if (option.index >= 0)
+          dispatch(
+            updateTableImageOptions({
+              _id,
+              option: option.option,
+              index: option?.index,
+            })
+          );
+        else dispatch(addTableImageOptions({ _id, option: option.option }));
       },
     };
   };
@@ -177,14 +193,17 @@ const ManagerTable = () => {
                 handleOnUpdateImage={handleOnUpdateImage}
                 handleOption={handleOption}
                 option={option}
-                options={options}
                 setOption={setOption}
+                stateTableInfo={stateTableInfo}
+                setStateTableInfo={setStateTableInfo}
               />
             );
           }
         })}
       </div>
+
       <Modal
+        ref={modalCreateRef}
         component={
           <ModalContentManagerTableCreate
             tableImg={tableImg}
@@ -193,6 +212,8 @@ const ManagerTable = () => {
             setPreviewImg={setPreviewImg}
             handleCreateNewTable={handleCreateNewTable}
             handleGetTableImage={handleGetTableImage}
+            option={option}
+            setOption={setOption}
           />
         }
       >
@@ -200,6 +221,8 @@ const ManagerTable = () => {
           <AiOutlinePlus />
         </Button>
       </Modal>
+      {/* Modal appear depend on update/add table */}
+      <Modal open={openModalFetching} component={<Progress />}></Modal>
     </div>
   );
 };

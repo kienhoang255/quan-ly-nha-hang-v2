@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import classNames from "classnames/bind";
 import { AiFillDelete, AiFillEye, AiOutlineSetting } from "react-icons/ai";
 import { FcCancel } from "react-icons/fc";
@@ -7,7 +7,7 @@ import styles from "./index.module.scss";
 
 import TextInput from "../../TextInput";
 import Button from "../../Button";
-import imageToBase64 from "../../../utils";
+import { imageToBase64 } from "../../../utils";
 
 import emptyImg from "../../../assets/images/placeholder-400x400.png";
 
@@ -23,8 +23,9 @@ const ModalContentManagerTableUpdate = ({
   handleCloseModal,
   handleOption,
   option,
-  options,
   setOption,
+  stateTableInfo,
+  setStateTableInfo,
 }) => {
   const array = [
     { name: "Ảnh chính", id: "image1", imgAPI: tableImage?.image1 },
@@ -32,6 +33,10 @@ const ModalContentManagerTableUpdate = ({
     { name: "Ảnh 3", id: "image3", imgAPI: tableImage?.image3 },
     { name: "Ảnh 4", id: "image4", imgAPI: tableImage?.image4 },
   ];
+
+  useEffect(() => {
+    setStateTableInfo(tableInfo);
+  }, []);
 
   return (
     <div className={cx("container")}>
@@ -55,13 +60,25 @@ const ModalContentManagerTableUpdate = ({
                 id="stage"
                 type="number"
                 placeholder="Tầng"
-                value={tableInfo?.stage}
+                value={stateTableInfo?.stage}
+                onChange={(e) => {
+                  setStateTableInfo((prev) => ({
+                    ...prev,
+                    stage: e.target.value,
+                  }));
+                }}
               />
               <TextInput
                 id="numOfPeople"
                 type="number"
                 placeholder="Số lượng người"
-                value={tableInfo?.numOfPeople}
+                value={stateTableInfo?.numOfPeople}
+                onChange={(e) => {
+                  setStateTableInfo((prev) => ({
+                    ...prev,
+                    numOfPeople: e.target.value,
+                  }));
+                }}
               />
               {array.map((e, key) => (
                 <div key={key} className={cx("imageInput")}>
@@ -126,7 +143,7 @@ const ModalContentManagerTableUpdate = ({
                 <Button
                   className={cx("optionBtn")}
                   onClick={() => {
-                    handleOption().add();
+                    handleOption(tableInfo._id).add();
                     setOption((prev) => ({ ...prev, option: "" }));
                   }}
                 >
@@ -147,8 +164,11 @@ const ModalContentManagerTableUpdate = ({
                       <Button
                         className={cx("optionListItemSetBtn")}
                         onClick={() => {
-                          handleOption(key).setUpdate();
-                          setOption((prev) => ({ ...prev, option: e }));
+                          setOption((prev) => ({
+                            ...prev,
+                            option: e,
+                            index: key,
+                          }));
                         }}
                       >
                         <AiOutlineSetting />
@@ -159,7 +179,7 @@ const ModalContentManagerTableUpdate = ({
                         className={cx("optionListItemCancelBtn")}
                         variant="outline"
                         onClick={() => {
-                          handleOption(key).cancelUpdate();
+                          handleOption().cancelUpdate();
                           setOption((prev) => ({ ...prev, option: "" }));
                         }}
                       >
@@ -171,7 +191,7 @@ const ModalContentManagerTableUpdate = ({
                         className={cx("optionListItemDelBtn")}
                         variant="outline"
                         onClick={() => {
-                          handleOption(key).remove();
+                          handleOption(tableInfo._id, key).remove();
                         }}
                       >
                         <AiFillDelete />

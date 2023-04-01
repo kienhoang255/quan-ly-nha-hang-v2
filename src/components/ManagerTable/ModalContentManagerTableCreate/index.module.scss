@@ -2,7 +2,7 @@
 
 .container {
   height: 600px;
-  width: 850px;
+  width: 1050px;
   background-color: $primaryBgColor;
   border-radius: 18px;
 }
@@ -36,13 +36,94 @@ $pContent: 16px;
   }
   &Right {
     flex-grow: 1;
-    @include flex($flexD: column, $justifyContent: space-evenly);
-    height: 100%;
+
+    height: 460px;
+    @include scrollBar($primaryColor);
+    @include grid($columns: 350px 1fr, $rows: repeat(6, 1fr));
     &Form {
-      padding: 12px;
+      padding: 8px;
       @include flex($flexD: column);
-      gap: 14px;
+      border-right: 1px solid $primaryColor;
+      gap: 5px;
     }
+  }
+}
+
+.option {
+  height: 100%;
+  padding: 12px 0;
+  &List {
+    width: 100%;
+    padding: 12px 0;
+    color: $primaryColor;
+    height: 370px;
+    overflow: hidden;
+    overflow-y: auto;
+    @include scrollBar($primaryColor);
+
+    &Item {
+      width: calc(100% - 12px * 2);
+      @include flex;
+      gap: 6px;
+      padding: 0 12px;
+
+      &Detail {
+        justify-self: start;
+        align-self: flex-start;
+        flex-grow: 1;
+      }
+
+      &Selected {
+        border-radius: 12px;
+        color: $primaryColor;
+        background-color: $secondaryBgColor;
+      }
+
+      &DelBtn {
+        width: 40px;
+        height: 40px;
+        color: red;
+        border: 1px solid red;
+        &:hover {
+          color: $dangerColor;
+          background-color: transparent;
+          border: 1px solid $dangerColor;
+        }
+      }
+
+      &SetBtn {
+        width: 40px;
+        height: 40px;
+        color: black;
+        background-color: $warningColor;
+        border: 1px solid black;
+        &:hover {
+          color: $warningColor;
+          background-color: transparent;
+          border: 1px solid $warningColor;
+        }
+      }
+
+      &CancelBtn {
+        width: 40px;
+        height: 40px;
+        color: red;
+        background-color: transparent;
+        border: 1px solid red;
+        &:hover {
+          color: $dangerColor;
+          background-color: transparent;
+          border: 1px solid $dangerColor;
+        }
+      }
+    }
+  }
+  &Add {
+    @include flex;
+  }
+  &Btn {
+    width: 50px;
+    height: 50px;
   }
 }
 

@@ -9,7 +9,7 @@ const cx = classNames.bind(styles);
 
 const ModalContentCheckIn = ({ handleCloseModal, hasValue, setHasValue }) => {
   const handleOnChangeInput = (value) => {
-    setHasValue(value);
+    setHasValue(value.target.value);
   };
 
   return (
@@ -18,7 +18,12 @@ const ModalContentCheckIn = ({ handleCloseModal, hasValue, setHasValue }) => {
         <div className={cx("headerTitle")}>check in</div>
       </div>
       <div className={cx("body")}>
-        <TextInput value={hasValue} onChange={handleOnChangeInput} />
+        <TextInput
+          value={hasValue}
+          onChange={handleOnChangeInput}
+          placeholder="Email/SĐT"
+        />
+        123
       </div>
       <div className={cx("footer")}>
         <Button variant="outline" onClick={handleCloseModal}>
