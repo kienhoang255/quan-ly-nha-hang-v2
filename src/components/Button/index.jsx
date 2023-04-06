@@ -9,6 +9,7 @@ const Button = ({
   children,
   variant = "normal",
   to,
+  href,
   className,
   leftIcon,
   rightIcon,
@@ -22,6 +23,9 @@ const Button = ({
   if (to) {
     props.to = to;
     Comp = Link;
+  } else if (href) {
+    props.href = href;
+    Comp = "a";
   }
 
   const variantMode = ["outline", "normal", "none", "circle"];

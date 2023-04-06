@@ -43,8 +43,10 @@ const MainLayout = () => {
         selectedPage={selectedPage}
         setSelectedPage={setSelectedPage}
       />
-      <div className={cx("content")}>
-        <Outlet />
+      <div className={cx("wrapper")}>
+        <div className={cx("content")}>
+          <Outlet />
+        </div>
       </div>
     </div>
   );

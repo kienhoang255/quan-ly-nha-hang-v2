@@ -18,6 +18,7 @@ const TextInput = ({
   onChange,
   className,
   defaultValue,
+  onClear,
 }) => {
   const [defaultType, setType] = useState(type);
   const [hideReveal, setHideReveal] = useState(false);
@@ -68,12 +69,12 @@ const TextInput = ({
 
   const handleClearText = () => {
     setInputValue("");
-    onChange && onChange("");
+    onChange && onClear("");
   };
 
   const handleOnChangeInput = (e) => {
     setInputValue(e.target.value);
-    onChange && onChange(e.target.value);
+    onChange && onChange(e);
   };
 
   return (
@@ -91,8 +92,12 @@ const TextInput = ({
             name={id}
             type={defaultType}
             placeholder=" "
-            value={value}
-            onChange={onChange}
+            value={rightIcon ? inputValue : value}
+            onChange={(e) => {
+              if (rightIcon) {
+                handleOnChangeInput(e);
+              } else onChange(e);
+            }}
             defaultValue={defaultValue}
           />
           <label className={cx("label")} htmlFor={id}>

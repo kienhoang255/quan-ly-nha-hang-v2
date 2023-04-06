@@ -5,8 +5,19 @@
   background-color: $secondaryBgColor;
 }
 
-.content {
-  max-width: 1200px;
+.wrapper {
+  width: 100%;
   margin: auto;
-  @include flex;
+  height: calc(100% - 60px);
+  overflow: hidden;
+  overflow-y: auto;
+  @include scrollBar($primaryColor);
+}
+
+.content {
+  width: 1200px;
+  max-width: 1200px;
+  height: 100%;
+  margin: auto;
+  @include flex($alignItems: start);
 }

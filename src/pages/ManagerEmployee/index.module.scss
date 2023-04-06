@@ -16,8 +16,14 @@
 }
 
 .search {
-  width: 30%;
-  @include flex;
+  width: 100%;
+  @include flex($justifyContent: space-between);
+}
+
+.addEmployee {
+  height: 55px;
+  width: 55px;
+  font-size: 22px;
 }
 
 .body {
@@ -30,7 +36,7 @@
 }
 
 .headerTable {
-  margin-top: 22px;
+  margin-top: 12px;
   @include grid($columns: 6% 1fr 10% 22% 24%);
   background-color: $primaryColor;
   border-radius: 8px 8px 0 0;
@@ -75,4 +81,8 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
+}
+
+.fetching {
+  @include flex;
 }

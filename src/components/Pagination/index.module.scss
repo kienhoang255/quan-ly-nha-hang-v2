@@ -1,0 +1,43 @@
+@use "../../assets/styles/" as *;
+
+.container {
+  @include flex($justifyContent: flex-end);
+  width: 100%;
+  gap: 4px;
+}
+
+.content {
+  @include flex;
+  border: 1px solid $primaryColor;
+  border-radius: 6px;
+  background-color: $primaryColor;
+  gap: 4px;
+}
+
+.btn {
+  height: 40px;
+  width: 40px;
+  background-color: $bgColor;
+  border-radius: 6px;
+  &:hover {
+    background-color: $secondaryBgColor;
+    color: $primaryColor;
+  }
+
+  &:first-child {
+    border-radius: 6px 0 0 6px;
+  }
+
+  &:last-child {
+    border-radius: 0 6px 6px 0;
+  }
+}
+
+.go {
+  @include flex;
+  border: 1px solid $primaryColor;
+  border-radius: 6px;
+  background-color: $primaryColor;
+  gap: 4px;
+  padding: 0 0 0 4px;
+}

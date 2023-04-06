@@ -1,0 +1,42 @@
+@use "../../assets/styles/" as *;
+
+.container {
+  width: 100%;
+  height: 100%;
+}
+
+.content {
+  height: 100%;
+  width: 100%;
+  background-color: $primaryBgColor;
+  border: 1px solid $bgColor;
+  @include flex;
+}
+
+.label {
+  width: 100%;
+  color: $primaryColor;
+  text-align: center;
+  text-transform: capitalize;
+  line-height: 40px;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.checkbox {
+  display: none;
+}
+
+.checkbox:checked + .content {
+  background-color: $primaryColor;
+}
+
+.active {
+  & > .label {
+    color: $secondaryBgColor;
+  }
+}

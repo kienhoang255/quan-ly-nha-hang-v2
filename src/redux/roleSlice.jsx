@@ -7,6 +7,7 @@ const initialState = {
     { path: "/employee", name: "Nhân viên" },
     { path: "/booking", name: "Đặt bàn" },
     { path: "/manager/table", name: "Cài đặt bàn ăn" },
+    { path: "/manager/employee", name: "Cài đặt nhân viên" },
   ],
   job: [],
 };

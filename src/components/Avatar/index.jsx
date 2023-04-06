@@ -2,6 +2,8 @@ import React, { memo } from "react";
 import classNames from "classnames/bind";
 import styles from "./index.module.scss";
 
+import { FcCancel } from "react-icons/fc";
+
 const cx = classNames.bind(styles);
 
 const Avatar = ({ username, avatar }) => {
@@ -11,7 +13,9 @@ const Avatar = ({ username, avatar }) => {
       {avatar ? (
         <img className={cx("img")} src={avatar} alt={username} />
       ) : (
-        <div className={cx("img")}>img</div>
+        <div className={cx("img")}>
+          <FcCancel />
+        </div>
       )}
     </div>
   );

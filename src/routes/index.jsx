@@ -19,6 +19,7 @@ const Table = React.lazy(() => import("../pages/Table"));
 const Booking = React.lazy(() => import("../pages/Booking"));
 const Login = React.lazy(() => import("../pages/Login"));
 const ManagerTable = React.lazy(() => import("../pages/ManagerTable"));
+const ManagerEmployee = React.lazy(() => import("../pages/ManagerEmployee"));
 
 const Routes = () => {
   const privateRoute = [
@@ -30,6 +31,11 @@ const Routes = () => {
     {
       path: "/manager/table",
       component: ManagerTable,
+      name: "Đặt bàn",
+    },
+    {
+      path: "/manager/employee",
+      component: ManagerEmployee,
       name: "Đặt bàn",
     },
   ];

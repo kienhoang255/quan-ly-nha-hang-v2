@@ -1,16 +1,9 @@
-import axios from "axios";
-import { URL } from "./index";
+import { instance } from ".";
 
-const getAllTypeFood = async () => {
-  return await axios.get(`${URL}food/option/type`);
-};
+const getAllTypeFood = async () => await instance.get(`food/option/type`);
 
-const getFoodByType = async (type) => {
-  return await axios.get(`${URL}food/?type=${type}`);
-};
+const getFoodByType = async (type) => await instance.get(`food/?type=${type}`);
 
-const getFoodById = async (id) => {
-  return await axios.get(`${URL}food/${id}`);
-};
+const getFoodById = async (id) => await instance.get(`food/${id}`);
 
 export default { getAllTypeFood, getFoodByType, getFoodById };

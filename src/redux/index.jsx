@@ -5,6 +5,7 @@ import role from "./roleSlice";
 import table from "./tableSlice";
 import tableServing from "./tableServingSlice";
 import foodOrdered from "./foodOrderedSlice";
+import employee from "./employeeSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
     table,
     foodOrdered,
     tableServing,
+    employee,
   },
 });

@@ -1,0 +1,61 @@
+@use "../../../assets/styles/" as *;
+
+.container {
+  background-color: $primaryBgColor;
+  width: 650px;
+  // height: 600px;
+  @include flex($flexD: column);
+  border-radius: 8px;
+}
+
+.header {
+  text-transform: uppercase;
+  color: $primaryColor;
+  font-size: 20px;
+  padding: 6px;
+}
+
+.body {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+
+  &_left {
+    padding: 0 12px;
+    @include flex($flexD: column, $justifyContent: start);
+    gap: 6px;
+    &_avatar {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 1px solid $primaryColor;
+      object-fit: contain;
+    }
+
+    &_list-title {
+      margin: 8px;
+    }
+    &_list-jobs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  &_right {
+    padding: 0 12px;
+    @include flex($flexD: column);
+    gap: 6px;
+  }
+}
+
+.footer {
+  @include flex;
+  gap: 30px;
+  padding-top: 24px;
+  padding-bottom: 12px;
+}
+
+.err_mes {
+  color: red;
+}
