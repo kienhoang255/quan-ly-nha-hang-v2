@@ -10,37 +10,48 @@ import MainLayout from "../layout";
 import CheckLoginRoute from "./CheckLoginRoute";
 import ProtectRoute from "./ProtectRoute";
 import LoadingRoute from "../components/LoadingRoute";
+import ProtectRole from "./ProtectRole";
 
+const User = React.lazy(() => import("../pages/User"));
 const Menu = React.lazy(() => import("../pages/Menu"));
-const Employee = React.lazy(() => import("../pages/Employee"));
 const Main = React.lazy(() => import("../pages/Main"));
 const Order = React.lazy(() => import("../pages/Order"));
 const Table = React.lazy(() => import("../pages/Table"));
-const Booking = React.lazy(() => import("../pages/Booking"));
 const Login = React.lazy(() => import("../pages/Login"));
+const Booking = React.lazy(() => import("../pages/Booking"));
+const Employee = React.lazy(() => import("../pages/Employee"));
 const ManagerTable = React.lazy(() => import("../pages/ManagerTable"));
 const ManagerEmployee = React.lazy(() => import("../pages/ManagerEmployee"));
+const ErrorPage = React.lazy(() => import("../pages/403"));
+const BillHistory = React.lazy(() => import("../pages/BillHistory"));
 
 const Routes = () => {
   const privateRoute = [
     { path: "/", component: Main, name: "Trang chủ" },
+    { path: "/me", component: User, name: "Trang cá nhân" },
     { path: "/order", component: Order, name: "Đặt món" },
     { path: "/table", component: Table, name: "Bàn ăn" },
     { path: "/employee", component: Employee, name: "Nhân viên" },
     { path: "/booking", component: Booking, name: "Đặt bàn" },
     {
+      path: "/bill-history",
+      component: BillHistory,
+      name: "Lịch sử giao dịch",
+    },
+    {
       path: "/manager/table",
       component: ManagerTable,
-      name: "Đặt bàn",
+      name: "Quản lý bàn",
     },
     {
       path: "/manager/employee",
       component: ManagerEmployee,
-      name: "Đặt bàn",
+      name: "Đặt nhân viên",
     },
   ];
 
   const NoLayoutRoute = [{ path: "/menu", component: Menu, name: "Thực đơn" }];
+
   const publicRoute = [{ path: "/login", component: Login, name: "Đăng nhập" }];
 
   const router = createBrowserRouter(
@@ -48,33 +59,43 @@ const Routes = () => {
       <>
         {/* if you not login, you can't use any page in `privateRoute` */}
         <Route element={<ProtectRoute />}>
-          <Route element={<MainLayout />}>
-            {privateRoute.map((e, key) => (
-              <Route
-                key={key}
-                path={e.path}
-                element={
-                  <Suspense fallback={<LoadingRoute />}>
-                    <e.component />
-                  </Suspense>
-                }
-              ></Route>
-            ))}
+          <Route element={<ProtectRole />}>
+            <Route element={<MainLayout />}>
+              {privateRoute.map((e, key) => (
+                <Route
+                  key={key}
+                  path={e.path}
+                  element={
+                    <Suspense fallback={<LoadingRoute />}>
+                      <e.component />
+                    </Suspense>
+                  }
+                ></Route>
+              ))}
+            </Route>
+            {/* This route don't use layout */}
+            <Route>
+              {NoLayoutRoute.map((e, key) => (
+                <Route
+                  key={key}
+                  path={e.path}
+                  element={
+                    <Suspense fallback={<LoadingRoute />}>
+                      <e.component />
+                    </Suspense>
+                  }
+                ></Route>
+              ))}
+            </Route>
           </Route>
-          {/* This route don't use layout */}
-          <Route>
-            {NoLayoutRoute.map((e, key) => (
-              <Route
-                key={key}
-                path={e.path}
-                element={
-                  <Suspense fallback={<LoadingRoute />}>
-                    <e.component />
-                  </Suspense>
-                }
-              ></Route>
-            ))}
-          </Route>
+          <Route
+            path="403"
+            element={
+              <Suspense fallback={<LoadingRoute />}>
+                <ErrorPage />
+              </Suspense>
+            }
+          ></Route>
         </Route>
 
         {/* Check if you're login, go can't go to login page anymore */}

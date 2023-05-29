@@ -18,7 +18,35 @@ export const tableSlice = createSlice({
       state.stageCalled.push(action.payload);
     },
     setTable: (state, action) => {
-      state.table.push(...action.payload);
+      // state.table.push(...action.payload);
+      const table = action.payload.table;
+      const booking = action.payload.booking;
+      const deathTime = action.payload.deathTime;
+
+      return {
+        ...state,
+        table: [
+          ...state.table,
+          ...table.map((t) => {
+            const findBooking = booking.find((b) => b.id_table === t._id);
+
+            if (
+              findBooking &&
+              t.status === "empty" &&
+              deathTime + 4 <= findBooking.timeCheckIn
+            ) {
+              return {
+                status: "booking",
+                name: t.name,
+                _id: t._id,
+                id_bill: t.id_bill,
+                numOfPeople: t.numOfPeople,
+                stage: t.stage,
+              };
+            } else return t;
+          }),
+        ],
+      };
     },
     addTable: (state, action) => {
       state.table.push(action.payload);

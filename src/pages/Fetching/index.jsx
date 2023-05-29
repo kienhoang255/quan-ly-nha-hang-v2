@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import classNames from "classnames/bind";
 import { decodeToken } from "react-jwt";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import styles from "./index.module.scss";
 
@@ -9,11 +9,17 @@ import Logo from "../../components/Logo";
 
 import { UserAPI } from "../../services";
 import { setUser } from "../../redux/userSlice";
+import { addRoleNotAllowed, setJob } from "../../redux/roleSlice";
 
 const cx = classNames.bind(styles);
 
 const Fetching = ({ children }) => {
   const dispatch = useDispatch();
+
+  const user = useSelector((state) => state.user);
+  const role = useSelector((state) => state.role.role);
+  const job = useSelector((state) => state.role.job);
+
   const [fetching, setFetching] = useState(true);
 
   useEffect(() => {
@@ -25,7 +31,9 @@ const Fetching = ({ children }) => {
       .forEach((e) =>
         e[0].trim() === "token" ? (cookie = e[1]) : (cookie = undefined)
       );
+    // setFetching(true);
     // Check cookie exist
+
     if (!cookie) {
       setFetching(false);
     } else {
@@ -35,9 +43,18 @@ const Fetching = ({ children }) => {
           .then((res) => {
             //set UserInfo {name,avatar,job}
             dispatch(setUser(res.data));
+
+            if (!job[0]) {
+              res.data.job.forEach((jobUser) => {
+                role.forEach((jobRole) => {
+                  if (jobRole.path === jobUser) {
+                    dispatch(setJob(jobRole));
+                  }
+                });
+              });
+            }
           })
           .catch((err) => err);
-        setFetching(false);
       } catch {
         setFetching(true);
         // show Error
@@ -45,6 +62,17 @@ const Fetching = ({ children }) => {
       }
     }
   }, []);
+
+  // Loop job and role to set link btn in side bar
+  useEffect(() => {
+    if (job.length !== 0)
+      role.forEach((e) => {
+        if (!job.find((e1) => e1.path === e.path)) {
+          dispatch(addRoleNotAllowed(e));
+        }
+      });
+    setFetching(false);
+  }, [job]);
 
   return (
     <>

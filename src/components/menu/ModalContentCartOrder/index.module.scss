@@ -28,6 +28,13 @@
   padding: 4px;
 }
 
+.wrap {
+  max-height: 370px;
+  overflow: hidden;
+  overflow-y: auto;
+  @include scrollBar($primaryColor);
+}
+
 .bodyTable {
   @extend .headerTable;
   font-weight: 400;

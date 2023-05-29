@@ -24,17 +24,24 @@ import {
   updateTableImageOptions,
   updateTableInfo,
 } from "../../redux/tableSlice";
-import { TableAPI } from "../../services";
+import { BookingAPI, TableAPI } from "../../services";
 import Progress from "../../components/Progress";
+import { setBooking } from "../../redux/bookingSlice";
+import moment from "moment";
 
 const cx = classNames.bind(styles);
 
 const ManagerTable = () => {
+  const dispatch = useDispatch();
+
   const stage = useSelector((stage) => stage.table.stage);
   const stageCalled = useSelector((stage) => stage.table.stageCalled);
   const table = useSelector((stage) => stage.table.table);
   const tableImage = useSelector((stage) => stage.table.tableImage);
-  const dispatch = useDispatch();
+  const booking = useSelector((stage) => stage.booking.booking);
+
+  const date = moment([]).format("YYYY-MM-DD");
+  const time = moment([]).format("HHmm");
 
   const modalCreateRef = useRef();
 
@@ -48,6 +55,7 @@ const ManagerTable = () => {
     stage: "",
     numOfPeople: "",
   });
+
   // For first time render
   useEffect(() => {
     // Set selected stage for first render
@@ -68,12 +76,17 @@ const ManagerTable = () => {
     if (!checkExistStageCalled && selectedStage !== undefined) {
       TableAPI.getTableByStage(selectedStage)
         .then((res) => {
-          dispatch(setTable(res.data));
+          BookingAPI.getBooking(date).then((res1) => {
+            dispatch(setBooking(res1.data));
+            dispatch(
+              setTable({ booking: res1.data, table: res.data, deathTime: time })
+            );
+          });
           dispatch(setStageCalled(selectedStage));
         })
         .catch((err) => err);
     }
-  }, [selectedStage]);
+  }, [selectedStage, booking]);
 
   // Change selected stage
   const handleOnClickStage = (stage) => {

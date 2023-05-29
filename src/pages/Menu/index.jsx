@@ -33,6 +33,8 @@ import {
   setClientInfo,
   setTableServing,
 } from "../../redux/tableServingSlice";
+import ModalChangeTable from "../../components/ModalChangeTable";
+import { updateTable } from "../../redux/tableSlice";
 
 const cx = classNames.bind(styles);
 const Menu = () => {
@@ -40,16 +42,18 @@ const Menu = () => {
   const foodType = useSelector((state) => state.menu.foodType);
   const foodTypeCalled = useSelector((state) => state.menu.foodTypeCalled);
   const menu = useSelector((state) => state.menu.menu);
-  const idBill = useSelector((state) => state.tableServing.id_bill);
-  const clientName = useSelector((state) => state.tableServing.clientName);
-  const foodSelecting = useSelector(
-    (state) => state.tableServing.foodSelecting
-  );
+  const tableServing = useSelector((state) => state.tableServing);
+  const listTable = useSelector((state) => state.table.table);
+  const listStage = useSelector((state) => state.table.stage);
+
   const dispatch = useDispatch();
   const refModalCart = useRef();
   const refModalBill = useRef();
 
   const [selectedType, setSelectedType] = useState();
+  const [billDetail, setBillDetail] = useState({});
+  const [modalCheckOutFetch, setModalCheckOutFetch] = useState(false);
+  const [modalBillFetch, setModalBillFetch] = useState(true);
 
   // For first time render
   useEffect(() => {
@@ -67,19 +71,33 @@ const Menu = () => {
     }
 
     // Use id_bill to get id_client then get info client
-    function getClientInfoByIdBill(idBillLocalStorage) {
-      BillAPI.getBillById(idBill || idBillLocalStorage).then((res) => {
-        const { avatar, username } = res.data;
-        dispatch(setClientInfo({ clientAvatar: avatar, clientName: username }));
+    function getClientInfoByIdBill(data) {
+      BillAPI.getClientInfoByIdBill(tableServing.idBill || data).then((res) => {
+        const { avatar, username, email, phone } = res.data;
+        dispatch(
+          setClientInfo({
+            clientAvatar: avatar,
+            clientName: username,
+            clientEmail: email,
+            clientPhone: phone,
+          })
+        );
+      });
+      OrderAPI.getFoodOrderedByIdBill(data).then((res) => {
+        setBillDetail((prev) => ({ ...prev, foods: res.data }));
+        return res.data;
       });
     }
 
-    if (idBill) getClientInfoByIdBill();
+    if (tableServing.idBill) getClientInfoByIdBill();
+    // Get id_bill when reload page
+    else {
+      const tableServingLocalStorage = JSON.parse(
+        localStorage.getItem("tableServing")
+      );
 
-    if (!idBill) {
-      const idBillLocalStorage = localStorage.getItem("idBill");
-      getClientInfoByIdBill(idBillLocalStorage);
-      dispatch(setTableServing({ id_bill: idBillLocalStorage }));
+      getClientInfoByIdBill(tableServingLocalStorage.id_bill);
+      dispatch(setTableServing(tableServingLocalStorage));
     }
   }, []);
 
@@ -99,8 +117,11 @@ const Menu = () => {
   // Handle create food order, delete info table serving, direct to table page
   const handleOnOrderFood = () => {
     // Check food order then call api
-    if (foodSelecting[0]) {
-      OrderAPI.addFoodOrder({ id_bill: idBill, foods: foodSelecting })
+    if (tableServing.foodSelecting[0]) {
+      OrderAPI.addFoodOrder({
+        id_bill: tableServing.id_bill[0],
+        foods: tableServing.foodSelecting,
+      })
         .then((res) => console.log(res.data))
         .catch((err) => console.log(err));
     }
@@ -112,11 +133,11 @@ const Menu = () => {
 
   // Calculator total price on order
   const totalPriceOnOrder = useMemo(() => {
-    return foodSelecting.reduce(
+    return tableServing.foodSelecting.reduce(
       (acc, cur) => acc + cur.price * cur.quantity,
       0
     );
-  }, [foodSelecting]);
+  }, [tableServing.foodSelecting]);
 
   // Change selected type
   const handleOnClickType = useCallback(
@@ -149,7 +170,7 @@ const Menu = () => {
         dispatch(increaseFoodSelecting({ id_food, name, price, quantity }));
       }
     },
-    [foodSelecting]
+    [tableServing.foodSelecting]
   );
 
   const handleOnClickDecreaseFood = useCallback(
@@ -161,7 +182,7 @@ const Menu = () => {
         dispatch(decreaseFoodSelecting({ id_food, name, price, quantity }));
       }
     },
-    [foodSelecting]
+    [tableServing.foodSelecting]
   );
 
   const handleCloseModalCart = () => {
@@ -171,6 +192,45 @@ const Menu = () => {
     refModalBill.current.closeModal();
   };
 
+  const handleGetBill = () => {
+    setBillDetail((prev) => ({
+      ...prev,
+      customerInfo:
+        tableServing.clientEmail ||
+        tableServing.clientPhone ||
+        tableServing.clientName,
+    }));
+    // Get bill
+    BillAPI.getBillByIdBill(tableServing.id_bill).then((res) => {
+      setBillDetail((prev) => ({ ...prev, bill: res.data }));
+    });
+
+    let promiseList = [];
+    billDetail?.foods?.forEach((e) => {
+      const find = menu?.find((m) => m?._id === e?.id_food);
+      // If exist set name food
+      if (find) {
+        setBillDetail((prev) => ({
+          ...prev,
+          name: { ...prev.name, [e?.id_food]: find.name },
+        }));
+      } else {
+        promiseList.push(
+          MenuAPI.getFoodById(e?.id_food).then((res) => {
+            setBillDetail((prev) => ({
+              ...prev,
+              name: { ...prev.name, [res.data._id]: res.data.name },
+            }));
+          })
+        );
+      }
+    });
+
+    Promise.all(promiseList).then(() => {
+      setModalBillFetch(false);
+    });
+  };
+
   const modalCart = useMemo(
     () => (
       <Modal
@@ -178,7 +238,7 @@ const Menu = () => {
         component={
           <ModalContentCartOrder
             handleCloseModal={handleCloseModalCart}
-            foodSelecting={foodSelecting}
+            foodSelecting={tableServing.foodSelecting}
             totalPriceOnOrder={totalPriceOnOrder}
             handleOnClickIncreaseFood={handleOnClickIncreaseFood}
             handleOnClickDecreaseFood={handleOnClickDecreaseFood}
@@ -191,21 +251,45 @@ const Menu = () => {
         </Button>
       </Modal>
     ),
-    [foodSelecting]
+    [tableServing.foodSelecting]
   );
+
+  const handleCleanTableServing = () => {
+    dispatch(cleanTableServingInfo());
+  };
+
+  const handleCheckOut = (id_bill) => {
+    setModalCheckOutFetch(true);
+    BillAPI.checkOut({ id_bill: id_bill }).then((res) => {
+      dispatch(updateTable(res.data.table));
+      setTimeout(() => {
+        setModalCheckOutFetch(false);
+        dispatch(cleanTableServingInfo());
+        navigate("/table");
+      }, 500);
+    });
+  };
 
   return (
     <div className={cx("container")}>
       <div className={cx("wrap")}>
         <div className={cx("header")}>
           <div className={cx("headerBackBtn")}>
-            <Button to="/table">
+            <Button to="/table" onClick={handleCleanTableServing}>
               <IoMdArrowRoundBack />
             </Button>
           </div>
           <div className={cx("headerTitle")}>THỰC ĐƠN</div>
+
+          <Modal
+            component={
+              <ModalChangeTable listTable={listTable} listStage={listStage} />
+            }
+          >
+            <div className={cx("headerSubTitle")}>{tableServing.nameTable}</div>
+          </Modal>
           <div className={cx("headerAvatar")}>
-            <Avatar username={clientName} />
+            <Avatar username={tableServing.clientName} />
           </div>
         </div>
         <div className={cx("body")}>
@@ -217,7 +301,15 @@ const Menu = () => {
               <Modal
                 ref={refModalBill}
                 component={
-                  <ModalContentBill handleCloseModal={handleCloseModalBill} />
+                  <ModalContentBill
+                    handleCloseModal={handleCloseModalBill}
+                    handleGetBill={handleGetBill}
+                    billDetail={billDetail}
+                    tableServing={tableServing}
+                    handleCheckOut={handleCheckOut}
+                    modalCheckOutFetch={modalCheckOutFetch}
+                    modalBillFetch={modalBillFetch}
+                  />
                 }
               >
                 <Button className={cx("btnBill")}>
@@ -235,7 +327,7 @@ const Menu = () => {
                       name={e.name}
                       price={e.price}
                       image={e.image}
-                      foodSelecting={foodSelecting}
+                      foodSelecting={tableServing.foodSelecting}
                       handleOnClickIncreaseFood={handleOnClickIncreaseFood}
                       handleOnClickDecreaseFood={handleOnClickDecreaseFood}
                     />

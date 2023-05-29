@@ -3,6 +3,8 @@
 .content {
   height: 40px;
   width: 120px;
+  padding: 0px;
+  text-decoration: none;
   @include centerDirection(row);
   @include window {
     height: 34px;
@@ -12,11 +14,13 @@
 
 .left-icon {
   margin: 10px;
+  font-size: 22px;
 }
 
 .title {
   @include center;
   height: 100%;
+  padding-bottom: 5px;
 }
 
 .normal {

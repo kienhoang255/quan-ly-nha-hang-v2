@@ -20,6 +20,11 @@ const SideBar = ({ job, selectedPage, setSelectedPage }) => {
     e.stopPropagation();
   };
 
+  useEffect(() => {
+    const path = location.pathname;
+    setSelectedPage(path);
+  });
+
   return (
     <div className={cx("container")}>
       <div

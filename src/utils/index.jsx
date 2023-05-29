@@ -9,9 +9,14 @@ const imageToBase64 = (img, callback) => {
 };
 
 export const formatVND = (number) =>
-  new Intl.NumberFormat("vn-VN", { style: "currency", currency: "VND" }).format(
-    number
-  );
+  new Intl.NumberFormat("vn-VN", {
+    style: "currency",
+    currency: "VND",
+  }).format(number);
+
+export const numberWithCommas = (number) => {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
 
 export const isEmail = (email) => {
   const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;

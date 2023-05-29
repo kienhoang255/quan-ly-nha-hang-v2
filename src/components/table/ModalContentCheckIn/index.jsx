@@ -7,9 +7,16 @@ import TextInput from "../../TextInput";
 
 const cx = classNames.bind(styles);
 
-const ModalContentCheckIn = ({ handleCloseModal, hasValue, setHasValue }) => {
+const ModalContentCheckIn = ({
+  handleCloseModal,
+  hasValue,
+  setHasValue,
+  handleCheckIn,
+  handleCheckInForWalkInGuest,
+  errMessage,
+}) => {
   const handleOnChangeInput = (value) => {
-    setHasValue(value.target.value);
+    setHasValue((prev) => ({ ...prev, email: value.target.value }));
   };
 
   return (
@@ -19,17 +26,20 @@ const ModalContentCheckIn = ({ handleCloseModal, hasValue, setHasValue }) => {
       </div>
       <div className={cx("body")}>
         <TextInput
-          value={hasValue}
+          value={hasValue.email}
           onChange={handleOnChangeInput}
           placeholder="Email/SĐT"
         />
-        123
       </div>
+      <span className={cx("errMessage")}>{errMessage}</span>
       <div className={cx("footer")}>
-        <Button variant="outline" onClick={handleCloseModal}>
+        <Button variant="outline" onClick={() => handleCloseModal(hasValue)}>
           Hủy
         </Button>
-        <Button>Check in</Button>
+        <Button onClick={() => handleCheckInForWalkInGuest(hasValue)}>
+          Khách
+        </Button>
+        <Button onClick={() => handleCheckIn(hasValue)}>Check in</Button>
       </div>
     </div>
   );

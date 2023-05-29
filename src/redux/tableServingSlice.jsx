@@ -1,11 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  // _id : id_table
   _id: "",
   id_bill: "",
+  nameTable: "",
+  numOfPeople: "",
+  status: "",
+  stage: "",
   clientAvatar: undefined,
   clientName: "",
+  clientEmail: "",
+  clientPhone: "",
   foodSelecting: [],
 };
 
@@ -14,12 +19,21 @@ export const tableServingSlice = createSlice({
   initialState,
   reducers: {
     setTableServing: (state, actions) => {
-      state._id = actions.payload._id;
-      state.id_bill = actions.payload.id_bill;
+      return {
+        ...state,
+        _id: actions.payload._id,
+        nameTable: actions.payload.name,
+        id_bill: actions.payload.id_bill,
+        numOfPeople: actions.payload.numOfPeople,
+        status: actions.payload.status,
+        stage: actions.payload.stage,
+      };
     },
     setClientInfo: (state, actions) => {
       state.clientAvatar = actions.payload.clientAvatar;
       state.clientName = actions.payload.clientName;
+      state.clientEmail = actions.payload.clientEmail;
+      state.clientPhone = actions.payload.clientPhone;
     },
     addFoodSelecting: (state, actions) => {
       return {
@@ -65,11 +79,16 @@ export const tableServingSlice = createSlice({
     },
     cleanTableServingInfo: (state) => {
       return {
-        ...state,
         _id: "",
         id_bill: "",
+        nameTable: "",
+        numOfPeople: "",
+        status: "",
+        stage: "",
         clientAvatar: undefined,
         clientName: "",
+        clientEmail: "",
+        clientPhone: "",
         foodSelecting: [],
       };
     },

@@ -30,3 +30,8 @@
   @include flex($justifyContent: space-between);
   gap: 12px;
 }
+
+.errMessage {
+  color: $dangerColor;
+  padding-bottom: 6px;
+}

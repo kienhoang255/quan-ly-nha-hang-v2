@@ -8,12 +8,14 @@ const initialState = {
     { path: "/booking", name: "Đặt bàn" },
     { path: "/manager/table", name: "Cài đặt bàn ăn" },
     { path: "/manager/employee", name: "Cài đặt nhân viên" },
+    { path: "/bill-history", name: "Lịch sử giao dịch" },
   ],
   job: [],
+  roleNotAllowed: [],
 };
 
 export const jobSlice = createSlice({
-  name: "job",
+  name: "role",
   initialState,
   reducers: {
     setJob: (state, actions) => {
@@ -22,9 +24,15 @@ export const jobSlice = createSlice({
         state.job.push(actions.payload);
       }
     },
+    addRoleNotAllowed: (state, actions) => {
+      return {
+        ...state,
+        roleNotAllowed: [...state.roleNotAllowed, actions.payload],
+      };
+    },
   },
 });
 
-export const { setJob } = jobSlice.actions;
+export const { setJob, addRoleNotAllowed } = jobSlice.actions;
 
 export default jobSlice.reducer;

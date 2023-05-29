@@ -18,11 +18,15 @@
   @include flex($flexD: column, $justifyContent: space-around);
   height: auto;
   width: 100%;
-  gap: 30px;
+  gap: 20px;
+}
+
+.input {
+  width: 100%;
 }
 
 .logo {
-  height: 200px;
+  height: 160px;
 }
 
 .submitBtn {

@@ -1,0 +1,191 @@
+@use "../../assets/styles/" as *;
+
+.container {
+  width: 100%;
+  @include flex($flexD: column, $justifyContent: start);
+  // height: 100%;
+}
+
+.title {
+  background-color: $bgColor;
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+  @include flex;
+  margin: 10px 0;
+}
+
+.search {
+  width: 30%;
+  @include flex;
+}
+
+.skeleton {
+  width: 291px !important;
+  height: 210px !important;
+  border-radius: 12px;
+}
+
+.wrap {
+  @include grid($columns: 1fr 1fr 1fr 1fr, $rows: 1fr 1fr 1fr);
+  align-items: start;
+  gap: 12px;
+  margin: 12px 0 18px 0;
+  height: 700px;
+  width: 1200px;
+}
+
+.card {
+  width: calc(291px - 12px * 2 - 3px);
+  height: calc(210px - 12px * 2);
+  background-color: $primaryBgColor;
+  border-radius: 12px;
+  color: $primaryColor;
+  padding: 12px;
+}
+
+.using {
+  border-left: $warningColor 3px solid;
+}
+.finished {
+  border-left: $successColor 3px solid;
+}
+.tag {
+  @include flex($justifyContent: space-between);
+  border-bottom: 1px solid $primaryColor;
+}
+
+.button {
+  margin: auto;
+  margin-top: 28px;
+  font-size: 24px;
+}
+
+.text {
+  color: white;
+}
+
+.modal_container {
+  width: 440px;
+  height: 515px;
+  background-color: $primaryBgColor;
+  border-radius: 16px;
+  @include flex($flexD: column);
+  min-height: 255px;
+}
+
+.modal_content {
+  max-height: 440px;
+  width: 400px;
+  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: auto;
+  border-radius: 6px;
+  @include scrollBar($primaryColor);
+  margin-bottom: 20px;
+}
+
+.modal_footer {
+  width: 100%;
+  @include flex($flexD: row, $justifyContent: space-around);
+}
+
+.canvas {
+  color: black;
+  width: calc(100% - 20px);
+  padding: 40px 10px 20px 10px;
+
+  &_title {
+    font-weight: bold;
+    @include flex($justifyContent: end);
+    font-size: 20px;
+    padding-bottom: 6px;
+
+    &_sub {
+      @include flex();
+      font-size: 14px;
+    }
+  }
+
+  &_main_title {
+    font-size: 24px;
+    @include flex;
+    font-weight: bold;
+  }
+
+  &_footer {
+    @include flex;
+    padding-top: 10px;
+    font-style: italic;
+    font-size: 15px;
+    color: $subColor;
+  }
+}
+
+.split {
+  @include grid($columns: repeat(2, auto));
+
+  :first-child {
+    justify-self: start;
+  }
+
+  :last-child {
+    justify-self: end;
+  }
+}
+
+.table {
+  border: 1px solid $primaryBgColor;
+
+  :last-child {
+    border: 0px;
+  }
+  &_header {
+    @include grid($columns: 40% 8% auto 27%);
+    font-size: 17px;
+    font-weight: 600;
+
+    border-bottom: 1px dashed $primaryBgColor;
+
+    :first-child {
+      justify-self: start;
+      border-right: 1px dashed $primaryBgColor;
+      width: calc(100% - 5px);
+      padding-left: 5px;
+    }
+
+    :nth-child(2) {
+      border-right: 1px dashed $primaryBgColor;
+      width: 100%;
+      @include center;
+    }
+
+    :last-child {
+      border-left: 1px dashed $primaryBgColor;
+      @include flex($justifyContent: end);
+      width: calc(100% - 10px);
+      padding-right: 10px;
+    }
+  }
+
+  &_body {
+    @extend .table_header;
+    font-size: 16px;
+    font-weight: 400;
+
+    :nth-child(3) {
+      width: calc(100% - 5px);
+      @include flex($justifyContent: end);
+      padding-right: 5px;
+    }
+  }
+}
+
+.totalPay {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.divider {
+  border-top: 2px solid $primaryBgColor;
+}

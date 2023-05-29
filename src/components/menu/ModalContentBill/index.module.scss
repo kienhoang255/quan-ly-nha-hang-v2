@@ -56,6 +56,13 @@
   padding: 4px;
 }
 
+.wrap {
+  max-height: 260px;
+  overflow: hidden;
+  overflow-y: auto;
+  @include scrollBar($primaryColor);
+}
+
 .bodyTable {
   @extend .headerTable;
   font-weight: 400;
@@ -106,4 +113,16 @@
   @include flex;
   gap: 20px;
   height: 40px;
+}
+
+.served {
+  color: $successColor;
+}
+
+.cooking {
+  color: $warningColor;
+}
+
+.cancel {
+  color: $subColor;
 }

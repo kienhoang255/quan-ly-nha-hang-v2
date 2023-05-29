@@ -92,11 +92,11 @@ const ManagerEmployee = () => {
 
     // Check username null
     if (!isNull(username)) {
-      setErrMes((prev) => ({ ...prev, username: "Khong dc de trong" }));
+      setErrMes((prev) => ({ ...prev, username: "Không được để trống" }));
     } else {
       // Check username length
       if (!isLength(username, 8)) {
-        setErrMes((prev) => ({ ...prev, username: "Ngan" }));
+        setErrMes((prev) => ({ ...prev, username: "Tối thiểu 8 ký tự" }));
       } else {
         setErrMes((prev) => ({ ...prev, username: "" }));
       }
@@ -104,11 +104,11 @@ const ManagerEmployee = () => {
 
     // Check password null
     if (!isNull(password)) {
-      setErrMes((prev) => ({ ...prev, password: "Khong dc de trong" }));
+      setErrMes((prev) => ({ ...prev, password: "Không được để trống" }));
     } else {
       // Check length password
       if (!isLength(password, 8)) {
-        setErrMes((prev) => ({ ...prev, password: "Ngan" }));
+        setErrMes((prev) => ({ ...prev, password: "Tối thiểu 8 ký tự" }));
       } else {
         setErrMes((prev) => ({ ...prev, password: "" }));
       }

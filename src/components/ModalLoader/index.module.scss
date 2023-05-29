@@ -1,0 +1,54 @@
+@use "../../assets/styles/" as *;
+
+.container {
+  @include fullScreenCenter;
+}
+
+.logo {
+  height: 150px;
+}
+
+.content {
+  width: 100px;
+  height: 100px;
+  display: inline-block;
+  overflow: hidden;
+  background: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.main div {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border: 4px solid #ff720d;
+  border-top-color: transparent;
+  border-radius: 50%;
+}
+.main div {
+  animation: rotate 1s linear infinite;
+  top: 50px;
+  left: 50px;
+}
+
+.main {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform: translateZ(0) scale(1);
+  backface-visibility: hidden;
+  transform-origin: 0 0; /* see note above */
+}
+.main div {
+  box-sizing: content-box;
+}
+
+@keyframes rotate {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}

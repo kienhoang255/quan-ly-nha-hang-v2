@@ -13,6 +13,8 @@
     "@tippyjs/react": "^4.2.6",
     "axios": "^1.3.4",
     "classnames": "^2.3.2",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.1",
     "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

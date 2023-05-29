@@ -3,6 +3,9 @@ import { URL } from "./index";
 
 const addFoodOrder = (data) => axios.post(`${URL}food-ordered`, data);
 
+const getFoodOrderedByIdBill = async (id) =>
+  await axios.get(`${URL}food-ordered/bill/${id}`);
+
 const getFoodOrderedByStatus = async (status) => {
   return await axios.get(`${URL}food-ordered/${status}`);
 };
@@ -15,6 +18,7 @@ const updateStatusToCancel = async (data) =>
 
 export default {
   addFoodOrder,
+  getFoodOrderedByIdBill,
   getFoodOrderedByStatus,
   updateStatusToServed,
   updateStatusToCancel,

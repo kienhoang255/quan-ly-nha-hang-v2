@@ -37,6 +37,21 @@ $bodyTitleHeight: 35px;
     text-transform: uppercase;
   }
 
+  &SubTitle {
+    width: 100px;
+
+    padding-bottom: 3px;
+    height: calc(40px - 3px);
+
+    border-radius: 8px;
+    background-color: $bgColor;
+    color: $primaryBgColor;
+    @include flex;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
   &BackBtn {
     font-size: 22px;
   }

@@ -1,0 +1,28 @@
+@use "../../../assets/styles/" as *;
+
+.container {
+  background-color: $secondaryBgColor;
+  border: 1px solid $primaryColor;
+  border-radius: 16px;
+  padding: 12px;
+}
+
+.title {
+  @include flex;
+  font-size: 20x;
+  text-transform: uppercase;
+}
+
+.content {
+  @include flex;
+}
+
+.nameTable {
+  color: $primaryColor;
+}
+
+.actions {
+  padding-top: 6px;
+  @include flex($flexD: row);
+  gap: 8px;
+}

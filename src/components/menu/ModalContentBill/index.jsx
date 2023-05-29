@@ -1,13 +1,44 @@
-import React, { memo } from "react";
+import React, { memo, useEffect, useMemo, useRef, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./index.module.scss";
 
 import Logo from "../../Logo";
 import Button from "../../Button";
+import { formatVND } from "../../../utils";
+import moment from "moment/moment";
+import ModalCheckOut from "../ModalCheckOut";
+import Modal from "../../Modal";
 
 const cx = classNames.bind(styles);
 
-const ModalContentBill = ({ handleCloseModal }) => {
+const ModalContentBill = ({
+  handleCloseModal,
+  handleGetBill,
+  billDetail,
+  tableServing,
+  handleCheckOut,
+  modalCheckOutFetch,
+  modalBillFetch,
+}) => {
+  const ref = useRef();
+
+  useEffect(() => {
+    handleGetBill();
+  }, []);
+
+  const handleCloseModalCheckOut = () => {
+    ref.current.closeModal();
+  };
+
+  const totalPay = useMemo(
+    () =>
+      formatVND(
+        billDetail?.foods
+          ?.filter((e) => e.status === "served")
+          .reduce((acc, cur) => acc + cur.price * cur.quantity, 0)
+      ),
+    [billDetail.foods]
+  );
   return (
     <div className={cx("container")}>
       <div className={cx("header")}>
@@ -17,15 +48,21 @@ const ModalContentBill = ({ handleCloseModal }) => {
         <div className={cx("clientInfo")}>
           <div className={cx("detail")}>
             <div className={cx("name")}>Email/SDT:</div>
-            <div className={cx("value")}>123</div>
+            <div className={cx("value")}>{billDetail.customerInfo}</div>
           </div>
           <div className={cx("detail")}>
             <div className={cx("name")}>Thời gian bắt đầu:</div>
-            <div className={cx("value")}>123</div>
+            <div className={cx("value")}>
+              {moment(billDetail?.bill?.createdAt).format(
+                "DD-MM-YYYY HH:mm:ss"
+              )}
+            </div>
           </div>
           <div className={cx("detail")}>
             <div className={cx("name")}>Thời gian kết thúc:</div>
-            <div className={cx("value")}>123</div>
+            <div className={cx("value")}>
+              {moment([]).format("DD-MM-YYYY HH:mm:ss")}
+            </div>
           </div>
         </div>
       </div>
@@ -34,33 +71,69 @@ const ModalContentBill = ({ handleCloseModal }) => {
           <div className={cx("headerTable")}>
             <div className={cx("mid")}>NO.</div>
             <div className={cx("left")}>TÊN</div>
-            <div className={cx("mid")}>Trang thai</div>
+            <div className={cx("mid")}>TRẠNG THÁI</div>
             <div className={cx("mid")}>SỐ LƯỢNG</div>
             <div className={cx("right")}>GIÁ</div>
           </div>
-          <div className={cx("bodyTable")}>
-            <div className={cx("mid")}>NO.</div>
-            <div className={cx("left")}>TÊN</div>
-            <div className={cx("mid")}>Trang thai</div>
-            <div className={cx("mid")}>SỐ LƯỢNG</div>
-            <div className={cx("right")}>GIÁ</div>
+          <div className={cx("wrap")}>
+            {billDetail?.foods?.map((e, key) => (
+              <div
+                key={key}
+                className={cx("bodyTable", e.status === "cancel" && "cancel")}
+              >
+                <div className={cx("mid")}>{key + 1}</div>
+                <div className={cx("left")}>
+                  {modalBillFetch ? "Loading..." : billDetail.name[e?.id_food]}
+                </div>
+                <div className={cx("mid", e.status)}>
+                  {e.status === "cooking"
+                    ? "Đang nấu"
+                    : e.status === "cancel"
+                    ? "Đã hủy"
+                    : "Đã hoàn thành"}
+                </div>
+                <div className={cx("mid")}>{e.quantity}</div>
+                <div className={cx("right")}>{formatVND(e.price)}</div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
       <div className={cx("footer")}>
         <div className={cx("totalPrice")}>
-          <div>tong</div>
-          <div>90000</div>
+          <div>Tổng đặt</div>
+          <div>
+            {formatVND(
+              billDetail?.foods?.reduce(
+                (acc, cur) => acc + cur.price * cur.quantity,
+                0
+              )
+            )}
+          </div>
         </div>
         <div className={cx("totalPrice")}>
-          <div>tong</div>
-          <div>90000</div>
+          <div>Tổng sử dụng</div>
+          <div>{totalPay}</div>
         </div>
         <div className={cx("actionBtn")}>
           <Button onClick={handleCloseModal} variant="outline">
             Hủy
           </Button>
-          <Button>Thanh toán</Button>
+          <Modal
+            ref={ref}
+            component={
+              <ModalCheckOut
+                handleCloseModalCheckOut={handleCloseModalCheckOut}
+                billDetail={billDetail}
+                tableServing={tableServing}
+                totalPay={totalPay}
+                handleCheckOut={handleCheckOut}
+                modalCheckOutFetch={modalCheckOutFetch}
+              />
+            }
+          >
+            <Button>Thanh toán</Button>
+          </Modal>
         </div>
       </div>
     </div>

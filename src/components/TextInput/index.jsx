@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./index.module.scss";
 import {
@@ -87,7 +87,7 @@ const TextInput = ({
             </div>
           )}
           <input
-            className={cx("input")}
+            className={cx("input", { [className]: className })}
             id={id}
             name={id}
             type={defaultType}

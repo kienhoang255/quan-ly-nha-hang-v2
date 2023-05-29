@@ -17,17 +17,17 @@ const MainLayout = () => {
   const [selectedPage, setSelectedPage] = useState();
 
   // Loop job and role to set link btn in side bar
-  useEffect(() => {
-    if (!job[0]) {
-      user.job.forEach((jobUser) => {
-        role.forEach((jobRole) => {
-          if (jobRole.path === jobUser) {
-            dispatch(setJob(jobRole));
-          }
-        });
-      });
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (!job[0]) {
+  //     user.job.forEach((jobUser) => {
+  //       role.forEach((jobRole) => {
+  //         if (jobRole.path === jobUser) {
+  //           dispatch(setJob(jobRole));
+  //         }
+  //       });
+  //     });
+  //   }
+  // }, [user]);
 
   //Set button selected in first render
   useEffect(() => {

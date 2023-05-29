@@ -6,6 +6,8 @@ import table from "./tableSlice";
 import tableServing from "./tableServingSlice";
 import foodOrdered from "./foodOrderedSlice";
 import employee from "./employeeSlice";
+import booking from "./bookingSlice";
+import bill from "./billSlice";
 
 export const store = configureStore({
   reducer: {
@@ -16,5 +18,7 @@ export const store = configureStore({
     foodOrdered,
     tableServing,
     employee,
+    booking,
+    bill,
   },
 });

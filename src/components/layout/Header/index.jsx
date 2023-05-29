@@ -24,8 +24,8 @@ const Header = ({ username, avatar, job, selectedPage, setSelectedPage }) => {
           <Logo />
         </div>
         <div className={cx("right")}>
-          <IconNotification shake={false} />
-          <Avatar username={username} avatar={avatar} />
+          <IconNotification shake={true} />
+          <Avatar tippy username={username} avatar={avatar} />
         </div>
       </div>
     </div>

@@ -1,0 +1,45 @@
+@use "../../assets/styles/" as *;
+
+.container {
+  background-color: $secondaryBgColor;
+  border: 1px solid $primaryColor;
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.title {
+  color: $primaryColor;
+  @include flex;
+  text-transform: uppercase;
+  font-size: large;
+}
+
+.listTable {
+  color: white;
+  width: 420px;
+  @include grid($columns: repeat(3, auto), $rows: repeat(3, 95px));
+  max-height: 285px;
+  min-height: 285px;
+  overflow: hidden;
+  overflow-y: auto;
+  @include scrollBar($primaryColor);
+}
+
+.listStage {
+  @include flex;
+  padding: 6px;
+  gap: 8px;
+  &Btn {
+    font-weight: 600;
+    padding-top: 3px;
+    height: 35px;
+    width: 35px;
+  }
+}
+
+.skeleton {
+  width: 116px !important;
+  height: 71px !important;
+  border-radius: 8px;
+  margin: 12px;
+}

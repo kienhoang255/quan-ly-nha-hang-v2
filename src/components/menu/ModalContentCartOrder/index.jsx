@@ -5,6 +5,7 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 import Logo from "../../Logo";
 import Button from "../../Button";
+import { formatVND } from "../../../utils";
 
 const cx = classNames.bind(styles);
 
@@ -29,49 +30,53 @@ const ModalContentCartOrder = ({
             <div className={cx("mid")}>SỐ LƯỢNG</div>
             <div className={cx("right")}>GIÁ</div>
           </div>
-          {foodSelecting.map((e, key) => (
-            <div className={cx("bodyTable")} key={key}>
-              <div className={cx("mid")}>{key}</div>
-              <div className={cx("left")}>{e.name}</div>
-              <div className={cx("mid")}>
-                <div className={cx("action")}>
-                  <Button
-                    className={cx("actionBtn")}
-                    variant="circle"
-                    onClick={() => {
-                      handleOnClickDecreaseFood(
-                        e._id,
-                        e.name,
-                        e.price,
-                        e.quantity
-                      );
-                    }}
-                  >
-                    <MdKeyboardArrowLeft />
-                  </Button>
-                  <span>{e.quantity}</span>
-                  <Button
-                    className={cx("actionBtn")}
-                    variant="circle"
-                    onClick={() => {
-                      handleOnClickIncreaseFood(
-                        e._id,
-                        e.name,
-                        e.price,
-                        e.quantity
-                      );
-                    }}
-                  >
-                    <MdKeyboardArrowRight />
-                  </Button>
+          <div className={cx("wrap")}>
+            {foodSelecting.map((e, key) => (
+              <div className={cx("bodyTable")} key={key}>
+                <div className={cx("mid")}>{key + 1}</div>
+                <div className={cx("left")}>{e.name}</div>
+                <div className={cx("mid")}>
+                  <div className={cx("action")}>
+                    <Button
+                      className={cx("actionBtn")}
+                      variant="circle"
+                      onClick={() => {
+                        handleOnClickDecreaseFood(
+                          e.id_food,
+                          e.name,
+                          e.price,
+                          e.quantity
+                        );
+                      }}
+                    >
+                      <MdKeyboardArrowLeft />
+                    </Button>
+                    <span>{e.quantity}</span>
+                    <Button
+                      className={cx("actionBtn")}
+                      variant="circle"
+                      onClick={() => {
+                        handleOnClickIncreaseFood(
+                          e.id_food,
+                          e.name,
+                          e.price,
+                          e.quantity
+                        );
+                      }}
+                    >
+                      <MdKeyboardArrowRight />
+                    </Button>
+                  </div>
                 </div>
+                <div className={cx("right")}>{formatVND(e.price)}</div>
               </div>
-              <div className={cx("right")}>{e.price}</div>
-            </div>
-          ))}
+            ))}
+          </div>
           <div className={cx("footerTable")}>
             <div className={cx("total")}>Tổng</div>
-            <div className={cx("totalPrice")}>{totalPriceOnOrder}</div>
+            <div className={cx("totalPrice")}>
+              {formatVND(totalPriceOnOrder)}
+            </div>
           </div>
         </div>
       </div>

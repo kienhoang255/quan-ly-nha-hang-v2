@@ -1,0 +1,144 @@
+@use "../../../assets/styles/" as *;
+
+.container {
+  width: 450px;
+  max-height: 615px;
+  background-color: $primaryBgColor;
+  border-radius: 16px;
+  padding-bottom: 15px;
+}
+
+.header {
+  @include flex;
+}
+
+.body {
+  @include flex;
+  min-height: 255px;
+}
+
+.footer {
+  @include flex($justifyContent: space-around);
+}
+
+.icon {
+  font-size: 120px;
+  color: $dangerColor;
+  @include flex;
+  margin-top: -40px;
+}
+
+.alert_content {
+  color: $dangerColor;
+}
+
+.bill_content {
+  max-height: 440px;
+  width: 400px;
+  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: auto;
+  border-radius: 6px;
+  @include scrollBar($primaryColor);
+  margin-bottom: 20px;
+}
+
+.canvas {
+  width: calc(100% - 20px);
+  height: 100%;
+  padding: 40px 10px 20px 10px;
+
+  &_title {
+    font-weight: bold;
+    @include flex($justifyContent: end);
+    font-size: 20px;
+    padding-bottom: 6px;
+
+    &_sub {
+      @include flex();
+      font-size: 14px;
+    }
+  }
+
+  &_main_title {
+    font-size: 24px;
+    @include flex;
+    font-weight: bold;
+  }
+
+  &_footer {
+    @include flex;
+    padding-top: 10px;
+    font-style: italic;
+    font-size: 15px;
+    color: $subColor;
+  }
+}
+
+.split {
+  @include grid($columns: repeat(2, auto));
+
+  :first-child {
+    justify-self: start;
+  }
+
+  :last-child {
+    justify-self: end;
+  }
+}
+
+.table {
+  border: 1px solid $primaryBgColor;
+
+  :last-child {
+    border: 0px;
+  }
+  &_header {
+    @include grid($columns: 40% 8% auto 27%);
+    font-size: 17px;
+    font-weight: 600;
+
+    border-bottom: 1px dashed $primaryBgColor;
+
+    :first-child {
+      justify-self: start;
+      border-right: 1px dashed $primaryBgColor;
+      width: calc(100% - 5px);
+      padding-left: 5px;
+    }
+
+    :nth-child(2) {
+      border-right: 1px dashed $primaryBgColor;
+      width: 100%;
+      @include center;
+    }
+
+    :last-child {
+      border-left: 1px dashed $primaryBgColor;
+      @include flex($justifyContent: end);
+      width: calc(100% - 10px);
+      padding-right: 10px;
+    }
+  }
+
+  &_body {
+    @extend .table_header;
+    font-size: 16px;
+    font-weight: 400;
+
+    :nth-child(3) {
+      width: calc(100% - 5px);
+      @include flex($justifyContent: end);
+      padding-right: 5px;
+    }
+  }
+}
+
+.totalPay {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.divider {
+  border-top: 2px solid $primaryBgColor;
+}

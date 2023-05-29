@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import classNames from "classnames/bind";
 import { decodeToken } from "react-jwt";
 import { useDispatch } from "react-redux";
@@ -20,15 +20,20 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [load, setLoad] = useState(false);
+  const [err, setErr] = useState(false);
+
   const handleOnClick = (e) => {
     e.preventDefault();
     // Get email, password from FormData
     const form = new FormData(e.target);
     const passForm = Object.fromEntries(form.entries());
 
+    setLoad(true);
     // Call API
     UserAPI.login(passForm)
       .then((res) => {
+        setLoad(false);
         const decodedToken = decodeToken(res.data.createToken);
         // Create time expire for cookie base on TOKEN
         const expired = new Date(
@@ -50,8 +55,13 @@ const Login = () => {
 
         //Redirect to / (main page)
         navigate("/");
+        location.reload();
       })
-      .catch((err) => err.response);
+      .catch((err) => {
+        setLoad(false);
+        setErr(true);
+        return err;
+      });
   };
 
   return (
@@ -59,14 +69,22 @@ const Login = () => {
       <div className={cx("content")}>
         <Logo className={cx("logo")} />
         <form className={cx("form")} onSubmit={handleOnClick}>
-          <TextInput id="email" placeholder="EMAIL" rightIcon />
+          <TextInput
+            className={cx("input")}
+            id="email"
+            placeholder="EMAIL"
+            rightIcon
+          />
           <TextInput
             id="password"
             type="password"
             placeholder="MẬT KHẨU"
             rightIcon
           />
-          <Button type="submit" className={cx("submitBtn")}>
+          {err && (
+            <div style={{ color: "red" }}>Tài khoản hoặc mật khẩu sai!</div>
+          )}
+          <Button type="submit" className={cx("submitBtn")} disable={load}>
             Đăng nhập
           </Button>
         </form>

@@ -4,6 +4,7 @@ import styles from "./index.module.scss";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 import Button from "../../Button";
+import { formatVND } from "../../../utils";
 
 const cx = classNames.bind(styles);
 
@@ -27,7 +28,7 @@ const FoodCard = ({
       ></div>
       <div className={cx("detail")}>
         <div className={cx("name")}>{name}</div>
-        <div className={cx("price")}>{price}</div>
+        <div className={cx("price")}>{formatVND(price)}</div>
         <div className={cx("action")}>
           <Button
             className={cx("actionBtn")}

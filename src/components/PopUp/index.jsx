@@ -1,0 +1,50 @@
+import React from "react";
+import classNames from "classnames/bind";
+import styles from "./index.module.scss";
+import Button from "../Button";
+import Avatar from "../Avatar";
+import { BiLogInCircle } from "react-icons/bi";
+import { BsPersonCircle } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
+
+const cx = classNames.bind(styles);
+
+const PopUp = ({ username, avatar, setOpen }) => {
+  const navigate = useNavigate();
+  const logout = () => {
+    document.cookie = "token" + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+    navigate("/login");
+  };
+  return (
+    <div className={cx("container")}>
+      <div className={cx("title")}>
+        <Avatar avatar={avatar} />
+        <p className={cx("name")}>{username}</p>
+      </div>
+      <Button
+        to="/me"
+        leftIcon={<BsPersonCircle />}
+        className={cx("btn")}
+        variant="none"
+        onClick={() => {
+          setOpen(false);
+        }}
+      >
+        Xem trang cá nhân
+      </Button>
+      <Button
+        onClick={() => {
+          logout();
+          setOpen();
+        }}
+        leftIcon={<BiLogInCircle />}
+        className={cx("btn")}
+        variant="none"
+      >
+        Đăng xuất
+      </Button>
+    </div>
+  );
+};
+
+export default PopUp;

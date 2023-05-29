@@ -37,10 +37,35 @@
 .empty {
   color: $successColor;
 }
+
+.booking {
+  color: $warningColor;
+}
 .ordered {
   color: $warningColor;
 }
 
 .amount {
   @extend .name;
+}
+
+.minSize {
+  width: 90px;
+  height: 45px;
+}
+
+.table_booking {
+  width: 200px;
+  height: 100px;
+  background-color: $primaryBgColor;
+  border-radius: 8px;
+  @include flex($flexD: column);
+
+  :first-child {
+    padding-bottom: 12px;
+  }
+
+  :last-child {
+    padding-top: 6px;
+  }
 }
