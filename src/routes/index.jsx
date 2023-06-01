@@ -24,6 +24,7 @@ const ManagerTable = React.lazy(() => import("../pages/ManagerTable"));
 const ManagerEmployee = React.lazy(() => import("../pages/ManagerEmployee"));
 const ErrorPage = React.lazy(() => import("../pages/403"));
 const BillHistory = React.lazy(() => import("../pages/BillHistory"));
+const ManagerMenu = React.lazy(() => import("../pages/ManagerMenu"));
 
 const Routes = () => {
   const privateRoute = [
@@ -47,6 +48,11 @@ const Routes = () => {
       path: "/manager/employee",
       component: ManagerEmployee,
       name: "Đặt nhân viên",
+    },
+    {
+      path: "/manager/menu",
+      component: ManagerMenu,
+      name: "Cài đặt thực đơn",
     },
   ];
 

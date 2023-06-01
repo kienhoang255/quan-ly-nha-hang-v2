@@ -8,6 +8,7 @@ const initialState = {
     { path: "/booking", name: "Đặt bàn" },
     { path: "/manager/table", name: "Cài đặt bàn ăn" },
     { path: "/manager/employee", name: "Cài đặt nhân viên" },
+    { path: "/manager/menu", name: "Cài đặt thực đơn" },
     { path: "/bill-history", name: "Lịch sử giao dịch" },
   ],
   job: [],

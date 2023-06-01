@@ -7,12 +7,12 @@ import Skeleton from "../../components/Skeleton";
 import Button from "../../components/Button";
 import Modal from "../../components/Modal";
 
-import { BsDownload } from "react-icons/bs";
 import moment from "moment";
 import { BillAPI } from "../../services";
 import { formatVND, numberWithCommas } from "../../utils";
 import { useDispatch, useSelector } from "react-redux";
 import { setBill, setTotalPage } from "../../redux/billSlice";
+import PDF from "../../components/PDF";
 
 const cx = classNames.bind(styles);
 
@@ -35,7 +35,7 @@ const BillHistory = () => {
     q: "",
     page: 0,
     timeDebounce: 0,
-    date: moment([]).format("yyyy-MM-DD"),
+    date: moment([]).format("MM-DD-YYYY"),
   });
 
   useEffect(() => {
@@ -86,12 +86,13 @@ const BillHistory = () => {
         <TextInput
           type="date"
           placeholder="Tìm kiếm"
-          value={search.date}
+          value={moment(search.date).format("yyyy-MM-DD")}
+          // value={search.date}
           rightIcon
           onChange={(e) => {
             setSearch((prev) => ({
               ...prev,
-              date: e.target.value,
+              date: moment(e.target.value).format("MM-DD-YYYY"),
               timeDebounce: 700,
             }));
           }}
@@ -113,117 +114,7 @@ const BillHistory = () => {
               <Modal
                 ref={refsById[e._id]}
                 key={key}
-                component={
-                  <div className={cx("modal_container")}>
-                    <div className={cx("modal_content")}>
-                      <div
-                        id="canvas"
-                        className={cx("canvas")}
-                        style={{ backgroundColor: "white" }}
-                      >
-                        <div className={cx("canvas_title")}>
-                          NHÀ HÀNG TRUNG KIÊN
-                        </div>
-                        <div className={cx("canvas_title_sub")}>
-                          Đ/C: 180 Cao Lỗ, Q8, TPHCM
-                        </div>
-                        <div className={cx("canvas_title_sub")}>
-                          Tel: 0912345678 Hotline: 0987654321
-                        </div>
-                        <div className={cx("canvas_main_title")}>
-                          HÓA ĐƠN THANH TOÁN
-                        </div>
-                        <div className={cx("canvas_title_sub")}>
-                          Mã HĐ: {e._id}
-                        </div>
-                        <div className={cx("split")}>
-                          <div className={cx("canvas_text")}>Bàn: {}</div>
-                          <div className={cx("canvas_text")}>
-                            Mã KH: {e.id_client}
-                          </div>
-                        </div>
-                        <div className={cx("split")}>
-                          <div className={cx("canvas_text")}>Tầng: {}</div>
-                          <div className={cx("canvas_text")}>
-                            Ngày:
-                            {moment(e.createdAt).format("DD/MM/YYYY")}
-                          </div>
-                        </div>
-                        <div className={cx("split")}>
-                          <div className={cx("canvas_text")}>
-                            Giờ vào:
-                            {moment(e.createdAt).format("HH:mm:ss")}
-                          </div>
-                          <div className={cx("canvas_text")}>
-                            Giờ ra: {moment(e.updatedAt).format("HH:mm:ss")}
-                          </div>
-                        </div>
-
-                        <div className={cx("table")}>
-                          <div className={cx("table_header")}>
-                            <div className={cx("table_header_cell")}>Món</div>
-                            <div className={cx("table_header_cell")}>SL</div>
-                            <div className={cx("table_header_cell")}>
-                              Đơn giá
-                            </div>
-                            <div className={cx("table_header_cell")}>
-                              Thành tiền
-                            </div>
-                          </div>
-
-                          {e.orders
-                            ?.filter((e) => e.status === "served")
-                            ?.map((e, key) => (
-                              <div key={key} className={cx("table_body")}>
-                                <div className={cx("table_body_cell")}>
-                                  {/* {data?.name[e.id_food]} */}
-                                  {/* {e?.id_food} */}
-                                </div>
-                                <div className={cx("table_body_cell")}>
-                                  {e?.quantity}
-                                </div>
-                                <div className={cx("table_body_cell")}>
-                                  {numberWithCommas(e.price)}
-                                </div>
-                                <div className={cx("table_body_cell")}>
-                                  {numberWithCommas(e?.price * e?.quantity)}
-                                </div>
-                              </div>
-                            ))}
-                        </div>
-
-                        <div className={cx("split")}>
-                          <div className={cx("totalMoney")}>Thành tiền:</div>
-                          <div className={cx("totalMoney")}>{}</div>
-                        </div>
-                        <div className={cx("split")}>
-                          <div className={cx("discount")}>Giảm giá:</div>
-                          <div className={cx("discount")}> </div>
-                        </div>
-                        <div className={cx("divider")}>
-                          <div className={cx("split")}>
-                            <div className={cx("totalPay")}>Tổng: </div>
-                            <div className={cx("totalPay")}>{}</div>
-                          </div>
-                        </div>
-                        <div className={cx("canvas_footer")}>
-                          Cảm ơn quý khách. Hẹn gặp lại.!
-                        </div>
-                      </div>
-                    </div>
-                    <div className={cx("modal_footer")}>
-                      <Button
-                        variant="outline"
-                        onClick={() => handleCloseModal(e._id)}
-                      >
-                        Đóng
-                      </Button>
-                      <Button>
-                        <BsDownload />
-                      </Button>
-                    </div>
-                  </div>
-                }
+                component={<PDF handleCloseModal={handleCloseModal} data={e} />}
               >
                 <div className={cx("card", e?.status)}>
                   <div className={cx("tag")}>

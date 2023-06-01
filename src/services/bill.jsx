@@ -17,6 +17,8 @@ const checkOut = async (data) => await instance.post("/bill/check-out", data);
 const searchBill = async (data) =>
   await instance.get("/bill/search/search", { params: data });
 
+const getAllInfo = async (data) => await instance.post("/bill/info/info", data);
+
 export default {
   getClientInfoByIdBill,
   getBillByIdBill,
@@ -25,4 +27,5 @@ export default {
   changeTable,
   checkOut,
   searchBill,
+  getAllInfo,
 };

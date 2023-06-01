@@ -4,11 +4,10 @@ import styles from "./index.module.scss";
 import Logo from "../../Logo";
 import Button from "../../Button";
 import { FiAlertCircle } from "react-icons/fi";
-import PDF from "../../PDF";
 import moment from "moment/moment";
-import { formatVND, numberWithCommas } from "../../../utils";
-import Modal from "../../Modal";
+import { numberWithCommas } from "../../../utils";
 import ModalLoader from "../../ModalLoader";
+import DownloadPDF from "../../PDF/DownloadPDF";
 const cx = classNames.bind(styles);
 
 const ModalCheckOut = ({
@@ -25,7 +24,7 @@ const ModalCheckOut = ({
   );
 
   const handleDownloadBill = () => {
-    PDF();
+    DownloadPDF();
     handleCheckOut(billDetail?.bill?._id);
   };
 

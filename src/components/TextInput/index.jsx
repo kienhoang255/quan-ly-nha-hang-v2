@@ -6,6 +6,7 @@ import {
   AiFillEyeInvisible,
   AiFillCloseCircle,
 } from "react-icons/ai";
+import Tippy from "@tippyjs/react";
 
 const cx = classNames.bind(styles);
 
@@ -19,10 +20,14 @@ const TextInput = ({
   className,
   defaultValue,
   onClear,
+  dropdown = false,
+  listDropdown,
+  setInputValueOnDropdown,
 }) => {
   const [defaultType, setType] = useState(type);
   const [hideReveal, setHideReveal] = useState(false);
   const [inputValue, setInputValue] = useState(value ? value : "");
+  const [showTippy, setShowTippy] = useState(false);
 
   const PasswordHideReveal = () => (
     <div
@@ -80,29 +85,65 @@ const TextInput = ({
   return (
     <>
       {type !== "file" ? (
-        <div className={cx("container")}>
-          {rightIcon && (
-            <div className={cx("rightIcon")}>
-              <RightIcon />
-            </div>
-          )}
-          <input
-            className={cx("input", { [className]: className })}
-            id={id}
-            name={id}
-            type={defaultType}
-            placeholder=" "
-            value={rightIcon ? inputValue : value}
-            onChange={(e) => {
-              if (rightIcon) {
-                handleOnChangeInput(e);
-              } else onChange(e);
+        <div>
+          <Tippy
+            visible={showTippy}
+            placement="bottom-start"
+            interactive={true}
+            onClickOutside={() => {
+              setShowTippy(false);
             }}
-            defaultValue={defaultValue}
-          />
-          <label className={cx("label")} htmlFor={id}>
-            {placeholder}
-          </label>
+            content={
+              dropdown ? (
+                <div className={cx("dropDown")}>
+                  {listDropdown?.map((e, key) => (
+                    <div
+                      key={key}
+                      className={cx("itemDropdown")}
+                      onClick={() => {
+                        setInputValueOnDropdown(e);
+                        setShowTippy(false);
+                      }}
+                    >
+                      {e}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <></>
+              )
+            }
+          >
+            <div
+              className={cx("container")}
+              onClick={() => {
+                setShowTippy(true);
+              }}
+            >
+              {rightIcon && (
+                <div className={cx("rightIcon")}>
+                  <RightIcon />
+                </div>
+              )}
+              <input
+                className={cx("input", { [className]: className })}
+                id={id}
+                name={id}
+                type={defaultType}
+                placeholder=" "
+                value={rightIcon ? inputValue : value}
+                onChange={(e) => {
+                  if (rightIcon) {
+                    handleOnChangeInput(e);
+                  } else onChange(e);
+                }}
+                defaultValue={defaultValue}
+              />
+              <label className={cx("label")} htmlFor={id}>
+                {placeholder}
+              </label>
+            </div>
+          </Tippy>
         </div>
       ) : (
         <TypeIsFile />

@@ -45,8 +45,8 @@ const Fetching = ({ children }) => {
             dispatch(setUser(res.data));
 
             if (!job[0]) {
-              res.data.job.forEach((jobUser) => {
-                role.forEach((jobRole) => {
+              role.forEach((jobRole) => {
+                res.data.job.forEach((jobUser) => {
                   if (jobRole.path === jobUser) {
                     dispatch(setJob(jobRole));
                   }

@@ -1,0 +1,64 @@
+@use "../../assets/styles/" as *;
+
+.container {
+  width: 760px;
+  background-color: $primaryBgColor;
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.title {
+  color: $primaryColor;
+  font-size: 22px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 16px;
+  @include flex;
+}
+
+.content {
+  @include flex($justifyContent: space-between);
+}
+
+.imgReview {
+  background-color: $secondaryBgColor;
+  width: 400px;
+  height: 400px;
+  background-size: cover;
+}
+
+.form {
+  @include flex($flexD: column);
+  gap: 12px;
+}
+
+.wrap {
+  @include flex($flexD: row, $justifyContent: space-between);
+  width: calc(100% - 12px);
+  padding: 0 12px;
+}
+
+.text {
+  width: 300px !important;
+}
+
+.btnAction {
+  margin-top: 16px;
+  @include flex($justifyContent: space-around);
+}
+
+.switch {
+  @include flex;
+  gap: 6px;
+  &Status {
+    color: $subColor;
+  }
+}
+
+.open {
+  color: $primaryColor;
+}
+
+.imageInput {
+  color: black;
+}
