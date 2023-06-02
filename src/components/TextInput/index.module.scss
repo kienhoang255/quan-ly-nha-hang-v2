@@ -104,6 +104,10 @@
   border-radius: 6px;
   color: white;
   padding: 8px;
+  max-height: 150px;
+  overflow: hidden;
+  overflow-y: auto;
+  @include scrollBar($primaryColor);
 }
 
 .itemDropdown {
