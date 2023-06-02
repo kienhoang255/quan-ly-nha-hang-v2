@@ -29,7 +29,7 @@
 
 .form {
   @include flex($flexD: column);
-  gap: 12px;
+  gap: 4px;
 }
 
 .wrap {
@@ -40,6 +40,7 @@
 
 .text {
   width: 300px !important;
+  margin: 0px 0px !important;
 }
 
 .btnAction {
@@ -61,4 +62,10 @@
 
 .imageInput {
   color: black;
+}
+
+.warningMessage {
+  color: $dangerColor;
+  @include flex;
+  margin-top: -3px;
 }

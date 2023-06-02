@@ -22,19 +22,21 @@ const FoodCard = ({
   setting = false,
   data,
   foodType,
+  handleDeleteFood,
+  handleUpdateFood,
+  errMes,
+  disClickOutside,
+  setDisClicksOutside,
+  fetching,
+  refs,
+  handleCloseModal,
 }) => {
   const [quantity, setQuantity] = useState();
-
-  const ref = useRef();
 
   useMemo(() => {
     const filter = foodSelecting?.filter((e) => e.id_food === _id);
     if (filter) setQuantity(filter[0]?.quantity ? filter[0]?.quantity : 0);
   }, [foodSelecting]);
-
-  const handleCloseModal = () => {
-    ref.current.closeModal();
-  };
 
   return (
     <div className={cx("container")}>
@@ -47,13 +49,19 @@ const FoodCard = ({
         <div className={cx("price")}>{formatVND(price)}</div>
         {setting ? (
           <Modal
-            ref={ref}
+            ref={refs}
+            hasValue={disClickOutside}
             component={
               <ModalSettingMenu
                 setting={true}
                 data={data}
                 foodType={foodType}
                 handleCloseModal={handleCloseModal}
+                handleDeleteFood={handleDeleteFood}
+                handleUpdateFood={handleUpdateFood}
+                errMes={errMes}
+                setDisClicksOutside={setDisClicksOutside}
+                fetching={fetching}
               />
             }
           >

@@ -35,6 +35,7 @@ import {
 } from "../../redux/tableServingSlice";
 import ModalChangeTable from "../../components/ModalChangeTable";
 import { updateTable } from "../../redux/tableSlice";
+import Skeleton from "../../components/Skeleton";
 
 const cx = classNames.bind(styles);
 const Menu = () => {
@@ -54,6 +55,7 @@ const Menu = () => {
   const [billDetail, setBillDetail] = useState({});
   const [modalCheckOutFetch, setModalCheckOutFetch] = useState(false);
   const [modalBillFetch, setModalBillFetch] = useState(true);
+  const [fetchingGet, setFetchingGet] = useState(false);
 
   // For first time render
   useEffect(() => {
@@ -61,11 +63,13 @@ const Menu = () => {
     setSelectedType(foodType[0]);
     // Check foodType exist
     if (!foodType[0]) {
+      setFetchingGet(true);
       MenuAPI.getAllTypeFood()
         .then((res) => {
           dispatch(setFoodType(res.data));
           // Set selected type after call api
           setSelectedType(res.data[0]);
+          setFetchingGet(false);
         })
         .catch((err) => console.log(err));
     }
@@ -105,10 +109,12 @@ const Menu = () => {
   useEffect(() => {
     const checkExistFoodType = foodTypeCalled.find((e) => e === selectedType);
     if (!checkExistFoodType && selectedType !== undefined) {
+      setFetchingGet(true);
       MenuAPI.getFoodByType(selectedType)
         .then((res) => {
           dispatch(setMenu(res.data));
           dispatch(setFoodTypeCalled(selectedType));
+          setFetchingGet(false);
         })
         .catch((err) => err);
     }
@@ -318,22 +324,30 @@ const Menu = () => {
               </Modal>
             </div>
             <div className={cx("contentBody")}>
-              {menu.map((e, key) => {
-                if (e.type === selectedType) {
-                  return (
-                    <FoodCard
-                      key={key}
-                      _id={e._id}
-                      name={e.name}
-                      price={e.price}
-                      image={e.image}
-                      foodSelecting={tableServing.foodSelecting}
-                      handleOnClickIncreaseFood={handleOnClickIncreaseFood}
-                      handleOnClickDecreaseFood={handleOnClickDecreaseFood}
-                    />
-                  );
-                }
-              })}
+              {fetchingGet ? (
+                <>
+                  <Skeleton className={cx("skeleton")} />
+                  <Skeleton className={cx("skeleton")} />
+                  <Skeleton className={cx("skeleton")} />
+                </>
+              ) : (
+                menu.map((e, key) => {
+                  if (e.type === selectedType && e.status === true) {
+                    return (
+                      <FoodCard
+                        key={key}
+                        _id={e._id}
+                        name={e.name}
+                        price={e.price}
+                        image={e.image}
+                        foodSelecting={tableServing.foodSelecting}
+                        handleOnClickIncreaseFood={handleOnClickIncreaseFood}
+                        handleOnClickDecreaseFood={handleOnClickDecreaseFood}
+                      />
+                    );
+                  }
+                })
+              )}
             </div>
           </div>
         </div>
