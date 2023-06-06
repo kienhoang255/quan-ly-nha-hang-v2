@@ -25,7 +25,27 @@ export const employeeSlice = createSlice({
     },
 
     addEmployee: (state, action) => {
-      return [...state, action.payload];
+      if (state.data.length === 10) {
+        return { ...state, data: [action.payload, ...state.data.slice(0, 9)] };
+      } else {
+        return { ...state, data: [action.payload, ...state.data] };
+      }
+    },
+    updateEmployee: (state, action) => {
+      return {
+        ...state,
+        data: state.data.map((e) => {
+          if (e._id === action.payload._id) {
+            return action.payload;
+          } else return e;
+        }),
+      };
+    },
+    delEmployee: (state, action) => {
+      return {
+        ...state,
+        data: state.data.filter((e) => e._id !== action.payload._id),
+      };
     },
   },
 });
@@ -36,6 +56,8 @@ export const {
   setPaginationCount,
   setPaginationLimit,
   setPaginationPage,
+  updateEmployee,
+  delEmployee,
 } = employeeSlice.actions;
 
 export default employeeSlice.reducer;

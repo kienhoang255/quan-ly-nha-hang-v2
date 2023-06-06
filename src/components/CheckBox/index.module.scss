@@ -8,12 +8,13 @@
 .content {
   height: 100%;
   width: 100%;
-  background-color: $primaryBgColor;
-  border: 1px solid $bgColor;
+  background-color: transparent;
+  border-radius: 12px;
   @include flex;
 }
 
 .label {
+  border: 1px solid $bgColor;
   width: 100%;
   color: $primaryColor;
   text-align: center;

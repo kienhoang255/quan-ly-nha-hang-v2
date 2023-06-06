@@ -4,19 +4,27 @@ import styles from "./index.module.scss";
 
 const cx = classNames.bind(styles);
 
-const CheckBox = ({ label = "label", id, active = false, onChange }) => {
+const CheckBox = ({
+  id,
+  onChange,
+  active = false,
+  label = "label",
+  type = "checkbox",
+  name,
+  className,
+}) => {
   return (
     <div className={cx("container")}>
       <input
         className={cx("checkbox")}
-        type="checkbox"
+        type={type}
         id={id}
-        name={id}
+        name={name}
         checked={active}
         onChange={onChange}
       />
       <div className={cx("content", { active: active })}>
-        <label htmlFor={id} className={cx("label")}>
+        <label htmlFor={id} className={cx("label", { [className]: className })}>
           {label}
         </label>
       </div>

@@ -6,14 +6,19 @@ import Avatar from "../Avatar";
 import { BiLogInCircle } from "react-icons/bi";
 import { BsPersonCircle } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { clearJob } from "../../redux/roleSlice";
 
 const cx = classNames.bind(styles);
 
 const PopUp = ({ username, avatar, setOpen }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const logout = () => {
     document.cookie = "token" + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
     navigate("/login");
+    dispatch(clearJob());
+    // location.reload();
   };
   return (
     <div className={cx("container")}>
@@ -35,7 +40,7 @@ const PopUp = ({ username, avatar, setOpen }) => {
       <Button
         onClick={() => {
           logout();
-          setOpen();
+          setOpen(false);
         }}
         leftIcon={<BiLogInCircle />}
         className={cx("btn")}

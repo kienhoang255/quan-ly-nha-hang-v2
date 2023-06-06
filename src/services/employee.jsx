@@ -7,4 +7,19 @@ const searchEmployee = async (data) =>
 
 const newEmployee = async (data) => await instance.post(`/employee`, data);
 
-export default { getEmployee, searchEmployee, newEmployee };
+const updateEmployee = async (data) => await instance.put(`/employee`, data);
+
+const deleteEmployee = async (id) =>
+  await instance.put(`/employee/delete/${id}`);
+
+const restoreEmployee = async (id) =>
+  await instance.put(`/employee/restore/${id}`);
+
+export default {
+  getEmployee,
+  searchEmployee,
+  newEmployee,
+  updateEmployee,
+  deleteEmployee,
+  restoreEmployee,
+};

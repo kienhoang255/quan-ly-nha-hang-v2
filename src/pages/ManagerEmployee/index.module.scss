@@ -37,7 +37,7 @@
 
 .headerTable {
   margin-top: 12px;
-  @include grid($columns: 6% 1fr 10% 22% 24%);
+  @include grid($columns: 6% 1fr 10% 22% 24% 7%);
   background-color: $primaryColor;
   border-radius: 8px 8px 0 0;
 }
@@ -60,6 +60,14 @@
   border-bottom: 1px solid $primaryColor;
   border-radius: 0px;
   height: 65px;
+
+  &:hover {
+    background-color: $secondaryBgColor;
+    .settingBtn {
+      animation: circular 1s linear infinite;
+    }
+  }
+
   &:last-child {
     border-bottom: 0px;
     border-radius: 0 0 8px 8px;
@@ -85,4 +93,47 @@
 
 .fetching {
   @include flex;
+}
+
+.btn {
+  width: 40px;
+  height: 40px;
+}
+
+.settingBtn {
+  font-size: 22px;
+  margin-top: 4px;
+  @include flex;
+}
+
+@keyframes circular {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.searchStatus {
+  @include flex;
+  width: 300px;
+}
+
+.working {
+  background-color: $successColor;
+  color: black !important;
+  border: none !important;
+  border-radius: 12px 0 0 12px;
+}
+
+.stopWorking {
+  background-color: $dangerColor;
+  color: black !important;
+  border: none !important;
+  border-radius: 0 12px 12px 0;
+}
+
+.disable {
+  background-color: $subColor;
 }

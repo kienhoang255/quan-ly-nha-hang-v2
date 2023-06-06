@@ -35,10 +35,24 @@
 
     &_list-title {
       margin: 8px;
+      color: $primaryColor;
     }
     &_list-jobs {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      max-height: 180px;
+      overflow: hidden;
+      overflow-y: auto;
+      border-top: 1px solid $primaryColor;
+      border-bottom: 1px solid $primaryColor;
+      padding: 5px;
+      @include scrollBar($primaryColor);
+      &-item {
+        :first-child {
+          color: $primaryColor;
+        }
+        @include flex($justifyContent: space-between);
+        gap: 12px;
+        padding: 4px;
+      }
     }
   }
 
@@ -58,4 +72,19 @@
 
 .err_mes {
   color: red;
+}
+
+.textInput {
+  width: 153px !important;
+}
+
+.settingJob {
+  @include flex($justifyContent: space-between);
+  gap: 12px;
+  padding: 4px;
+}
+
+.changePassword {
+  width: 211px;
+  height: 56px;
 }

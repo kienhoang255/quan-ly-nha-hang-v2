@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import classNames from "classnames/bind";
 import { decodeToken } from "react-jwt";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 
@@ -13,12 +13,15 @@ import Button from "../../components/Button";
 
 import { UserAPI } from "../../services";
 import { setUser } from "../../redux/userSlice";
+import { setJob } from "../../redux/roleSlice";
 
 const cx = classNames.bind(styles);
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const role = useSelector((state) => state.role.role);
 
   const [load, setLoad] = useState(false);
   const [err, setErr] = useState(false);
@@ -50,12 +53,20 @@ const Login = () => {
           })
         );
 
+        role.forEach((jobRole) => {
+          decodedToken.job.forEach((jobUser) => {
+            if (jobRole.path === jobUser) {
+              dispatch(setJob(jobRole));
+            }
+          });
+        });
+
         // Set to cookie
         document.cookie = `token=${res.data.createToken}; expires=${expired}`;
 
         //Redirect to / (main page)
         navigate("/");
-        location.reload();
+        // location.reload();
       })
       .catch((err) => {
         setLoad(false);

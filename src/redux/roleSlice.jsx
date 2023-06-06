@@ -25,6 +25,9 @@ export const jobSlice = createSlice({
         state.job.push(actions.payload);
       }
     },
+    clearJob: (state, actions) => {
+      return { ...state, job: [] };
+    },
     addRoleNotAllowed: (state, actions) => {
       return {
         ...state,
@@ -34,6 +37,6 @@ export const jobSlice = createSlice({
   },
 });
 
-export const { setJob, addRoleNotAllowed } = jobSlice.actions;
+export const { setJob, addRoleNotAllowed, clearJob } = jobSlice.actions;
 
 export default jobSlice.reducer;

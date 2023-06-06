@@ -5,6 +5,7 @@ import styles from "./index.module.scss";
 import { FcCancel } from "react-icons/fc";
 import Tippy from "@tippyjs/react";
 import PopUp from "../PopUp";
+import avatarNull from "../../assets/images/avatar-null.png";
 
 const cx = classNames.bind(styles);
 
@@ -29,25 +30,21 @@ const Avatar = ({ username, avatar, tippy = false }) => {
             }}
           >
             {username && <div className={cx("name")}>{username}</div>}
-            {avatar ? (
-              <img className={cx("img")} src={avatar} alt={username} />
-            ) : (
-              <div className={cx("img")}>
-                <FcCancel />
-              </div>
-            )}
+            <img
+              className={cx("img")}
+              src={avatar || avatarNull}
+              alt={username}
+            />
           </div>
         </Tippy>
       ) : (
         <div className={cx("container")}>
           {username && <div className={cx("name")}>{username}</div>}
-          {avatar ? (
-            <img className={cx("img")} src={avatar} alt={username} />
-          ) : (
-            <div className={cx("img")}>
-              <FcCancel />
-            </div>
-          )}
+          <img
+            className={cx("img")}
+            src={avatar || avatarNull}
+            alt={username}
+          />
         </div>
       )}
     </>

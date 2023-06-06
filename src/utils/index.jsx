@@ -44,6 +44,19 @@ export const isNull = (data) => {
   return result;
 };
 
+export const compareArray = (a, b) => {
+  const array2Sorted = b.slice().sort();
+  return (
+    a.length === b.length &&
+    a
+      .slice()
+      .sort()
+      .every(function (value, index) {
+        return value === array2Sorted[index];
+      })
+  );
+};
+
 export const isNumber = (data) => Number(data);
 
 export const isMax = (data, max) => data > max;

@@ -131,6 +131,7 @@ const TextInput = ({
                 name={id}
                 type={defaultType}
                 placeholder=" "
+                autoComplete="one-time-code"
                 value={rightIcon ? inputValue : value}
                 onChange={(e) => {
                   if (rightIcon) {

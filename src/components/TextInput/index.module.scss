@@ -55,6 +55,8 @@
   right: 15px;
   + .input {
     padding: 18px 42px 18px 14px;
+    // width: calc(100% - 10px);
+    width: 100%;
   }
 }
 

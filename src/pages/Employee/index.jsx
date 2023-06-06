@@ -27,6 +27,7 @@ const Employee = () => {
     q: "",
     page: 0,
     timeDebounce: 0,
+    status: true,
   });
   const [fetchingSearch, setFetchingSearch] = useState(true);
 
@@ -62,7 +63,7 @@ const Employee = () => {
           onChange={(e) => {
             setSearch((prev) => ({
               ...prev,
-              q: e.target.value,
+              q: e.target.value.trim(),
               timeDebounce: 700,
             }));
           }}
@@ -90,14 +91,14 @@ const Employee = () => {
                 <div key={key} className={cx("bodyTable")}>
                   <div className={cx("bodyCell")}>{key + 1}</div>
                   <div className={cx("bodyCell", "left")}>
-                    <Avatar avatar={employee.avatar} />
-                    {employee.username}
+                    <Avatar avatar={employee?.avatar} />
+                    {employee?.username}
                   </div>
-                  <div className={cx("bodyCell")}>{employee.phone}</div>
-                  <div className={cx("bodyCell")}>{employee.email}</div>
+                  <div className={cx("bodyCell")}>{employee?.phone}</div>
+                  <div className={cx("bodyCell")}>{employee?.email}</div>
 
                   <div className={cx("bodyCell", "actionBtn")}>
-                    {employee.address}
+                    {employee?.address}
                   </div>
                 </div>
               ))}
