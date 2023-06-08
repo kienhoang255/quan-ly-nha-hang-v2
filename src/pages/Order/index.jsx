@@ -13,6 +13,9 @@ import {
   removeFoodOrdered,
   setFoodOrdered,
 } from "../../redux/foodOrderedSlice";
+import { addFood, addFoodByOrderPage } from "../../redux/menuSlice";
+import FoodOrderItem from "../../components/FoodOrderItem";
+import ModalLoader from "../../components/ModalLoader";
 
 const cx = classNames.bind(styles);
 
@@ -20,6 +23,9 @@ const Order = () => {
   const dispatch = useDispatch();
   const foodOrdered = useSelector((state) => state.foodOrdered.foodOrdered);
   const cacheFood = useSelector((state) => state.foodOrdered.cacheFood);
+  const menu = useSelector((state) => state.menu.menu);
+
+  const [isFetching, setIsFetching] = useState(false);
   const [pageBtn, setPageBtn] = useState([
     {
       title: "Đang nấu",
@@ -48,14 +54,33 @@ const Order = () => {
   const getFoodInfo = useCallback(
     (id) => {
       // Check exist food item
-      if (!cacheFood[id]) {
+      const check = menu?.find((m) => m?._id === id);
+      console.log("run");
+      if (check) {
+        dispatch(addCache(check));
+      } else {
         MenuAPI.getFoodById(id).then((res) => {
+          dispatch(addFoodByOrderPage(res.data));
           dispatch(addCache(res.data));
         });
       }
     },
     [cacheFood]
   );
+
+  useEffect(() => {
+    foodOrdered.forEach((food) => {
+      const check = menu?.find((m) => m?._id === food.id_food);
+      if (check) {
+        dispatch(addCache(check));
+      } else {
+        MenuAPI.getFoodById(food.id_food).then((res) => {
+          dispatch(addFoodByOrderPage(res.data));
+          dispatch(addCache(res.data));
+        });
+      }
+    });
+  }, [foodOrdered]);
 
   // Get ordered food by status, default status = 'cooking'
   const getFoodOrderByStatus = useCallback(
@@ -64,9 +89,9 @@ const Order = () => {
         // Set food
         dispatch(setFoodOrdered(res.data));
         // Loop to get image and name food
-        res.data.forEach((e) => {
-          getFoodInfo(e.id_food);
-        });
+        // res.data.forEach((e) => {
+        //   getFoodInfo(e.id_food);
+        // });
       });
     },
     [pageBtn]
@@ -92,55 +117,68 @@ const Order = () => {
   );
 
   const handleOnServedFood = (id) => {
+    setIsFetching(true);
     OrderAPI.updateStatusToServed({ id_foodOrdered: id }).then((res) => {
       dispatch(removeFoodOrdered(id));
+      setIsFetching(false);
     });
   };
   const handleOnCancelFood = (id) => {
+    setIsFetching(true);
     OrderAPI.updateStatusToCancel({ id_foodOrdered: id }).then((res) => {
       dispatch(removeFoodOrdered(id));
+      setIsFetching(false);
     });
   };
 
   // Render table content
   const contentTable = useMemo(() => {
-    return foodOrdered.map((e, key) => (
-      <div className={cx("bodyTable")} key={key}>
-        <div className={cx("bodyCell")}>
-          <div className={cx("wrapPreview")}>
-            <div
-              className={cx("imgPreview")}
-              style={{
-                backgroundImage: `url(${cacheFood[e.id_food]?.image})`,
-              }}
-            ></div>
-            <span>{cacheFood[e.id_food]?.name}</span>
-          </div>
-        </div>
-        <div className={cx("bodyCell")}>{e.quantity}</div>
-        <div className={cx("bodyCell")}>
-          {/* moment */}
-          {moment(e.createdAt).format("DD/MM-hh:mm:ss")}
-        </div>
-        <div className={cx("bodyCell")}>{e.status}</div>
+    return foodOrdered.map((e, key) => {
+      return (
+        <FoodOrderItem
+          key={key}
+          data={e}
+          cacheFood={cacheFood}
+          handleOnServedFood={handleOnServedFood}
+          handleOnCancelFood={handleOnCancelFood}
+        />
+        // <div className={cx("bodyTable")} key={key}>
+        //   <div className={cx("bodyCell")}>
+        //     <div className={cx("wrapPreview")}>
+        //       <div
+        //         className={cx("imgPreview")}
+        //         style={{
+        //           backgroundImage: `url(${cacheFood[e.id_food]?.image})`,
+        //         }}
+        //       ></div>
+        //       <span>{cacheFood[e.id_food]?.name}</span>
+        //     </div>
+        //   </div>
+        //   <div className={cx("bodyCell")}>{e.quantity}</div>
+        //   <div className={cx("bodyCell")}>
+        //     {/* moment */}
+        //     {moment(e.createdAt).format("DD/MM-hh:mm:ss")}
+        //   </div>
+        //   <div className={cx("bodyCell")}>{e.status}</div>
 
-        <div className={cx("bodyCell", "actionBtn")}>
-          <Button
-            className={cx("cancelBtn")}
-            onClick={() => handleOnCancelFood(e._id)}
-            variant="outline"
-          >
-            Huỷ
-          </Button>
-          <Button
-            className={cx("completeBtn")}
-            onClick={() => handleOnServedFood(e._id)}
-          >
-            Hoàn thành
-          </Button>
-        </div>
-      </div>
-    ));
+        //   <div className={cx("bodyCell", "actionBtn")}>
+        //     <Button
+        //       className={cx("cancelBtn")}
+        //       onClick={() => handleOnCancelFood(e._id)}
+        //       variant="outline"
+        //     >
+        //       Huỷ
+        //     </Button>
+        //     <Button
+        //       className={cx("completeBtn")}
+        //       onClick={() => handleOnServedFood(e._id)}
+        //     >
+        //       Hoàn thành
+        //     </Button>
+        //   </div>
+        // </div>
+      );
+    });
   }, [foodOrdered, cacheFood]);
 
   return (
@@ -172,6 +210,7 @@ const Order = () => {
           {contentTable}
         </div>
       </div>
+      <ModalLoader show={isFetching} />
     </div>
   );
 };

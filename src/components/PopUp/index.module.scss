@@ -6,6 +6,7 @@
   padding: 6px;
   @include flex($flexD: column);
   width: 100%;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .title {

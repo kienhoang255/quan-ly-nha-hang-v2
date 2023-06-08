@@ -36,6 +36,8 @@ import {
 import ModalChangeTable from "../../components/ModalChangeTable";
 import { updateTable } from "../../redux/tableSlice";
 import Skeleton from "../../components/Skeleton";
+import { addFood } from "../../redux/menuSlice";
+import ModalLoader from "../../components/ModalLoader";
 
 const cx = classNames.bind(styles);
 const Menu = () => {
@@ -56,6 +58,7 @@ const Menu = () => {
   const [modalCheckOutFetch, setModalCheckOutFetch] = useState(false);
   const [modalBillFetch, setModalBillFetch] = useState(true);
   const [fetchingGet, setFetchingGet] = useState(false);
+  const [fetchingOrder, setFetchingOrder] = useState(false);
 
   // For first time render
   useEffect(() => {
@@ -124,12 +127,15 @@ const Menu = () => {
   const handleOnOrderFood = () => {
     // Check food order then call api
     if (tableServing.foodSelecting[0]) {
+      setFetchingOrder(true);
       OrderAPI.addFoodOrder({
         id_bill: tableServing.id_bill[0],
         foods: tableServing.foodSelecting,
       })
-        .then((res) => console.log(res.data))
-        .catch((err) => console.log(err));
+        .then((res) => {
+          setFetchingOrder(false);
+        })
+        .catch((err) => setFetchingOrder(false));
     }
     // Clean table serving info
     dispatch(cleanTableServingInfo());
@@ -227,6 +233,7 @@ const Menu = () => {
               ...prev,
               name: { ...prev.name, [res.data._id]: res.data.name },
             }));
+            dispatch(addFood(res.data));
           })
         );
       }
@@ -267,7 +274,7 @@ const Menu = () => {
   const handleCheckOut = (id_bill) => {
     setModalCheckOutFetch(true);
     BillAPI.checkOut({ id_bill: id_bill }).then((res) => {
-      dispatch(updateTable(res.data.table));
+      // dispatch(updateTable(res.data.table));
       setTimeout(() => {
         setModalCheckOutFetch(false);
         dispatch(cleanTableServingInfo());
@@ -352,6 +359,7 @@ const Menu = () => {
           </div>
         </div>
       </div>
+      <ModalLoader show={fetchingOrder} />
     </div>
   );
 };

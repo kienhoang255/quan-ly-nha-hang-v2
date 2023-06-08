@@ -21,14 +21,27 @@ export const foodOrderedSlice = createSlice({
       };
     },
     addFoodOrdered: (state, action) => {
-      state.table.push(...action.payload);
+      let data = [];
+      action.payload.forEach((e) => {
+        if (!data?.find((f) => f._id === e._id)) {
+          data.push(e);
+        }
+      });
+      return {
+        ...state,
+        foodOrdered: [...state.foodOrdered, ...data],
+      };
+      // state.foodOrdered.push(...action.payload);
     },
     addCache: (state, action) => {
       return {
         ...state,
         cacheFood: {
           ...state.cacheFood,
-          [action.payload._id]: action.payload,
+          [action.payload._id]: {
+            name: action.payload.name,
+            image: action.payload.image,
+          },
         },
       };
     },

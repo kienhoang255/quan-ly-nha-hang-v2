@@ -121,7 +121,7 @@ const Table = () => {
       BillAPI.createBill(value).then((res) => {
         const table = res.data.table;
         const bill = res.data.createBill;
-        dispatch(updateTable(res.data.table));
+        // dispatch(updateTable(res.data.table));
         handleCloseModal(value);
         handleOnSelectedTable(table);
       });
@@ -133,7 +133,7 @@ const Table = () => {
     BillAPI.createBillForWalkInGuest(value).then((res) => {
       const table = res.data.table;
       const bill = res.data.createBill;
-      dispatch(updateTable(res.data.table));
+      // dispatch(updateTable(res.data.table));
       handleCloseModal(value);
       handleOnSelectedTable(table);
     });

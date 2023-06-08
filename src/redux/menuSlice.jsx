@@ -18,7 +18,7 @@ export const menuSlice = createSlice({
     },
     setMenu: (state, action) => {
       if (state.menu.length === 0) {
-        return { ...state, menu: [...state.menu, ...action.payload] };
+        return { ...state, menu: [...action.payload] };
       } else {
         let data = [];
         action.payload.forEach((e) => {
@@ -26,7 +26,6 @@ export const menuSlice = createSlice({
             data.push(e);
           }
         });
-
         return { ...state, menu: [...state.menu, ...data] };
       }
     },
@@ -39,7 +38,17 @@ export const menuSlice = createSlice({
           foodType: [...state.foodType, data.type],
           foodTypeCalled: [...state.foodTypeCalled, data.type],
         };
-      } else return { ...state, menu: [...state.menu, action.payload] };
+      } else {
+        if (!state.menu.find((f) => f._id === data._id)) {
+          return { ...state, menu: [...state.menu, action.payload] };
+        }
+      }
+    },
+    addFoodByOrderPage: (state, action) => {
+      const data = action.payload;
+      if (!state.menu.find((f) => f._id === data._id)) {
+        return { ...state, menu: [...state.menu, action.payload] };
+      }
     },
     deleteFood: (state, action) => {
       const data = action.payload;
@@ -140,6 +149,7 @@ export const {
   addFood,
   deleteFood,
   updateFood,
+  addFoodByOrderPage,
 } = menuSlice.actions;
 
 export default menuSlice.reducer;

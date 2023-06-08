@@ -31,3 +31,36 @@
     transform: rotate(-10deg);
   }
 }
+
+.containerTippy {
+  width: calc(300px - 24px * 2);
+  height: 230px;
+  @include flex;
+  background-color: #242526;
+  border-radius: 12px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  padding: 12px 24px;
+  @include flex($flexD: column, $justifyContent: flex-start);
+  gap: 12px;
+}
+.item {
+  width: 100%;
+  padding: 6px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  color: $primaryColor;
+  @include flex($flexD: column);
+}
+.title {
+  width: 100%;
+  @include flex($justifyContent: flex-start);
+}
+
+.subTitle {
+  width: 100%;
+  @include flex($justifyContent: space-between);
+}
+
+.btn {
+  height: 30px;
+  width: 80px;
+}
