@@ -1,20 +1,20 @@
 import axios from "axios";
-import { URL } from "./index";
+import { URL, instance } from "./index";
 
-const addFoodOrder = (data) => axios.post(`${URL}food-ordered`, data);
+const addFoodOrder = (data) => instance.post(`food-ordered`, data);
 
 const getFoodOrderedByIdBill = async (id) =>
-  await axios.get(`${URL}food-ordered/bill/${id}`);
+  await instance.get(`food-ordered/bill/${id}`);
 
 const getFoodOrderedByStatus = async (status) => {
-  return await axios.get(`${URL}food-ordered/${status}`);
+  return await instance.get(`food-ordered/${status}`);
 };
 
 const updateStatusToServed = async (data) =>
-  axios.put(`${URL}food-ordered/served`, data);
+  instance.put(`food-ordered/served`, data);
 
 const updateStatusToCancel = async (data) =>
-  axios.put(`${URL}food-ordered/cancel`, data);
+  instance.put(`food-ordered/cancel`, data);
 
 export default {
   addFoodOrder,

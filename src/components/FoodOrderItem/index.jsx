@@ -35,7 +35,7 @@ const FoodOrderItem = ({
       <div className={cx("bodyCell", "actionBtn")}>
         <Button
           className={cx("cancelBtn")}
-          onClick={() => handleOnCancelFood(e._id)}
+          onClick={() => handleOnCancelFood(data._id)}
           variant="outline"
         >
           Huỷ

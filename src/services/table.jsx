@@ -1,20 +1,20 @@
 import axios from "axios";
-import { URL } from "./index";
+import { URL, instance } from "./index";
 
-const getStage = async () => await axios.get(`${URL}table/option/stage`);
+const getStage = async () => await instance.get(`table/option/stage`);
 
 const getTableByStage = async (stage) =>
-  await axios.get(`${URL}table/?stage=${stage}`);
+  await instance.get(`table/?stage=${stage}`);
 
 const createTableImage = async (data) =>
-  await axios.post(`${URL}table-image`, data);
+  await instance.post(`table-image`, data);
 
-const createTable = async (data) => await axios.post(`${URL}table/`, data);
+const createTable = async (data) => await instance.post(`table/`, data);
 
-const updateTable = async (data) => await axios.put(`${URL}table/`, data);
+const updateTable = async (data) => await instance.put(`table/`, data);
 
 const getTableImage = async (id) =>
-  await axios.get(`${URL}table-image/?id_table=${id}`);
+  await instance.get(`table-image/?id_table=${id}`);
 
 export default {
   getStage,
