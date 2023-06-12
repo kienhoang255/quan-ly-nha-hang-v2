@@ -28,10 +28,12 @@ const Fetching = ({ children }) => {
     document.cookie
       .split(";")
       .map((e) => e.split("="))
-      .forEach((e) =>
-        e[0].trim() === "token" ? (cookie = e[1]) : (cookie = undefined)
-      );
-    // setFetching(true);
+      .forEach((e) => {
+        if (e[0].trim() === "token") {
+          cookie = e[1];
+        }
+      });
+    setFetching(true);
     // Check cookie exist
 
     if (!cookie) {
@@ -61,6 +63,10 @@ const Fetching = ({ children }) => {
         console.log("dm ao that day");
       }
     }
+    // document.cookie
+    //   .split(";")
+    //   .map((e) => e.split("="))
+    //   .forEach((e) => e[0].trim() === "token" && console.log(e[1]));
   }, []);
 
   // Loop job and role to set link btn in side bar

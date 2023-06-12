@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classNames from "classnames/bind";
 import { decodeToken } from "react-jwt";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,6 +22,7 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const role = useSelector((state) => state.role.role);
+  const job = useSelector((state) => state.role.job);
 
   const [load, setLoad] = useState(false);
   const [err, setErr] = useState(false);
@@ -63,9 +64,11 @@ const Login = () => {
 
         // Set to cookie
         document.cookie = `token=${res.data.createToken}; expires=${expired}`;
-
+        // console.log(decodedToken.job[0]);
         //Redirect to / (main page)
-        navigate("/");
+
+        // navigate("/");
+
         // location.reload();
       })
       .catch((err) => {
@@ -74,6 +77,10 @@ const Login = () => {
         return err;
       });
   };
+
+  useEffect(() => {
+    if (job[0]) navigate(job[0].path || "/");
+  }, [job]);
 
   return (
     <div className={cx("container")}>

@@ -131,6 +131,7 @@ const Menu = () => {
       OrderAPI.addFoodOrder({
         id_bill: tableServing.id_bill[0],
         foods: tableServing.foodSelecting,
+        nameTable: tableServing.nameTable,
       })
         .then((res) => {
           setFetchingOrder(false);

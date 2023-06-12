@@ -27,7 +27,7 @@
 
 .content {
   margin-top: 8px;
-  @include grid($columns: 1fr 1fr 1fr);
+  @include grid($columns: 1fr 1fr 1fr, $rows: 1fr 1fr 1fr);
   gap: 20px;
   height: calc(100vh - 170px);
   overflow: hidden;

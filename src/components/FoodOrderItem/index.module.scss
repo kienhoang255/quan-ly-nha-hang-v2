@@ -29,7 +29,7 @@
 
 .headerTable {
   margin-top: 22px;
-  @include grid($columns: 1fr 8% 10% 10% 24%);
+  @include grid($columns: 1fr 8% 8% 10% 10% 24%);
   background-color: $primaryColor;
   border-radius: 8px 8px 0 0;
 }

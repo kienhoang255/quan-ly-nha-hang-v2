@@ -1,0 +1,36 @@
+@use "../..//assets/styles/" as *;
+
+.container {
+  background-color: $secondaryBgColor;
+  @include fullScreenCenter;
+}
+.content {
+  width: 400px;
+  height: 318px;
+  background-color: $primaryBgColor;
+  border-radius: 12px;
+  padding: 12px;
+  @include flex($flexD: column);
+}
+
+.title {
+  color: $primaryColor;
+  text-transform: uppercase;
+  @include flex;
+  padding: 12px 12px 18px 12px;
+}
+
+.form {
+  flex-grow: 1;
+  width: 100%;
+}
+
+.actions {
+  width: 100%;
+  @include flex($justifyContent: space-around);
+}
+
+.err {
+  color: $dangerColor;
+  @include flex;
+}

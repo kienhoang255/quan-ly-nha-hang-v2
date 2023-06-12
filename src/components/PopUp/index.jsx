@@ -18,7 +18,7 @@ const PopUp = ({ username, avatar, setOpen }) => {
     document.cookie = "token" + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
     navigate("/login");
     dispatch(clearJob());
-    // location.reload();
+    location.reload();
   };
   return (
     <div className={cx("container")}>

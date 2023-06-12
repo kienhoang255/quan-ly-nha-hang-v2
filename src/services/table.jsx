@@ -1,5 +1,4 @@
-import axios from "axios";
-import { URL, instance } from "./index";
+import { instance } from "./index";
 
 const getStage = async () => await instance.get(`table/option/stage`);
 
@@ -13,6 +12,8 @@ const createTable = async (data) => await instance.post(`table/`, data);
 
 const updateTable = async (data) => await instance.put(`table/`, data);
 
+const deleteTable = async (id) => await instance.delete(`table/${id}`);
+
 const getTableImage = async (id) =>
   await instance.get(`table-image/?id_table=${id}`);
 
@@ -23,4 +24,5 @@ export default {
   createTable,
   updateTable,
   getTableImage,
+  deleteTable,
 };

@@ -137,6 +137,10 @@ const BillHistory = () => {
                       {formatVND(e.totalPrice || 0)}
                     </div>
                   </div>
+                  <div className={cx("textSub")}>
+                    {e.status === "using" &&
+                      "Khách hàng vẫn đang sử dụng dịch vụ"}
+                  </div>
                 </div>
               </Modal>
             ))}

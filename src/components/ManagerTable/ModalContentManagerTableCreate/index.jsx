@@ -46,6 +46,7 @@ const ModalContentManagerTableCreate = ({
                 id="numOfPeople"
                 placeholder="Số lượng người"
               />
+              <div></div>
               {array.map((e, key) => (
                 <div key={key} className={cx("imageInput")}>
                   <div

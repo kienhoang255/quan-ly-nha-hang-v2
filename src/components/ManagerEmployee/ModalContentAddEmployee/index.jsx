@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import avatarNull from "../../../assets/images/avatar-null.png";
 import { compareArray, imageToBase64 } from "../../../utils";
 import Switch from "../../Switch";
+import moment from "moment";
 
 const cx = classNames.bind(styles);
 
@@ -140,6 +141,19 @@ const ManagerEmployee = ({
             <></>
           ) : setting ? (
             <Button
+              onClick={() => {
+                // localStorage.setItem(
+                //   "_idChange",
+                //   JSON.stringify(infoEmployee._id)
+                // );
+                document.cookie = `idChange=${
+                  infoEmployee._id
+                }; expires=${moment([]).add(5, "minutes")}`;
+                document.cookie = `id_expires=${moment([]).add(
+                  5,
+                  "minutes"
+                )}; expires=${moment([]).add(5, "minutes")}`;
+              }}
               target="_blank"
               to="/new-password"
               className={cx("changePassword")}

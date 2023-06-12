@@ -25,6 +25,7 @@ const FoodOrderItem = ({
           <span>{cacheFood[data.id_food]?.name}</span>
         </div>
       </div>
+      <div className={cx("bodyCell")}>{data.nameTable}</div>
       <div className={cx("bodyCell")}>{data.quantity}</div>
       <div className={cx("bodyCell")}>
         {/* moment */}
@@ -37,10 +38,12 @@ const FoodOrderItem = ({
           className={cx("cancelBtn")}
           onClick={() => handleOnCancelFood(data._id)}
           variant="outline"
+          disable={data.status === "cooking" ? false : true}
         >
           Huỷ
         </Button>
         <Button
+          disable={data.status === "cooking" ? false : true}
           className={cx("completeBtn")}
           onClick={() => {
             handleOnServedFood(data._id);

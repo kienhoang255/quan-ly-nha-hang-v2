@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import classNames from "classnames/bind";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -14,6 +14,7 @@ import Modal from "../../components/Modal";
 import {
   addTable,
   addTableImageOptions,
+  deleteTable,
   removeTableImageOptions,
   setStage,
   setStageCalled,
@@ -42,6 +43,14 @@ const ManagerTable = () => {
 
   const date = moment([]).format("YYYY-MM-DD");
   const time = moment([]).format("HHmm");
+
+  const refsById = useMemo(() => {
+    const refs = {};
+    table.forEach((item) => {
+      refs[item._id] = React.createRef(null);
+    });
+    return refs;
+  }, [table]);
 
   const modalCreateRef = useRef();
 
@@ -125,11 +134,11 @@ const ManagerTable = () => {
       image4,
       options: option.options,
     };
-
+    console.log(dataAPI);
     TableAPI.createTable(dataAPI).then((res) => {
+      dispatch(addTable(res.data.data.table));
       setOpenModalFetching(false);
       modalCreateRef.current.closeModal();
-      dispatch(addTable(res.data.data.table));
     });
   };
 
@@ -150,9 +159,19 @@ const ManagerTable = () => {
       options,
     };
     TableAPI.updateTable(dataAPI).then((res) => {
+      handleCloseModal(_id);
       setOpenModalFetching(false);
       dispatch(setTableImage(res.data.data.tableImage));
       dispatch(updateTable(res.data.data.table));
+    });
+  };
+
+  const handleDeleteTable = (_id) => {
+    setOpenModalFetching(true);
+    TableAPI.deleteTable(_id).then((res) => {
+      handleCloseModal(_id);
+      setOpenModalFetching(false);
+      dispatch(deleteTable(res.data.data));
     });
   };
 
@@ -178,6 +197,10 @@ const ManagerTable = () => {
     };
   };
 
+  const handleCloseModal = (id) => {
+    refsById[id].current.closeModal();
+  };
+
   return (
     <div className={cx("container")}>
       <div className={cx("title")}>Cài đặt bàn ăn</div>
@@ -198,17 +221,20 @@ const ManagerTable = () => {
           if (e.stage === selectedStage) {
             return (
               <MTBCard
+                refs={refsById[e._id]}
                 key={key}
                 tableInfo={e}
                 tableImage={tableImage[e._id]}
                 handleGetTableImage={handleGetTableImage}
                 handleUpdateTable={handleUpdateTable}
+                handleDeleteTable={handleDeleteTable}
                 handleOnUpdateImage={handleOnUpdateImage}
                 handleOption={handleOption}
                 option={option}
                 setOption={setOption}
                 stateTableInfo={stateTableInfo}
                 setStateTableInfo={setStateTableInfo}
+                handleCloseModal={handleCloseModal}
               />
             );
           }

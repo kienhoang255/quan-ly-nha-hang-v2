@@ -49,17 +49,108 @@ export const tableSlice = createSlice({
       };
     },
     addTable: (state, action) => {
-      state.table.push(action.payload);
+      const data = action.payload;
+      if (!state.stage.find((stage) => stage === data.stage)) {
+        return {
+          ...state,
+          table: [...state.table, data],
+          stage: [...state.stage, data.stage],
+          stageCalled: [...state.stageCalled, data.stage],
+        };
+      } else {
+        if (!state.table.find((f) => f._id === data._id)) {
+          return { ...state, table: [...state.table, action.payload] };
+        }
+      }
     },
     updateTable: (state, action) => {
-      return {
-        ...state,
-        table: state.table.map((e) => {
-          if (e._id === action.payload._id) {
-            return { ...action.payload };
-          } else return { ...e };
-        }),
-      };
+      const data = action.payload;
+      const stage1 = state.table.find((s) => s._id === data._id);
+      const stageExists = state.stage.find((t) => t === data.stage);
+      const typeEqualOne =
+        state.table.filter((food) => food.stage === stage1.stage).length === 1;
+
+      if (stage1.stage !== data.stage) {
+        if (stageExists) {
+          if (typeEqualOne) {
+            return {
+              ...state,
+              stage: state.stage.filter((e) => e !== stage1.stage),
+              table: state.table.map((e) => {
+                if (e._id === data._id) return data;
+                else return e;
+              }),
+            };
+          } else
+            return {
+              ...state,
+              table: state.table.map((e) => {
+                if (e._id === data._id) return data;
+                else return e;
+              }),
+            };
+        } else {
+          if (typeEqualOne) {
+            return {
+              ...state,
+              stage: state.stage.map((t) => {
+                if (t === stage1.stage) return data.stage;
+                else return t;
+              }),
+              stageCalled: [...state.stageCalled, data.stage],
+              table: state.table.map((e) => {
+                if (e._id === data._id) return data;
+                else return e;
+              }),
+            };
+          } else
+            return {
+              ...state,
+              stage: [...state.stage, data.stage],
+              stageCalled: [...state.stageCalled, data.stage],
+              table: state.table.map((e) => {
+                if (e._id === data._id) return data;
+                else return e;
+              }),
+            };
+          // return {
+          //   ...state,
+          //   // foodType: [...state.foodType, data.type],
+          //   // foodTypeCalled: [...state.foodTypeCalled, data.type],
+          //   menu: state.menu.map((e) => {
+          //     if (e._id === data._id) return data;
+          //     else return e;
+          //   }),
+          // };
+        }
+      } else {
+        return {
+          ...state,
+          menu: state.menu.map((e) => {
+            if (e._id === data._id) return data;
+            else return e;
+          }),
+        };
+      }
+    },
+    deleteTable: (state, action) => {
+      const data = action.payload;
+      if (
+        state.table.filter((food) => food.stage === data.stage).length === 1
+      ) {
+        return {
+          ...state,
+          table: state.table.filter((stage) => stage._id !== data._id),
+          stage: state.stage.filter((stage) => stage !== data.stage),
+          stageCalled: state.stageCalled.filter(
+            (stage) => stage !== data.stage
+          ),
+        };
+      } else
+        return {
+          ...state,
+          table: state.table.filter((stage) => stage._id !== data._id),
+        };
     },
 
     setTableImage: (state, action) => {
@@ -123,6 +214,7 @@ export const {
   setTable,
   addTable,
   updateTable,
+  deleteTable,
   updateTableInfo,
   setTableImage,
   updateTableImage,

@@ -19,12 +19,15 @@ const MTBCard = ({
   tableInfo,
   tableImage,
   handleUpdateTable,
+  handleDeleteTable,
   handleOnUpdateImage,
   handleOption,
   option,
   setOption,
   stateTableInfo,
   setStateTableInfo,
+  refs,
+  handleCloseModal,
 }) => {
   const [previewImgRedux, setPreviewImgRedux] = useState();
   useEffect(() => {
@@ -32,12 +35,6 @@ const MTBCard = ({
       handleGetTableImage(tableInfo._id);
     }
   }, [tableInfo._id]);
-
-  const ref = useRef();
-
-  const handleCloseModal = () => {
-    ref.current.closeModal();
-  };
 
   return (
     <div className={cx("container")}>
@@ -53,12 +50,13 @@ const MTBCard = ({
           </div>
         </div>
         <Modal
-          ref={ref}
+          ref={refs}
           component={
             <ModalContentManagerTableUpdate
               tableInfo={tableInfo}
               tableImage={tableImage}
               handleUpdateTable={handleUpdateTable}
+              handleDeleteTable={handleDeleteTable}
               handleOnUpdateImage={handleOnUpdateImage}
               previewImgRedux={previewImgRedux}
               setPreviewImgRedux={setPreviewImgRedux}

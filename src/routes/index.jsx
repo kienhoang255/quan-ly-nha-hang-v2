@@ -25,13 +25,15 @@ const ManagerEmployee = React.lazy(() => import("../pages/ManagerEmployee"));
 const ErrorPage = React.lazy(() => import("../pages/403"));
 const BillHistory = React.lazy(() => import("../pages/BillHistory"));
 const ManagerMenu = React.lazy(() => import("../pages/ManagerMenu"));
+const Statistic = React.lazy(() => import("../pages/Statistic"));
+const ChangePassword = React.lazy(() => import("../pages/ChangePassword"));
 
 const Routes = () => {
   const privateRoute = [
     { path: "/", component: Main, name: "Trang chủ" },
     { path: "/me", component: User, name: "Trang cá nhân" },
     { path: "/order", component: Order, name: "Đặt món" },
-    { path: "/table", component: Table, name: "Bàn ăn" },
+    { path: "/table", component: Table, name: "Sơ đồ bàn" },
     { path: "/employee", component: Employee, name: "Nhân viên" },
     { path: "/booking", component: Booking, name: "Đặt bàn" },
     {
@@ -54,9 +56,17 @@ const Routes = () => {
       component: ManagerMenu,
       name: "Cài đặt thực đơn",
     },
+    {
+      path: "/statistic",
+      component: Statistic,
+      name: "Báo cáo thông kê",
+    },
   ];
 
-  const NoLayoutRoute = [{ path: "/menu", component: Menu, name: "Thực đơn" }];
+  const NoLayoutRoute = [
+    { path: "/menu", component: Menu, name: "Thực đơn" },
+    { path: "/new-password", component: ChangePassword, name: "Đổi mật khẩu" },
+  ];
 
   const publicRoute = [{ path: "/login", component: Login, name: "Đăng nhập" }];
 

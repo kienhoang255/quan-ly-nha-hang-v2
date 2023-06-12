@@ -6,9 +6,11 @@ const CheckLoginRoute = () => {
   document.cookie
     .split(";")
     .map((e) => e.split("="))
-    .forEach((e) =>
-      e[0].trim() === "token" ? (value = e[1]) : (value = undefined)
-    );
+    .forEach((e) => {
+      if (e[0].trim() === "token") {
+        value = e[1];
+      }
+    });
 
   return <>{value ? <Navigate to="/" /> : <Outlet />}</>;
 };

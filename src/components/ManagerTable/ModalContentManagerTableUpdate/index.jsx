@@ -18,6 +18,7 @@ const ModalContentManagerTableUpdate = ({
   previewImgRedux,
   setPreviewImgRedux,
   handleUpdateTable,
+  handleDeleteTable,
   tableInfo,
   handleOnUpdateImage,
   handleCloseModal,
@@ -211,7 +212,11 @@ const ModalContentManagerTableUpdate = ({
           >
             Hủy
           </Button>
-          <Button type="button" variant="outline">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => handleDeleteTable(tableInfo._id)}
+          >
             Xoá
           </Button>
           <Button type="submit">Cập nhật</Button>
