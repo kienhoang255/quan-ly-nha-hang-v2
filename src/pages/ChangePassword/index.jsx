@@ -28,7 +28,6 @@ const ChangePassword = () => {
         }
       });
   }, []);
-  console.log(id, expires);
 
   const handleChangePassword = () => {};
 

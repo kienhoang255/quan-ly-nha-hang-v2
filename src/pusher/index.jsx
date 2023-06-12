@@ -55,7 +55,6 @@ const PusherComponent = () => {
   useEffect(() => {
     if (job.find((e) => e.path === "/order"))
       FO_Channel.bind("FO_order-event", function (data) {
-        console.log("run");
         triggerSound();
         dispatch(
           addNewNotification({

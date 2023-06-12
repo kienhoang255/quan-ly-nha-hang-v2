@@ -134,7 +134,6 @@ const ManagerTable = () => {
       image4,
       options: option.options,
     };
-    console.log(dataAPI);
     TableAPI.createTable(dataAPI).then((res) => {
       dispatch(addTable(res.data.data.table));
       setOpenModalFetching(false);

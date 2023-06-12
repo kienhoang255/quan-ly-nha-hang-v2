@@ -55,7 +55,6 @@ const Order = () => {
     (id) => {
       // Check exist food item
       const check = menu?.find((m) => m?._id === id);
-      console.log("run");
       if (check) {
         dispatch(addCache(check));
       } else {
