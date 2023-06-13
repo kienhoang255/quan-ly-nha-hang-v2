@@ -6,7 +6,6 @@
 }
 .content {
   width: 400px;
-  height: 318px;
   background-color: $primaryBgColor;
   border-radius: 12px;
   padding: 12px;
@@ -16,8 +15,10 @@
 .title {
   color: $primaryColor;
   text-transform: uppercase;
+  font-weight: 600;
   @include flex;
   padding: 12px 12px 18px 12px;
+  font-size: 20px;
 }
 
 .form {
@@ -27,10 +28,63 @@
 
 .actions {
   width: 100%;
+  padding-top: 12px;
   @include flex($justifyContent: space-around);
 }
 
 .err {
   color: $dangerColor;
   @include flex;
+}
+
+.subTitle {
+  font-size: 18px;
+  font-weight: 500;
+  color: $primaryColor;
+}
+
+.good {
+  color: $successColor;
+}
+
+.normal {
+  color: $warningColor;
+}
+
+.bad {
+  color: $dangerColor;
+}
+
+.modal {
+  &Container {
+    @include fullScreenCenter;
+  }
+
+  &Content {
+    width: calc(400px - 48px);
+    height: calc(300px - 48px);
+    background-color: $primaryBgColor;
+    border-radius: 12px;
+    padding: 24px;
+    @include flex($flexD: column);
+  }
+
+  &Title {
+    color: $primaryColor;
+    font-size: 24px;
+    text-transform: uppercase;
+    font-weight: bold;
+    justify-self: start;
+  }
+
+  &Text {
+    color: white;
+    flex-grow: 1;
+    padding-top: 24px;
+    font-size: 20px;
+  }
+
+  &TextSub {
+    color: white;
+  }
 }

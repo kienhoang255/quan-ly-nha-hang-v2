@@ -58,6 +58,17 @@ const ManagerEmployee = ({
     } else setIsChanged(false);
   }, [employeeInfo]);
 
+  const handleBeforeChangePassword = () => {
+    document.cookie = `idChange=${infoEmployee._id};expires=${moment([]).add(
+      5,
+      "minutes"
+    )};path=/`;
+    document.cookie = `id_expires=${moment([]).add(
+      5,
+      "minutes"
+    )};expires=${moment([]).add(5, "minutes")};path=/`;
+  };
+
   return (
     <div className={cx("container")}>
       <div className={cx("header")}>
@@ -146,13 +157,14 @@ const ManagerEmployee = ({
                 //   "_idChange",
                 //   JSON.stringify(infoEmployee._id)
                 // );
-                document.cookie = `idChange=${
-                  infoEmployee._id
-                }; expires=${moment([]).add(5, "minutes")}`;
-                document.cookie = `id_expires=${moment([]).add(
-                  5,
-                  "minutes"
-                )}; expires=${moment([]).add(5, "minutes")}`;
+                // document.cookie = `idChange=${
+                //   infoEmployee._id
+                // }; expires=${moment([]).add(5, "minutes")}`;
+                // document.cookie = `id_expires=${moment([]).add(
+                //   5,
+                //   "minutes"
+                // )}; expires=${moment([]).add(5, "minutes")}`;
+                handleBeforeChangePassword();
               }}
               target="_blank"
               to="/new-password"

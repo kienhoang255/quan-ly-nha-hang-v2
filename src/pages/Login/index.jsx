@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import classNames from "classnames/bind";
 import { decodeToken } from "react-jwt";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,60 +26,67 @@ const Login = () => {
 
   const [load, setLoad] = useState(false);
   const [err, setErr] = useState(false);
+  const [alert, setAlert] = useState(false);
 
-  const handleOnClick = (e) => {
-    e.preventDefault();
-    // Get email, password from FormData
-    const form = new FormData(e.target);
-    const passForm = Object.fromEntries(form.entries());
+  const handleOnClick = useCallback(
+    (e) => {
+      e.preventDefault();
+      // Get email, password from FormData
+      const form = new FormData(e.target);
+      const passForm = Object.fromEntries(form.entries());
 
-    setLoad(true);
-    // Call API
-    UserAPI.login(passForm)
-      .then((res) => {
-        setLoad(false);
-        const decodedToken = decodeToken(res.data.createToken);
-        // Create time expire for cookie base on TOKEN
-        const expired = new Date(
-          moment.unix(decodedToken.exp).format("YYYY-MM-DD HH:mm:ss")
-        ).toUTCString();
+      setLoad(true);
+      // Call API
+      UserAPI.login(passForm)
+        .then((res) => {
+          setLoad(false);
+          const decodedToken = decodeToken(res.data.createToken);
+          // Create time expire for cookie base on TOKEN
+          const expired = new Date(
+            moment.unix(decodedToken.exp).format("YYYY-MM-DD HH:mm:ss")
+          ).toUTCString();
 
-        // Set userInfo to redux
-        dispatch(
-          setUser({
-            _id: decodedToken._id,
-            username: decodedToken.username,
-            job: decodedToken.job,
-            avatar: res.data.avatar,
-          })
-        );
+          // Set userInfo to redux
+          dispatch(
+            setUser({
+              _id: decodedToken._id,
+              username: decodedToken.username,
+              job: decodedToken.job,
+              avatar: res.data.avatar,
+            })
+          );
 
-        role.forEach((jobRole) => {
-          decodedToken.job.forEach((jobUser) => {
-            if (jobRole.path === jobUser) {
-              dispatch(setJob(jobRole));
-            }
+          role.forEach((jobRole) => {
+            decodedToken.job.forEach((jobUser) => {
+              if (jobRole.path === jobUser) {
+                dispatch(setJob(jobRole));
+              }
+            });
           });
+
+          // Set to cookie
+          document.cookie = `token=${res.data.createToken};expires=${expired};path=/`;
+          // console.log(decodedToken.job[0]);
+          //Redirect to / (main page)
+
+          // navigate("/");
+          if (decodedToken.job.length == 0) {
+            navigate("/");
+          }
+
+          // location.reload();
+        })
+        .catch((err) => {
+          setLoad(false);
+          setErr(true);
+          return err;
         });
-
-        // Set to cookie
-        document.cookie = `token=${res.data.createToken}; expires=${expired}`;
-        // console.log(decodedToken.job[0]);
-        //Redirect to / (main page)
-
-        // navigate("/");
-
-        // location.reload();
-      })
-      .catch((err) => {
-        setLoad(false);
-        setErr(true);
-        return err;
-      });
-  };
+    },
+    [job]
+  );
 
   useEffect(() => {
-    if (job[0]) navigate(job[0].path || "/");
+    if (job[0]) navigate(job[0]?.path);
   }, [job]);
 
   return (
