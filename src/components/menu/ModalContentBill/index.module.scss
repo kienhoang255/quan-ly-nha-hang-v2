@@ -79,6 +79,8 @@
 
 .mid {
   justify-self: center;
+  @include flex($justifyContent: space-between);
+  width: 100%;
 }
 
 .action {
@@ -124,5 +126,24 @@
 }
 
 .cancel {
+  color: $subColor;
+}
+
+.btnCancel {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 20px;
+  background-color: $secondaryBgColor;
+  color: $dangerColor;
+  padding-top: 5px;
+  line-height: 0;
+}
+
+.request {
+  color: $successColor;
+}
+
+.reject {
   color: $subColor;
 }

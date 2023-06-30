@@ -27,7 +27,7 @@ import {
 } from "../../redux/tableSlice";
 import { BookingAPI, TableAPI } from "../../services";
 import Progress from "../../components/Progress";
-import { setBooking } from "../../redux/bookingSlice";
+import { setBooking, setBookingOnly } from "../../redux/bookingSlice";
 import moment from "moment";
 
 const cx = classNames.bind(styles);
@@ -85,10 +85,17 @@ const ManagerTable = () => {
     if (!checkExistStageCalled && selectedStage !== undefined) {
       TableAPI.getTableByStage(selectedStage)
         .then((res) => {
-          BookingAPI.getBooking(date).then((res1) => {
-            dispatch(setBooking(res1.data));
+          BookingAPI.getAllBooking({
+            dateCheckIn: date,
+            status: "pending",
+          }).then((res1) => {
+            dispatch(setBookingOnly(res1.data));
             dispatch(
-              setTable({ booking: res1.data, table: res.data, deathTime: time })
+              setTable({
+                booking: res1.data,
+                table: res.data,
+                deathTime: time,
+              })
             );
           });
           dispatch(setStageCalled(selectedStage));
@@ -249,7 +256,6 @@ const ManagerTable = () => {
             previewImg={previewImg}
             setPreviewImg={setPreviewImg}
             handleCreateNewTable={handleCreateNewTable}
-            handleGetTableImage={handleGetTableImage}
             option={option}
             setOption={setOption}
           />

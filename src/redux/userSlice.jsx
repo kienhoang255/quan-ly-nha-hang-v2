@@ -5,6 +5,7 @@ const initialState = {
   username: "",
   avatar: "",
   job: [],
+  role: "",
 };
 
 export const userSlice = createSlice({

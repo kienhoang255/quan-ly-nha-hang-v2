@@ -227,21 +227,36 @@ const ManagerEmployee = () => {
       EmployeeAPI.updateEmployee(employeeInfo)
         .then((res) => {
           setOpenModalFetching(false);
-          dispatch(updateEmployee(res.data.data));
           handleCloseModal(res.data.data._id);
+          dispatch(updateEmployee(res.data.data));
         })
         .catch((err) => {
           setOpenModalFetching(false);
-          switch (err?.response?.status) {
-            case 401:
-              setErrMes(() => ({
-                phone: "Số điện thoại đã tồn tại!",
+          switch (err.response.status) {
+            case 400:
+              setErrMes((prev) => ({
+                ...prev,
+                email: "Email/SĐT bạn vừa cập nhật đã có người khác sử dụng!",
+                phone: "Email/SĐT bạn vừa cập nhật đã có người khác sử dụng!",
               }));
               break;
-
+            case 401:
+              setErrMes((prev) => ({
+                ...prev,
+                email: "Email đã có người sử dụng!",
+              }));
+              break;
             case 402:
-              setErrMes(() => ({
-                email: "Email đã tồn tại!",
+              setErrMes((prev) => ({
+                ...prev,
+                phone: "Số điện thoại đã có người sử dụng!",
+              }));
+              break;
+            case 403:
+              setErrMes((prev) => ({
+                ...prev,
+                email: "Không được để trống",
+                phone: "Không được để trống",
               }));
               break;
 

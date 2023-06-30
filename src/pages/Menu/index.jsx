@@ -38,6 +38,9 @@ import { updateTable } from "../../redux/tableSlice";
 import Skeleton from "../../components/Skeleton";
 import { addFood } from "../../redux/menuSlice";
 import ModalLoader from "../../components/ModalLoader";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { GoPrimitiveDot } from "react-icons/go";
 
 const cx = classNames.bind(styles);
 const Menu = () => {
@@ -60,6 +63,14 @@ const Menu = () => {
   const [fetchingGet, setFetchingGet] = useState(false);
   const [fetchingOrder, setFetchingOrder] = useState(false);
 
+  const refsById = useMemo(() => {
+    const refs = {};
+    billDetail?.foods?.forEach((item) => {
+      refs[item._id] = React.createRef(null);
+    });
+    return refs;
+  }, [billDetail?.foods]);
+
   // For first time render
   useEffect(() => {
     // Set selected type for first render
@@ -79,17 +90,19 @@ const Menu = () => {
 
     // Use id_bill to get id_client then get info client
     function getClientInfoByIdBill(data) {
-      BillAPI.getClientInfoByIdBill(tableServing.idBill || data).then((res) => {
-        const { avatar, username, email, phone } = res.data;
-        dispatch(
-          setClientInfo({
-            clientAvatar: avatar,
-            clientName: username,
-            clientEmail: email,
-            clientPhone: phone,
-          })
-        );
-      });
+      BillAPI.getClientInfoByIdBill(tableServing.id_bill || data).then(
+        (res) => {
+          const { avatar, username, email, phone } = res.data;
+          dispatch(
+            setClientInfo({
+              clientAvatar: avatar,
+              clientName: username,
+              clientEmail: email,
+              clientPhone: phone,
+            })
+          );
+        }
+      );
       OrderAPI.getFoodOrderedByIdBill(data).then((res) => {
         setBillDetail((prev) => ({ ...prev, foods: res.data }));
         return res.data;
@@ -178,8 +191,28 @@ const Menu = () => {
   const handleOnClickIncreaseFood = useCallback(
     (id_food, name, price, quantity) => {
       if (quantity === 0 || !quantity) {
+        toast.success(`Đã thêm ${name}`, {
+          position: "top-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
         dispatch(addFoodSelecting({ id_food, name, price, quantity: 1 }));
       } else {
+        // toast.success(`Đã thêm 1 ${name}`, {
+        //   position: "top-right",
+        //   autoClose: 1000,
+        //   hideProgressBar: false,
+        //   closeOnClick: true,
+        //   pauseOnHover: true,
+        //   draggable: true,
+        //   progress: undefined,
+        //   theme: "dark",
+        // });
         dispatch(increaseFoodSelecting({ id_food, name, price, quantity }));
       }
     },
@@ -190,9 +223,29 @@ const Menu = () => {
     (id_food, name, price, quantity) => {
       if (quantity === 1) {
         dispatch(removeFoodSelecting({ id_food, name, price, quantity }));
+        toast.warning(`Đã bỏ ${name}`, {
+          position: "top-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
       }
       if (quantity > 1) {
         dispatch(decreaseFoodSelecting({ id_food, name, price, quantity }));
+        // toast.warning(`Đã bỏ 1 ${name}`, {
+        //   position: "top-right",
+        //   autoClose: 1000,
+        //   hideProgressBar: false,
+        //   closeOnClick: true,
+        //   pauseOnHover: true,
+        //   draggable: true,
+        //   progress: undefined,
+        //   theme: "dark",
+        // });
       }
     },
     [tableServing.foodSelecting]
@@ -245,6 +298,10 @@ const Menu = () => {
     });
   };
 
+  const totalQuantity = useMemo(() =>
+    tableServing.foodSelecting.reduce((acc, cur) => acc + cur.quantity, 0)
+  );
+
   const modalCart = useMemo(
     () => (
       <Modal
@@ -261,6 +318,9 @@ const Menu = () => {
         }
       >
         <Button className={cx("btnBill")}>
+          {totalQuantity != 0 && (
+            <div className={cx("numFood")}>{totalQuantity}</div>
+          )}
           <AiOutlineShoppingCart />
         </Button>
       </Modal>
@@ -282,6 +342,25 @@ const Menu = () => {
         navigate("/table");
       }, 500);
     });
+  };
+
+  const handleCancelFood = (e) => {
+    refsById[e._id].current.closeModal();
+    OrderAPI.requestCancelFoodOrdered(e);
+    // receive response by pusher
+    setBillDetail((prev) => ({
+      ...prev,
+      foods: prev?.foods?.map((f) => {
+        if (e._id === f._id) {
+          return { ...f, cancelRequest: "request" };
+        } else return f;
+      }),
+    }));
+    navigate("/table");
+  };
+
+  const handleCloseModalCancel = (e) => {
+    refsById[e._id].current.closeModal();
   };
 
   return (
@@ -323,6 +402,9 @@ const Menu = () => {
                     handleCheckOut={handleCheckOut}
                     modalCheckOutFetch={modalCheckOutFetch}
                     modalBillFetch={modalBillFetch}
+                    handleCancelFood={handleCancelFood}
+                    handleCloseModalCancel={handleCloseModalCancel}
+                    refs={refsById}
                   />
                 }
               >
@@ -361,6 +443,7 @@ const Menu = () => {
         </div>
       </div>
       <ModalLoader show={fetchingOrder} />
+      <ToastContainer />
     </div>
   );
 };

@@ -23,6 +23,8 @@ const TextInput = ({
   dropdown = false,
   listDropdown,
   setInputValueOnDropdown,
+  autoComplete,
+  ...props
 }) => {
   const [defaultType, setType] = useState(type);
   const [hideReveal, setHideReveal] = useState(false);
@@ -82,6 +84,18 @@ const TextInput = ({
     onChange && onChange(e);
   };
 
+  function handleAutoComplete(inputValue) {
+    let result = [];
+    result = listDropdown?.filter((value) =>
+      value.toLowerCase()?.includes(inputValue.toLowerCase())
+    );
+
+    if (result.length == 0) {
+      result = ["Không có dữ liệu"];
+    }
+    return result;
+  }
+
   return (
     <>
       {type !== "file" ? (
@@ -96,18 +110,31 @@ const TextInput = ({
             content={
               dropdown ? (
                 <div className={cx("dropDown")}>
-                  {listDropdown?.map((e, key) => (
-                    <div
-                      key={key}
-                      className={cx("itemDropdown")}
-                      onClick={() => {
-                        setInputValueOnDropdown(e);
-                        setShowTippy(false);
-                      }}
-                    >
-                      {e}
-                    </div>
-                  ))}
+                  {autoComplete && handleAutoComplete(value)
+                    ? handleAutoComplete(value)?.map((e, key) => (
+                        <div
+                          key={key}
+                          className={cx("itemDropdown")}
+                          onClick={() => {
+                            setInputValueOnDropdown(e);
+                            setShowTippy(false);
+                          }}
+                        >
+                          {e}
+                        </div>
+                      ))
+                    : listDropdown?.map((e, key) => (
+                        <div
+                          key={key}
+                          className={cx("itemDropdown")}
+                          onClick={() => {
+                            setInputValueOnDropdown(e);
+                            setShowTippy(false);
+                          }}
+                        >
+                          {e}
+                        </div>
+                      ))}
                 </div>
               ) : (
                 <></>
@@ -126,13 +153,14 @@ const TextInput = ({
                 </div>
               )}
               <input
+                {...props}
                 className={cx("input", { [className]: className })}
                 id={id}
                 name={id}
                 type={defaultType}
                 placeholder=" "
                 autoComplete="one-time-code"
-                value={rightIcon ? inputValue : value}
+                value={rightIcon ? value : value}
                 onChange={(e) => {
                   if (rightIcon) {
                     handleOnChangeInput(e);

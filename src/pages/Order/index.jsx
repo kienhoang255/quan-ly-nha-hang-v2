@@ -16,6 +16,7 @@ import {
 import { addFood, addFoodByOrderPage } from "../../redux/menuSlice";
 import FoodOrderItem from "../../components/FoodOrderItem";
 import ModalLoader from "../../components/ModalLoader";
+import { ToastContainer } from "react-toastify";
 
 const cx = classNames.bind(styles);
 
@@ -141,41 +142,6 @@ const Order = () => {
           handleOnServedFood={handleOnServedFood}
           handleOnCancelFood={handleOnCancelFood}
         />
-        // <div className={cx("bodyTable")} key={key}>
-        //   <div className={cx("bodyCell")}>
-        //     <div className={cx("wrapPreview")}>
-        //       <div
-        //         className={cx("imgPreview")}
-        //         style={{
-        //           backgroundImage: `url(${cacheFood[e.id_food]?.image})`,
-        //         }}
-        //       ></div>
-        //       <span>{cacheFood[e.id_food]?.name}</span>
-        //     </div>
-        //   </div>
-        //   <div className={cx("bodyCell")}>{e.quantity}</div>
-        //   <div className={cx("bodyCell")}>
-        //     {/* moment */}
-        //     {moment(e.createdAt).format("DD/MM-hh:mm:ss")}
-        //   </div>
-        //   <div className={cx("bodyCell")}>{e.status}</div>
-
-        //   <div className={cx("bodyCell", "actionBtn")}>
-        //     <Button
-        //       className={cx("cancelBtn")}
-        //       onClick={() => handleOnCancelFood(e._id)}
-        //       variant="outline"
-        //     >
-        //       Huỷ
-        //     </Button>
-        //     <Button
-        //       className={cx("completeBtn")}
-        //       onClick={() => handleOnServedFood(e._id)}
-        //     >
-        //       Hoàn thành
-        //     </Button>
-        //   </div>
-        // </div>
       );
     });
   }, [foodOrdered, cacheFood]);
@@ -211,6 +177,7 @@ const Order = () => {
         </div>
       </div>
       <ModalLoader show={isFetching} />
+      <ToastContainer />
     </div>
   );
 };

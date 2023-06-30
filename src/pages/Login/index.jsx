@@ -53,6 +53,7 @@ const Login = () => {
               username: decodedToken.username,
               job: decodedToken.job,
               avatar: res.data.avatar,
+              role: decodedToken.role,
             })
           );
 
@@ -98,13 +99,15 @@ const Login = () => {
             className={cx("input")}
             id="email"
             placeholder="EMAIL"
-            rightIcon
+            onChange={() => {}}
+            // rightIcon
           />
           <TextInput
             id="password"
             type="password"
             placeholder="MẬT KHẨU"
             rightIcon
+            onChange={() => {}}
           />
           {err && (
             <div style={{ color: "red" }}>Tài khoản hoặc mật khẩu sai!</div>

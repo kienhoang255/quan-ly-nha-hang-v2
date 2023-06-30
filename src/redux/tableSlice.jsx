@@ -5,6 +5,9 @@ const initialState = {
   table: [],
   stageCalled: [],
   tableImage: {},
+  tableBooking: [],
+  options: [],
+  table2: [],
 };
 
 export const tableSlice = createSlice({
@@ -18,9 +21,8 @@ export const tableSlice = createSlice({
       state.stageCalled.push(action.payload);
     },
     setTable: (state, action) => {
-      // state.table.push(...action.payload);
       const table = action.payload.table;
-      const booking = action.payload.booking;
+      const booking = action.payload?.booking;
       const deathTime = action.payload.deathTime;
 
       return {
@@ -28,20 +30,18 @@ export const tableSlice = createSlice({
         table: [
           ...state.table,
           ...table.map((t) => {
-            const findBooking = booking.find((b) => b.id_table === t._id);
-
+            const findBooking = booking?.find((b) => b?.id_table === t._id);
             if (
               findBooking &&
-              t.status === "empty" &&
-              deathTime + 4 <= findBooking.timeCheckIn
+              deathTime - findBooking?.timeCheckIn >= -400 &&
+              deathTime - findBooking?.timeCheckIn <= 30 &&
+              t.status == "empty"
             ) {
               return {
+                ...t,
                 status: "booking",
-                name: t.name,
-                _id: t._id,
-                id_bill: t.id_bill,
-                numOfPeople: t.numOfPeople,
-                stage: t.stage,
+                specialRequired: findBooking?.specialRequired,
+                timeCheckIn: findBooking?.timeCheckIn,
               };
             } else return t;
           }),
@@ -63,10 +63,25 @@ export const tableSlice = createSlice({
         }
       }
     },
+    addTable2: (state, action) => {
+      const data = action.payload;
+      if (!state.stage.find((stage) => stage === data.stage)) {
+        return {
+          ...state,
+          table2: [...state.table2, data],
+        };
+      } else {
+        if (!state.table2.find((f) => f._id === data._id)) {
+          return { ...state, table2: [...state.table2, action.payload] };
+        }
+      }
+    },
     updateTable: (state, action) => {
       const data = action.payload;
       const stage1 = state.table.find((s) => s._id === data._id);
       const stageExists = state.stage.find((t) => t === data.stage);
+      const booking = action.payload?.booking;
+      const deathTime = action.payload?.deathTime;
       const typeEqualOne =
         state.table.filter((food) => food.stage === stage1.stage).length === 1;
 
@@ -126,9 +141,29 @@ export const tableSlice = createSlice({
       } else {
         return {
           ...state,
-          menu: state.menu.map((e) => {
-            if (e._id === data._id) return data;
-            else return e;
+          table: state.table.map((t) => {
+            const findBooking = booking?.find((b) => b?.id_table === t._id);
+            if (
+              findBooking &&
+              deathTime - findBooking?.timeCheckIn >= -400 &&
+              deathTime - findBooking?.timeCheckIn <= 30
+            ) {
+              return {
+                ...t,
+                status: "booking",
+                specialRequired: findBooking?.specialRequired,
+                timeCheckIn: findBooking?.timeCheckIn,
+              };
+            } else if (t._id === data._id)
+              return {
+                id_bill: data.id_bill,
+                status: data.status,
+                _id: data._id,
+                stage: data.stage,
+                numOfPeople: data.numOfPeople,
+                name: data.name,
+              };
+            else return t;
           }),
         };
       }
@@ -205,6 +240,14 @@ export const tableSlice = createSlice({
         1
       );
     },
+
+    setTableBooking: (state, action) => {
+      return { ...state, tableBooking: [...action.payload] };
+    },
+
+    setOptions: (state, action) => {
+      return { ...state, options: action.payload };
+    },
   },
 });
 
@@ -213,6 +256,7 @@ export const {
   setStageCalled,
   setTable,
   addTable,
+  addTable2,
   updateTable,
   deleteTable,
   updateTableInfo,
@@ -221,6 +265,8 @@ export const {
   addTableImageOptions,
   updateTableImageOptions,
   removeTableImageOptions,
+  setTableBooking,
+  setOptions,
 } = tableSlice.actions;
 
 export default tableSlice.reducer;

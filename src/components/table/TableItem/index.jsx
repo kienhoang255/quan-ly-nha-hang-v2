@@ -30,6 +30,17 @@ const TableItem = ({
     id_table: tableInfo._id,
   });
 
+  const handleTruncate = (sentence, amount, tail) => {
+    const words = sentence?.split(" ");
+
+    if (amount >= words?.length) {
+      return sentence;
+    }
+
+    const truncated = words?.slice(0, amount);
+    return `${truncated?.join(" ")}${tail}`;
+  };
+
   return (
     <div
       onClick={() => {
@@ -90,6 +101,11 @@ const TableItem = ({
             <div className={cx("amount")}>
               <MdPeopleAlt />
               {tableInfo.numOfPeople}
+            </div>
+
+            <div>
+              {tableInfo?.specialRequired &&
+                handleTruncate(tableInfo?.specialRequired, 10, "...")}
             </div>
           </div>
         </Modal>

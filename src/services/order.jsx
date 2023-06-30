@@ -16,10 +16,22 @@ const updateStatusToServed = async (data) =>
 const updateStatusToCancel = async (data) =>
   instance.put(`food-ordered/cancel`, data);
 
+const requestCancelFoodOrdered = async (data) =>
+  instance.post(`food-ordered/r/cancel/`, data);
+
+const returnRequestCancelFOReject = async (_id) =>
+  instance.post(`food-ordered/cancelRequest/reject/${_id}`);
+
+const returnRequestCancelFOConfirm = async (_id) =>
+  instance.post(`food-ordered/cancelRequest/confirm/${_id}`);
+
 export default {
   addFoodOrder,
   getFoodOrderedByIdBill,
   getFoodOrderedByStatus,
   updateStatusToServed,
   updateStatusToCancel,
+  requestCancelFoodOrdered,
+  returnRequestCancelFOReject,
+  returnRequestCancelFOConfirm,
 };

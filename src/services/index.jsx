@@ -21,3 +21,4 @@ export { default as BillAPI } from "./bill";
 export { default as OrderAPI } from "./order";
 export { default as EmployeeAPI } from "./employee";
 export { default as BookingAPI } from "./booking";
+export { default as CustomerAPI } from "./customer";

@@ -56,11 +56,11 @@ const Routes = () => {
       component: ManagerMenu,
       name: "Cài đặt thực đơn",
     },
-    {
-      path: "/statistic",
-      component: Statistic,
-      name: "Báo cáo thông kê",
-    },
+    // {
+    //   path: "/statistic",
+    //   component: Statistic,
+    //   name: "Báo cáo thông kê",
+    // },
   ];
 
   const NoLayoutRoute = [

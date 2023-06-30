@@ -8,6 +8,10 @@ import { formatVND } from "../../../utils";
 import moment from "moment/moment";
 import ModalCheckOut from "../ModalCheckOut";
 import Modal from "../../Modal";
+import { ImCancelCircle } from "react-icons/im";
+import ModalConfirmCancel from "../ModalConfirmCancel";
+import { BiTime } from "react-icons/bi";
+import { MdOutlineCancel } from "react-icons/md";
 
 const cx = classNames.bind(styles);
 
@@ -19,6 +23,9 @@ const ModalContentBill = ({
   handleCheckOut,
   modalCheckOutFetch,
   modalBillFetch,
+  handleCancelFood,
+  handleCloseModalCancel,
+  refs,
 }) => {
   const ref = useRef();
 
@@ -39,6 +46,7 @@ const ModalContentBill = ({
       ),
     [billDetail.foods]
   );
+
   return (
     <div className={cx("container")}>
       <div className={cx("header")}>
@@ -91,6 +99,39 @@ const ModalContentBill = ({
                     : e.status === "cancel"
                     ? "Đã hủy"
                     : "Đã hoàn thành"}
+                  {e?.status == "cooking" && (
+                    <Modal
+                      ref={refs[e._id]}
+                      component={
+                        <ModalConfirmCancel
+                          data={e}
+                          handleCancelFood={handleCancelFood}
+                          handleCloseModalCancel={handleCloseModalCancel}
+                          name={
+                            modalBillFetch
+                              ? "Loading..."
+                              : billDetail.name[e?.id_food]
+                          }
+                        />
+                      }
+                    >
+                      <Button
+                        className={cx(
+                          "btnCancel",
+                          e.cancelRequest === "request" && "request",
+                          e.cancelRequest === "reject" && "reject"
+                        )}
+                      >
+                        {e.cancelRequest === "request" ? (
+                          <BiTime />
+                        ) : e.cancelRequest === "reject" ? (
+                          <MdOutlineCancel />
+                        ) : (
+                          <ImCancelCircle />
+                        )}
+                      </Button>
+                    </Modal>
+                  )}
                 </div>
                 <div className={cx("mid")}>{e.quantity}</div>
                 <div className={cx("right")}>{formatVND(e.price)}</div>

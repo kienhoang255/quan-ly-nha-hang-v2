@@ -75,7 +75,7 @@
 
 .wrapPreview {
   height: 100%;
-  width: 60%;
+  width: 90%;
   margin: auto;
   @include flex($justifyContent: start);
   gap: 12px;
@@ -127,4 +127,10 @@
   &:hover {
     background-color: $successColor;
   }
+}
+
+.name {
+  width: 100%;
+  @include flex($justifyContent: space-between);
+  gap: 8px;
 }

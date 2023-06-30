@@ -1,0 +1,38 @@
+@use "../../assets/styles/" as *;
+
+.modal {
+  width: 500px;
+  background-color: $primaryBgColor;
+  border-radius: 12px;
+  border: 1px solid $primaryColor;
+  @include flex($flexD: column);
+  padding: 12px;
+
+  &Title {
+    padding-bottom: 12px;
+    font-size: 18px;
+    text-transform: uppercase;
+    color: $primaryColor;
+
+    &Sub {
+      color: $subColor;
+      font-size: 13px;
+    }
+  }
+
+  &Content {
+    width: 100%;
+    @include grid($columns: 1fr 1fr);
+    gap: 8px;
+    padding-bottom: 8px;
+    &TextInnput {
+      width: 100% !important;
+    }
+  }
+  &Footer {
+    @include flex;
+    padding-top: 12px;
+    padding-bottom: 6px;
+    gap: 12px;
+  }
+}

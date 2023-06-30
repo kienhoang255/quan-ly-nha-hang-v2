@@ -1,0 +1,321 @@
+@use "../../assets/styles/" as *;
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 97% 3% 0%;
+}
+
+.left {
+  width: calc(100% - 16px * 2);
+  height: calc(100% - 30px * 2);
+  @include grid($columns: 1fr, $rows: 1fr);
+  padding: 16px;
+
+  &Search {
+    @include flex;
+    gap: 40px;
+
+    &Input {
+      @include flex;
+      &Btn {
+        height: 58px;
+        width: 58px;
+      }
+    }
+  }
+}
+
+.listBook {
+  max-height: 760px;
+  min-height: 760px;
+  height: 760px;
+  width: 100%;
+  margin: 12px 0;
+  overflow: hidden;
+  overflow-y: auto;
+  @include scrollBar($primaryColor);
+
+  &Notification {
+    width: 1130px;
+    height: 114px;
+    border-radius: 12px;
+    background-color: $primaryBgColor;
+    border: 1px solid $primaryColor;
+    @include flex;
+    font-size: 24px;
+    color: white;
+  }
+}
+
+.action {
+  @include flex;
+  width: 400px;
+}
+
+.used {
+  background-color: $successColor;
+  color: black !important;
+  border: 1px solid $successColor !important;
+}
+
+.pending {
+  border: 1px solid $warningColor !important;
+  color: black !important;
+  background-color: $warningColor;
+}
+
+.cancel {
+  border: 1px solid $dangerColor !important;
+  background-color: $dangerColor;
+  color: black !important;
+}
+
+.notActive {
+  background-color: $subColor;
+  border: 1px solid $subColor !important;
+}
+
+.listBookingItem {
+  width: 1132px !important;
+  height: 114px !important;
+  border-radius: 12px;
+  margin-bottom: 12px !important;
+}
+
+.right {
+  @include grid($columns: auto 70%, $rows: 1fr 1fr);
+  height: calc(930px - 16px * 2);
+  width: calc(1165px - 16px * 2);
+  gap: 15px;
+  padding: 16px;
+
+  &Search {
+    width: 290px;
+    height: 405px;
+    padding: 16px;
+    border: 1px solid $primaryColor;
+    background-color: $primaryBgColor;
+    border-radius: 8px;
+    @include flex($flexD: column);
+    gap: 6px;
+
+    &Title {
+      font-size: 25px;
+      color: $primaryColor;
+      align-self: flex-start;
+    }
+
+    &Text {
+      width: 260px !important;
+
+      &1 {
+        width: 232px !important;
+      }
+    }
+
+    &Btn {
+      width: 290px !important;
+      height: 50px;
+    }
+  }
+
+  &Filter {
+    width: 290px;
+    height: 405px;
+    padding: 16px;
+    border: 1px solid $primaryColor;
+    background-color: $primaryBgColor;
+    border-radius: 8px;
+    @include flex(
+      $flexD: column,
+      $justifyContent: flex-start,
+      $alignItems: flex-start
+    );
+    gap: 6px;
+    color: white;
+    max-height: 390px;
+    overflow: hidden;
+    overflow-y: auto;
+    @include scrollBar($primaryColor);
+
+    &Title {
+      font-size: 25px;
+      color: $primaryColor;
+      align-self: flex-start;
+    }
+  }
+
+  &List {
+    align-self: flex-start;
+    grid-row: 2 span;
+    width: 100%;
+    max-height: 880px;
+    min-height: 880px;
+    overflow: hidden;
+    overflow-y: auto;
+    @include scrollBar($primaryColor);
+    gap: 12px;
+
+    &Notification {
+      width: calc(100% - 2px - 24px);
+      background-color: $primaryBgColor;
+      border: 1px solid $primaryColor;
+      border-radius: 12px;
+      padding: 12px;
+      &Title {
+        font-size: 20px;
+        color: white;
+
+        &1 {
+          @include flex($alignItems: flex-start, $justifyContent: flex-start);
+        }
+
+        &2 {
+          color: $primaryColor;
+        }
+
+        &Sub {
+          color: $subColor;
+          @include flex;
+        }
+      }
+    }
+  }
+}
+
+.skeletonTableBookingItem {
+  grid-column: 2 span;
+  height: 120px !important;
+  width: calc(100% - 24px - 24px) !important;
+  @include flex($justifyContent: space-between);
+  background-color: $primaryBgColor;
+  padding: 12px;
+  margin: 0 12px;
+  border-radius: 12px;
+  gap: 20px;
+  margin-bottom: 12px;
+}
+
+.modal {
+  background-color: $primaryBgColor;
+  border: 1px solid $primaryColor;
+  border-radius: 8px;
+  padding: 12px;
+  &Title {
+    color: $primaryColor;
+    font-size: 20px;
+    text-transform: uppercase;
+
+    &Sub {
+      color: $subColor;
+      @include flex;
+    }
+  }
+
+  &Success {
+    color: $successColor;
+  }
+
+  &Failed {
+    color: $dangerColor;
+  }
+
+  &Btn {
+    margin: 24px 12px 12px 12px;
+    width: calc(100% - 24px);
+    @include flex;
+
+    &:hover {
+      background-color: $secondaryBgColor;
+      color: $primaryColor;
+      border: 1px solid $primaryColor;
+    }
+  }
+}
+
+.checkbox {
+  @include flex;
+  gap: 12px;
+  width: 100%;
+
+  &Label {
+    cursor: pointer;
+    width: 100%;
+  }
+}
+
+.mid {
+  width: 100%;
+  @include flex;
+}
+
+.listBooked {
+  animation: SlideIn 0.7s linear forwards;
+}
+
+.listBooking {
+  animation: SlideOut 0.7s linear forwards;
+}
+
+@keyframes SlideIn {
+  to {
+    grid-template-columns: 0% 3% 97%;
+  }
+  from {
+    grid-template-columns: 97% 3% 0%;
+  }
+}
+
+@keyframes SlideOut {
+  to {
+    grid-template-columns: 97% 3% 0%;
+  }
+  from {
+    grid-template-columns: 0% 3% 97%;
+  }
+}
+
+.action {
+  @include flex;
+}
+
+.leftBtn {
+  height: 140px;
+  width: 35px;
+  background-color: $primaryBgColor;
+  border: 1px solid $primaryColor;
+  animation: btnLeft 0.3s linear forwards;
+  justify-self: flex-end;
+  color: $primaryColor;
+  font-size: 30px;
+}
+
+.rightBtn {
+  height: 140px;
+  width: 35px;
+  background-color: $primaryBgColor;
+  border: 1px solid $primaryColor;
+  animation: btnRight 0.3s linear forwards;
+  color: $primaryColor;
+  font-size: 30px;
+}
+
+@keyframes btnLeft {
+  to {
+    border-radius: 0px 50% 50% 0px;
+  }
+  from {
+    border-radius: 50% 0px 0px 50%;
+  }
+}
+
+@keyframes btnRight {
+  to {
+    border-radius: 50% 0px 0px 50%;
+  }
+  from {
+    border-radius: 0px 50% 50% 0px;
+  }
+}

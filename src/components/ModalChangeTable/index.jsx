@@ -14,7 +14,7 @@ import {
 import Skeleton from "../Skeleton";
 import { useNavigate } from "react-router-dom";
 import ModalLoader from "../ModalLoader";
-import { setBooking } from "../../redux/bookingSlice";
+import { setBooking, setBookingOnly } from "../../redux/bookingSlice";
 import moment from "moment";
 
 const cx = classNames.bind(styles);
@@ -64,16 +64,18 @@ const ModalChangeTable = () => {
     if (!checkExistStageCalled && selectedStage !== undefined) {
       TableAPI.getTableByStage(selectedStage)
         .then((res) => {
-          BookingAPI.getBooking(date).then((res1) => {
-            dispatch(setBooking(res1.data));
-            dispatch(
-              setTable({
-                booking: res1.data,
-                table: res.data,
-                deathTime: time,
-              })
-            );
-          });
+          BookingAPI.getAllBooking({ dateCheckIn: date, status: booking }).then(
+            (res1) => {
+              dispatch(setBookingOnly(res1.data));
+              dispatch(
+                setTable({
+                  booking: res1.data,
+                  table: res.data,
+                  deathTime: time,
+                })
+              );
+            }
+          );
           dispatch(setStageCalled(selectedStage));
         })
         .catch((err) => err);
@@ -91,9 +93,9 @@ const ModalChangeTable = () => {
     BillAPI.changeTable(data)
       .then((res) => {
         setOnChangeTable(false);
-        dispatch(updateTable(res.data.tableTo));
-        dispatch(updateTable(res.data.table));
         navigate("/table");
+        // dispatch(updateTable(res.data.tableTo));
+        // dispatch(updateTable(res.data.table));
       })
       .catch((err) => err.response);
   };

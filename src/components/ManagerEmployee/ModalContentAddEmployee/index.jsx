@@ -32,6 +32,7 @@ const ManagerEmployee = ({
     address: infoEmployee?.address || "",
     avatar: infoEmployee?.avatar || undefined,
     job: [...(infoEmployee?.job || "")],
+    role: infoEmployee?.role || "",
   });
 
   useEffect(() => {
@@ -43,6 +44,7 @@ const ManagerEmployee = ({
       address: infoEmployee?.address || "",
       avatar: infoEmployee?.avatar || undefined,
       job: [...(infoEmployee?.job || "")],
+      role: infoEmployee?.role || "",
     };
 
     if (
@@ -52,6 +54,7 @@ const ManagerEmployee = ({
       rawData.phone === employeeInfo.phone &&
       rawData.address === employeeInfo.address &&
       rawData.avatar === employeeInfo.avatar &&
+      rawData.role === employeeInfo.role &&
       compareArray(rawData.job, employeeInfo.job)
     ) {
       setIsChanged(true);
@@ -100,6 +103,24 @@ const ManagerEmployee = ({
           />
           <div className={cx("body_left_list-title")}>Chức năng nhân viên</div>
           <div className={cx("body_left_list-jobs")}>
+            <div className={cx("body_left_list-jobs-item")}>
+              <div>Quản lý</div>
+              <Switch
+                open={!!employeeInfo.role}
+                onChange={() => {
+                  if (employeeInfo.role)
+                    setEmployeeInfo((prev) => ({
+                      ...prev,
+                      role: "",
+                    }));
+                  else
+                    setEmployeeInfo((prev) => ({
+                      ...prev,
+                      role: "manager",
+                    }));
+                }}
+              />
+            </div>
             {role.role.map((e, key) => (
               <div key={key} className={cx("body_left_list-jobs-item")}>
                 <div>{e.name}</div>

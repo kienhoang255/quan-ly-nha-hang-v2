@@ -17,7 +17,7 @@ import {
 } from "../../redux/tableSlice";
 import { setTableServing } from "../../redux/tableServingSlice";
 import { isEmail, isNull, isPhoneNumber } from "../../utils";
-import { setBooking } from "../../redux/bookingSlice";
+import { setBooking, setBookingOnly } from "../../redux/bookingSlice";
 import moment from "moment/moment";
 
 const cx = classNames.bind(styles);
@@ -33,7 +33,7 @@ const Table = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const date = moment([]).format("YYYY-MM-DD");
+  const dateCheckIn = moment([]).format("YYYY-MM-DD");
   const time = moment([]).format("HHmm");
 
   const [selectedStage, setSelectedStage] = useState();
@@ -42,7 +42,7 @@ const Table = () => {
   const refsById = useMemo(() => {
     const refs = {};
     table.forEach((item) => {
-      refs[item._id] = React.createRef(null);
+      refs[item?._id] = React.createRef(null);
     });
     return refs;
   }, [table]);
@@ -67,12 +67,18 @@ const Table = () => {
     if (!checkExistStageCalled && selectedStage !== undefined) {
       TableAPI.getTableByStage(selectedStage)
         .then((res) => {
-          BookingAPI.getBooking(date).then((res1) => {
-            dispatch(setBooking(res1.data));
-            dispatch(
-              setTable({ booking: res1.data, table: res.data, deathTime: time })
-            );
-          });
+          BookingAPI.getAllBooking({ dateCheckIn, status: "pending" }).then(
+            (res1) => {
+              dispatch(setBookingOnly(res1.data));
+              dispatch(
+                setTable({
+                  booking: res1.data,
+                  table: res.data,
+                  deathTime: time,
+                })
+              );
+            }
+          );
           dispatch(setStageCalled(selectedStage));
         })
         .catch((err) => err);
@@ -118,25 +124,76 @@ const Table = () => {
 
     // Create new bill
     if (validateEmail(value.email)) {
-      BillAPI.createBill(value).then((res) => {
-        const table = res.data.table;
-        const bill = res.data.createBill;
-        // dispatch(updateTable(res.data.table));
-        handleCloseModal(value);
-        handleOnSelectedTable(table);
-      });
+      BillAPI.createBill(value)
+        .then((res) => {
+          BookingAPI.getAllBooking({ dateCheckIn, status: "pending" }).then(
+            (res1) => {
+              dispatch(setBookingOnly(res1.data));
+            }
+          );
+          const table = res.data.table;
+          const bill = res.data.createBill;
+          // dispatch(updateTable(res.data.table));
+          handleCloseModal(value);
+          handleOnSelectedTable(table);
+        })
+        .catch((err) => {
+          switch (err.response.status) {
+            case 400:
+              setErrMessage("Bàn đã có người sử dụng!");
+              break;
+            case 401:
+              setErrMessage("Bàn đã có người đặt trước!");
+              break;
+            default:
+              setErrMessage("Không thể check in");
+              TableAPI.getTableByStage(selectedStage)
+                .then((res) => {
+                  BookingAPI.getAllBooking({
+                    dateCheckIn,
+                    status: "pending",
+                  }).then((res1) => {
+                    dispatch(setBookingOnly(res1.data));
+                    dispatch(
+                      setTable({
+                        booking: res1.data,
+                        table: res.data,
+                        deathTime: time,
+                      })
+                    );
+                  });
+                  dispatch(setStageCalled(selectedStage));
+                })
+                .catch((err) => err);
+              break;
+          }
+        });
     }
   };
 
   const handleCheckInForWalkInGuest = (value) => {
     // Create new bill
-    BillAPI.createBillForWalkInGuest(value).then((res) => {
-      const table = res.data.table;
-      const bill = res.data.createBill;
-      // dispatch(updateTable(res.data.table));
-      handleCloseModal(value);
-      handleOnSelectedTable(table);
-    });
+    BillAPI.createBillForWalkInGuest(value)
+      .then((res) => {
+        const table = res.data.table;
+        const bill = res.data.createBill;
+        // dispatch(updateTable(res.data.table));
+        handleCloseModal(value);
+        handleOnSelectedTable(table);
+      })
+      .catch((err) => {
+        switch (err.response.status) {
+          case 400:
+            setErrMessage("Bàn đã có người sử dụng!");
+            break;
+          case 401:
+            setErrMessage("Bàn đã có người đặt trước!");
+            break;
+          default:
+            setErrMessage("Không thể check in");
+            break;
+        }
+      });
   };
 
   const handleCloseModal = (value) => {
@@ -160,10 +217,10 @@ const Table = () => {
       </div>
       <div className={cx("content")}>
         {table.map((e, key) => {
-          if (e.stage === selectedStage) {
+          if (e?.stage === selectedStage) {
             return (
               <TableItem
-                refs={refsById[e._id]}
+                refs={refsById[e?._id]}
                 key={key}
                 tableInfo={e}
                 handleOnSelectedTable={handleOnSelectedTable}

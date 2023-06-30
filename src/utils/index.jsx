@@ -9,7 +9,7 @@ const imageToBase64 = (img, callback) => {
 };
 
 export const formatVND = (number) =>
-  new Intl.NumberFormat("vn-VN", {
+  new Intl.NumberFormat("vi-VI", {
     style: "currency",
     currency: "VND",
   }).format(number);

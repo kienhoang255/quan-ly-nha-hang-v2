@@ -53,6 +53,7 @@
 .title {
   width: 100%;
   @include flex($justifyContent: flex-start);
+  color: $primaryColor;
 }
 
 .subTitle {

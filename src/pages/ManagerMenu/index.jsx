@@ -14,7 +14,7 @@ import FoodCard from "../../components/menu/FoodCard";
 import Modal from "../../components/Modal";
 import Skeleton from "../../components/Skeleton";
 
-import { AiFillSetting } from "react-icons/ai";
+import { GrFormAdd } from "react-icons/gr";
 
 import { MenuAPI } from "../../services";
 
@@ -223,7 +223,7 @@ const ManagerMenu = () => {
                 }
               >
                 <Button className={cx("btnBill")}>
-                  <AiFillSetting />
+                  <GrFormAdd />
                 </Button>
               </Modal>
             </div>

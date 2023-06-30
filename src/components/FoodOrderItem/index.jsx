@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import classNames from "classnames/bind";
 import Button from "../Button";
 import styles from "./index.module.scss";
 import moment from "moment";
+import { useSelector } from "react-redux";
 
 const cx = classNames.bind(styles);
 
@@ -12,6 +13,18 @@ const FoodOrderItem = ({
   handleOnServedFood,
   handleOnCancelFood,
 }) => {
+  const user = useSelector((state) => state.user);
+  const disableBtn = useMemo(() => {
+    let result;
+    if (user?.role === "manager") {
+      result = false;
+    } else if (user?.role !== "manager" && data.status === "cooking") {
+      result = false;
+    } else if (user?.role !== "manager" && data.status !== "cooking") {
+      result = true;
+    }
+    return result;
+  }, [user, data]);
   return (
     <div className={cx("bodyTable")}>
       <div className={cx("bodyCell")}>
@@ -22,13 +35,17 @@ const FoodOrderItem = ({
               backgroundImage: `url(${cacheFood[data.id_food]?.image})`,
             }}
           ></div>
-          <span>{cacheFood[data.id_food]?.name}</span>
+          <span className={cx("name")}>
+            <div>{cacheFood[data.id_food]?.name}</div>
+            {data.cancelRequest === "request" && <div>Đang chờ hủy</div>}
+            {data.cancelRequest === "reject" && <div>Đã từ chối</div>}
+            {data.cancelRequest === "confirm" && <div>Đã hủy</div>}
+          </span>
         </div>
       </div>
       <div className={cx("bodyCell")}>{data.nameTable}</div>
       <div className={cx("bodyCell")}>{data.quantity}</div>
       <div className={cx("bodyCell")}>
-        {/* moment */}
         {moment(data.createdAt).format("DD/MM-hh:mm:ss")}
       </div>
       <div className={cx("bodyCell")}>{data.status}</div>
@@ -38,12 +55,12 @@ const FoodOrderItem = ({
           className={cx("cancelBtn")}
           onClick={() => handleOnCancelFood(data._id)}
           variant="outline"
-          disable={data.status === "cooking" ? false : true}
+          disable={disableBtn}
         >
           Huỷ
         </Button>
         <Button
-          disable={data.status === "cooking" ? false : true}
+          disable={disableBtn}
           className={cx("completeBtn")}
           onClick={() => {
             handleOnServedFood(data._id);

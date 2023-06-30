@@ -352,7 +352,7 @@ template {
   display: none;
 }
 
-@media screen and (max-width: 1179px) and (max-width: 1179px) {
+/* @media screen and (max-width: 1179px) and (max-width: 1179px) {
   .App::before {
     content: "We do not serve devices screen width or height less than 1180px";
     color: #000;
@@ -382,7 +382,7 @@ template {
   .App::before {
     display: none;
   }
-}
+} */
 
 /* customize */
 
