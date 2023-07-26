@@ -1,7 +1,10 @@
 import React, { useEffect, useMemo } from "react";
 import Pusher from "pusher-js";
 import { useDispatch, useSelector } from "react-redux";
-import { addFoodOrdered } from "../redux/foodOrderedSlice";
+import {
+  addFoodOrdered,
+  updateNameTableFoodOrdered,
+} from "../redux/foodOrderedSlice";
 import tingSound from "../assets/sound/TING SOUND EFFECT.mp3";
 import cancelFORequestSound from "../assets/sound/cancelFoodOrderRequest.mp3";
 import { addNewNotification } from "../redux/notiSlice";
@@ -57,6 +60,13 @@ const PusherComponent = () => {
           dispatch(addFoodOrdered(data.data));
         });
 
+      //Đổi bàn
+      if (job.find((e) => e.path === "/order"))
+        Bill_Channel.bind("changeTable-event", function (data) {
+          console.log(data.data.tableTo.id_bill);
+          dispatch(updateNameTableFoodOrdered(data.data.tableTo));
+        });
+
       if (job.find((e) => e.path === "/order"))
         FO_Channel.bind("FO_cancel-request", function (data) {
           cancelFOSound();
@@ -82,6 +92,7 @@ const PusherComponent = () => {
               title: "served",
               timeOrder: data.foodOrdered.time,
               option: "serve",
+              nameTable: data.foodOrdered.nameTable,
             })
           );
         });

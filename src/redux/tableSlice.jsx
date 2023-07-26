@@ -14,6 +14,9 @@ export const tableSlice = createSlice({
   name: "table",
   initialState,
   reducers: {
+    clearData: (state, action) => {
+      return { ...state, table: [], stage: [], stageCalled: [] };
+    },
     setStage: (state, action) => {
       state.stage = action.payload;
     },
@@ -267,6 +270,7 @@ export const {
   removeTableImageOptions,
   setTableBooking,
   setOptions,
+  clearData,
 } = tableSlice.actions;
 
 export default tableSlice.reducer;

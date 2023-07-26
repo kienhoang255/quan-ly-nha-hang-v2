@@ -29,6 +29,7 @@ import { BookingAPI, TableAPI } from "../../services";
 import Progress from "../../components/Progress";
 import { setBooking, setBookingOnly } from "../../redux/bookingSlice";
 import moment from "moment";
+import { isMax, isNull } from "../../utils";
 
 const cx = classNames.bind(styles);
 
@@ -64,6 +65,7 @@ const ManagerTable = () => {
     stage: "",
     numOfPeople: "",
   });
+  const [errNOP, setErrNOP] = useState({});
 
   // For first time render
   useEffect(() => {
@@ -128,7 +130,6 @@ const ManagerTable = () => {
   // Create new table
   const handleCreateNewTable = (e) => {
     e.preventDefault();
-    setOpenModalFetching(true);
     const form = new FormData(e.target);
     const { stage, numOfPeople } = Object.fromEntries(form.entries());
     const { image1, image2, image3, image4 } = tableImg;
@@ -141,16 +142,45 @@ const ManagerTable = () => {
       image4,
       options: option.options,
     };
-    TableAPI.createTable(dataAPI).then((res) => {
-      dispatch(addTable(res.data.data.table));
-      setOpenModalFetching(false);
-      modalCreateRef.current.closeModal();
-    });
+
+    const nOPMax = isMax(dataAPI.numOfPeople, 40);
+    const isStageEmpty = isNull(dataAPI.stage);
+    const isNOPEmpty = isNull(dataAPI.numOfPeople);
+
+    if (!isNOPEmpty && !dataAPI.numOfPeople) {
+      setErrNOP((prev) => ({ ...prev, NOP: "Không được để trống" }));
+    } else {
+      if (nOPMax) {
+        setErrNOP((prev) => ({
+          ...prev,
+          NOP: "Số lượng người quá lớn, tối đa 40",
+        }));
+      } else setErrNOP((prev) => ({ ...prev, NOP: "" }));
+    }
+
+    if (!isStageEmpty && !dataAPI.stage)
+      setErrNOP((prev) => ({ ...prev, stage: "Không được để trống" }));
+    else setErrNOP((prev) => ({ ...prev, stage: "" }));
+
+    if (
+      !nOPMax &&
+      isStageEmpty &&
+      isNOPEmpty &&
+      !!dataAPI.stage &&
+      !!dataAPI.numOfPeople
+    ) {
+      setOpenModalFetching(true);
+      setErrNOP("");
+      TableAPI.createTable(dataAPI).then((res) => {
+        dispatch(addTable(res.data.data.table));
+        setOpenModalFetching(false);
+        modalCreateRef.current.closeModal();
+      });
+    }
   };
 
   const handleUpdateTable = (e, _id) => {
     e.preventDefault();
-    setOpenModalFetching(true);
     const form = new FormData(e.target);
     const { stage, numOfPeople } = Object.fromEntries(form.entries());
     const { image1, image2, image3, image4, options } = tableImage[_id];
@@ -164,12 +194,42 @@ const ManagerTable = () => {
       image4,
       options,
     };
-    TableAPI.updateTable(dataAPI).then((res) => {
-      handleCloseModal(_id);
-      setOpenModalFetching(false);
-      dispatch(setTableImage(res.data.data.tableImage));
-      dispatch(updateTable(res.data.data.table));
-    });
+
+    const nOPMax = isMax(dataAPI.numOfPeople, 40);
+    const isStageEmpty = isNull(dataAPI.stage);
+    const isNOPEmpty = isNull(dataAPI.numOfPeople);
+
+    if (!isNOPEmpty && !dataAPI.numOfPeople) {
+      setErrNOP((prev) => ({ ...prev, NOP: "Không được để trống" }));
+    } else {
+      if (nOPMax) {
+        setErrNOP((prev) => ({
+          ...prev,
+          NOP: "Số lượng người quá lớn, tối đa 40",
+        }));
+      } else setErrNOP((prev) => ({ ...prev, NOP: "" }));
+    }
+
+    if (!isStageEmpty && !dataAPI.stage)
+      setErrNOP((prev) => ({ ...prev, stage: "Không được để trống" }));
+    else setErrNOP((prev) => ({ ...prev, stage: "" }));
+
+    if (
+      !nOPMax &&
+      isStageEmpty &&
+      isNOPEmpty &&
+      !!dataAPI.stage &&
+      !!dataAPI.numOfPeople
+    ) {
+      setOpenModalFetching(true);
+      setErrNOP("");
+      TableAPI.updateTable(dataAPI).then((res) => {
+        handleCloseModal(_id);
+        setOpenModalFetching(false);
+        dispatch(setTableImage(res.data.data.tableImage));
+        dispatch(updateTable(res.data.data.table));
+      });
+    }
   };
 
   const handleDeleteTable = (_id) => {
@@ -227,6 +287,7 @@ const ManagerTable = () => {
           if (e.stage === selectedStage) {
             return (
               <MTBCard
+                errNOP={errNOP}
                 refs={refsById[e._id]}
                 key={key}
                 tableInfo={e}
@@ -258,6 +319,7 @@ const ManagerTable = () => {
             handleCreateNewTable={handleCreateNewTable}
             option={option}
             setOption={setOption}
+            errNOP={errNOP}
           />
         }
       >

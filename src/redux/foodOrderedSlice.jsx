@@ -45,10 +45,25 @@ export const foodOrderedSlice = createSlice({
         },
       };
     },
+    updateNameTableFoodOrdered: (state, action) => {
+      return {
+        ...state,
+        foodOrdered: state.foodOrdered.map((e) => {
+          if (e.id_bill === action.payload.id_bill[0]) {
+            return { ...e, nameTable: action.payload.name };
+          } else return e;
+        }),
+      };
+    },
   },
 });
 
-export const { setFoodOrdered, removeFoodOrdered, addFoodOrdered, addCache } =
-  foodOrderedSlice.actions;
+export const {
+  setFoodOrdered,
+  removeFoodOrdered,
+  addFoodOrdered,
+  addCache,
+  updateNameTableFoodOrdered,
+} = foodOrderedSlice.actions;
 
 export default foodOrderedSlice.reducer;

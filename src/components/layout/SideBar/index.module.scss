@@ -8,6 +8,9 @@
   font-size: 25px;
   line-height: 0;
   color: white;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .wrap {

@@ -4,6 +4,7 @@ import Button from "../Button";
 import styles from "./index.module.scss";
 import moment from "moment";
 import { useSelector } from "react-redux";
+import { formatVND } from "../../utils";
 
 const cx = classNames.bind(styles);
 
@@ -45,6 +46,7 @@ const FoodOrderItem = ({
       </div>
       <div className={cx("bodyCell")}>{data.nameTable}</div>
       <div className={cx("bodyCell")}>{data.quantity}</div>
+      {/* <div className={cx("bodyCell")}>{formatVND(data?.price)}</div> */}
       <div className={cx("bodyCell")}>
         {moment(data.createdAt).format("DD/MM-hh:mm:ss")}
       </div>

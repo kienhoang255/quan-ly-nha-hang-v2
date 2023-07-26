@@ -28,6 +28,7 @@ const MTBCard = ({
   setStateTableInfo,
   refs,
   handleCloseModal,
+  errNOP,
 }) => {
   const [previewImgRedux, setPreviewImgRedux] = useState();
   useEffect(() => {
@@ -53,6 +54,7 @@ const MTBCard = ({
           ref={refs}
           component={
             <ModalContentManagerTableUpdate
+              errNOP={errNOP}
               tableInfo={tableInfo}
               tableImage={tableImage}
               handleUpdateTable={handleUpdateTable}

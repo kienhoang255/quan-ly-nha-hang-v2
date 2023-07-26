@@ -10,6 +10,7 @@ import { imageToBase64 } from "../../../utils";
 
 import emptyImg from "../../../assets/images/placeholder-400x400.png";
 import { FcCancel } from "react-icons/fc";
+import Switch from "../../Switch";
 
 const cx = classNames.bind(styles);
 
@@ -21,6 +22,7 @@ const ModalContentManagerTableCreate = ({
   handleCreateNewTable,
   option,
   setOption,
+  errNOP,
 }) => {
   const array = [
     { name: "Ảnh chính", id: "image1" },
@@ -41,12 +43,15 @@ const ModalContentManagerTableCreate = ({
           <div className={cx("bodyRight")}>
             <div className={cx("bodyRightForm")}>
               <TextInput type="number" id="stage" placeholder="Tầng" />
+
+              <div className={cx("err")}> {errNOP.stage}</div>
+
               <TextInput
                 type="number"
                 id="numOfPeople"
                 placeholder="Số lượng người"
               />
-              <div></div>
+              <div className={cx("err")}> {errNOP.NOP}</div>
               {array.map((e, key) => (
                 <div key={key} className={cx("imageInput")}>
                   <div
@@ -94,6 +99,15 @@ const ModalContentManagerTableCreate = ({
           </div>
 
           <div className={cx("option")}>
+            <div className={cx("switch")}>
+              {/* <div className={cx("switchInvisible")}>Ẩn</div>
+              <Switch
+                onChange={() =>
+                  setTableImg((prev) => ({ ...prev, [e.id]: "" }))
+                }
+              />
+              <div className={cx("switchVisible")}>Hiện</div> */}
+            </div>
             <div className={cx("optionAdd")}>
               <TextInput
                 className={cx("optionText")}

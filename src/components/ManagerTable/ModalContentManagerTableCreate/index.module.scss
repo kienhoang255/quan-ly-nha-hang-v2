@@ -1,7 +1,7 @@
 @use "../../../assets/styles/" as *;
 
 .container {
-  height: 600px;
+  // height: 600px;
   width: 1050px;
   background-color: $primaryBgColor;
   border-radius: 18px;
@@ -37,7 +37,8 @@ $pContent: 16px;
   &Right {
     flex-grow: 1;
 
-    height: 460px;
+    height: 500px;
+    max-height: 500px;
     @include scrollBar($primaryColor);
     @include grid($columns: 350px 1fr, $rows: repeat(6, 1fr));
     &Form {
@@ -129,6 +130,7 @@ $pContent: 16px;
 
 .footer {
   width: 50%;
+  margin-top: 25px;
   @include flex($justifyContent: space-between);
 }
 
@@ -154,4 +156,19 @@ $pContent: 16px;
 
 .actionBtn {
   @include flex($flexD: row);
+}
+
+.err {
+  color: $dangerColor;
+}
+
+.switch {
+  @include flex;
+  &Invisible {
+    color: $subColor;
+  }
+
+  &Visible {
+    color: $primaryColor;
+  }
 }

@@ -16,7 +16,12 @@
 .pagination {
   max-height: 35px;
   @include flex;
-  gap: 4px;
+  gap: 6px;
+
+  &Title {
+    color: $primaryColor;
+    font-size: 24px;
+  }
 }
 
 .stageBtn {

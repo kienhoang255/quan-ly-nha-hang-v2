@@ -169,6 +169,7 @@ const Order = () => {
             <div className={cx("headerCell")}>Tên món ăn</div>
             <div className={cx("headerCell")}>Bàn</div>
             <div className={cx("headerCell")}>Số lượng</div>
+            {/* <div className={cx("headerCell")}>Tiền</div> */}
             <div className={cx("headerCell")}>Thời gian đặt</div>
             <div className={cx("headerCell")}>Trạng thái</div>
             <div className={cx("headerCell")}>Điều khiển</div>

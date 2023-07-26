@@ -10,6 +10,7 @@ import TableItem from "../../components/table/TableItem";
 
 import { BillAPI, BookingAPI, TableAPI } from "../../services";
 import {
+  clearData,
   setStage,
   setStageCalled,
   setTable,
@@ -147,24 +148,7 @@ const Table = () => {
               break;
             default:
               setErrMessage("Không thể check in");
-              TableAPI.getTableByStage(selectedStage)
-                .then((res) => {
-                  BookingAPI.getAllBooking({
-                    dateCheckIn,
-                    status: "pending",
-                  }).then((res1) => {
-                    dispatch(setBookingOnly(res1.data));
-                    dispatch(
-                      setTable({
-                        booking: res1.data,
-                        table: res.data,
-                        deathTime: time,
-                      })
-                    );
-                  });
-                  dispatch(setStageCalled(selectedStage));
-                })
-                .catch((err) => err);
+              // location.reload();
               break;
           }
         });
@@ -191,6 +175,7 @@ const Table = () => {
             break;
           default:
             setErrMessage("Không thể check in");
+            // location.reload();
             break;
         }
       });
@@ -204,6 +189,7 @@ const Table = () => {
     <div className={cx("container")}>
       <div className={cx("title")}>DANH SÁCH BÀN ĂN</div>
       <div className={cx("pagination")}>
+        <div className={cx("paginationTitle")}>TẦNG</div>
         {stage.map((e, key) => (
           <Button
             key={key}

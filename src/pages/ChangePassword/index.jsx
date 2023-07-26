@@ -130,7 +130,7 @@ const ChangePassword = () => {
       }
     }
 
-    if (data.rePassword === data.password) {
+    if (data.rePassword === data.password && isLength(data.password, 8)) {
       setIsFetching(true);
       UserAPI.changePassword({ _id: id, ...data }).then((res) => {
         setIsFetching(false);

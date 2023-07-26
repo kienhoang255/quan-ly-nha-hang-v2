@@ -189,12 +189,14 @@ const ManagerMenu = () => {
   };
 
   const handleUpdateFood = (id, data) => {
-    setFetching(true);
-    MenuAPI.updateFood({ _id: id, ...data }).then((res) => {
-      dispatch(updateFood(res.data.data));
-      setFetching(false);
-      handleCloseModalUpdate(id);
-    });
+    if (handleFoodValue(data)) {
+      setFetching(true);
+      MenuAPI.updateFood({ _id: id, ...data }).then((res) => {
+        dispatch(updateFood(res.data.data));
+        setFetching(false);
+        handleCloseModalUpdate(id);
+      });
+    }
   };
 
   return (

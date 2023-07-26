@@ -19,7 +19,7 @@ const Order = React.lazy(() => import("../pages/Order"));
 const Table = React.lazy(() => import("../pages/Table"));
 const Login = React.lazy(() => import("../pages/Login"));
 const Booking = React.lazy(() => import("../pages/Booking"));
-const Employee = React.lazy(() => import("../pages/Employee"));
+// const Employee = React.lazy(() => import("../pages/Employee"));
 const ManagerTable = React.lazy(() => import("../pages/ManagerTable"));
 const ManagerEmployee = React.lazy(() => import("../pages/ManagerEmployee"));
 const ErrorPage = React.lazy(() => import("../pages/403"));
@@ -34,7 +34,7 @@ const Routes = () => {
     { path: "/me", component: User, name: "Trang cá nhân" },
     { path: "/order", component: Order, name: "Đặt món" },
     { path: "/table", component: Table, name: "Sơ đồ bàn" },
-    { path: "/employee", component: Employee, name: "Nhân viên" },
+    // { path: "/employee", component: Employee, name: "Nhân viên" },
     { path: "/booking", component: Booking, name: "Đặt bàn" },
     {
       path: "/bill-history",

@@ -76,7 +76,7 @@ const ManagerEmployee = ({
     <div className={cx("container")}>
       <div className={cx("header")}>
         {infoEmployee?.email === "admin@gmail.com"
-          ? "Acc siêu cấp vip pro max"
+          ? "Không thể xóa hay cập nhật admin"
           : setting
           ? "Chỉnh sửa nhân viên"
           : "Thêm nhân viên"}

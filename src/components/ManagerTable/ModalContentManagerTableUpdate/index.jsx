@@ -27,6 +27,7 @@ const ModalContentManagerTableUpdate = ({
   setOption,
   stateTableInfo,
   setStateTableInfo,
+  errNOP,
 }) => {
   const array = [
     { name: "Ảnh chính", id: "image1", imgAPI: tableImage?.image1 },
@@ -69,6 +70,7 @@ const ModalContentManagerTableUpdate = ({
                   }));
                 }}
               />
+              <div className={cx("err")}> {errNOP.stage}</div>
               <TextInput
                 id="numOfPeople"
                 type="number"
@@ -81,6 +83,7 @@ const ModalContentManagerTableUpdate = ({
                   }));
                 }}
               />
+              <div className={cx("err")}>{errNOP.NOP}</div>
               {array.map((e, key) => (
                 <div key={key} className={cx("imageInput")}>
                   <div
